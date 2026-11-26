@@ -2,7 +2,7 @@
  * NON-PRODUCTION MARKER.
  *
  * While this is `true`, the site contains placeholder numbers, testimonials, handles
- * and brand slots (every one is tagged `// PLACEHOLDER` and listed in
+ * and brand slots (every one carries a PLACEHOLDER/CONFIRM line comment, listed in
  * docs/TODO-real-content.md). Effects:
  *   - testimonials render a small "Sample" tag
  *   - <meta name="ccc-content" content="placeholder"> is emitted (invisible)

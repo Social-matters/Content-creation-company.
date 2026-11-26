@@ -16,7 +16,7 @@ export function Stats() {
   return (
     <section ref={root} className="relative overflow-hidden bg-ink py-[var(--section-y)] text-cream">
       <div className="grain pointer-events-none absolute inset-0" />
-      <div aria-hidden className="pointer-events-none absolute -left-40 top-1/3 size-[30rem] rounded-full bg-orange/20 blur-[120px]" />
+      <div aria-hidden className="pointer-events-none absolute -left-40 top-1/3 size-[30rem] bg-[radial-gradient(closest-side,rgb(255_129_42/0.45),transparent)]" />
       <div className="container-x relative">
         <SectionIntro label={stats.label} headline={stats.headline} tone="dark" />
         <dl className="mt-16 grid grid-cols-2 border-l border-t border-cream/10 lg:grid-cols-4">
@@ -46,7 +46,7 @@ export function Stats() {
                   data-reveal-delay={(i % 4) * 0.05}
                   className={cn(
                     'flex aspect-[5/3] flex-col items-center justify-center gap-1.5 rounded-2xl text-center font-mono text-[0.68rem] uppercase tracking-[0.08em]',
-                    taken ? 'border-2 border-black bg-ink-3 text-cream/45' : 'border-2 border-dashed border-cream/25 text-cream/70 transition-colors hover:border-orange hover:text-orange',
+                    taken ? 'border-2 border-black bg-ink-3 text-cream/70' : 'border-2 border-dashed border-cream/25 text-cream/70 transition-colors hover:border-orange hover:text-orange',
                   )}
                 >
                   <Icon name={taken ? 'lock' : 'plus'} size={16} />

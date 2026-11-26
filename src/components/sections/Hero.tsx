@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useRef } from 'react';
 import { gsap, useGSAP } from '@/lib/gsap';
-import { dur, ease, mq, stagger } from '@/lib/motion';
+import { dur, ease, ENTRANCE_MIN_WIDTH, mq, stagger } from '@/lib/motion';
 import { hero } from '@/content/home';
 import { assets } from '@/content/assets';
 import { useUI } from '@/components/providers/UIProvider';
@@ -13,7 +13,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Counter } from '@/components/ui/Counter';
 import { Video } from '@/components/ui/Video';
 import { TLink } from '@/components/ui/TLink';
-import { NotificationCard } from './NotificationCard';
+import { NotificationCard, floatVars } from './NotificationCard';
 
 /** Card positions (desktop). Mobile shows the first card only. */
 const CARD_POS = ['left-[42%] top-[21%]', 'right-[4%] top-[13%]', 'left-[var(--gutter)] top-[36%]'];
@@ -40,14 +40,13 @@ export function Hero() {
           return;
         }
         const tl = gsap.timeline({ defaults: { ease: ease.reveal } });
-        tl.fromTo(q('[data-hero-media]'), { clipPath: 'inset(14% 10% 14% 10% round 2.5rem)', scale: 1.18 }, { clipPath: 'inset(0% 0% 0% 0% round 0rem)', scale: 1, duration: 1.6, ease: 'expo.inOut' }, 0)
-          .fromTo(items, { autoAlpha: 0, y: 36 }, { autoAlpha: 1, y: 0, duration: dur.reveal, stagger: stagger.base }, 0.7)
+        // The media intro only runs behind the entrance (desktop); on phones the poster shows full-size at once (it's the LCP).
+        if (window.innerWidth >= ENTRANCE_MIN_WIDTH) {
+          tl.fromTo(q('[data-hero-media]'), { clipPath: 'inset(14% 10% 14% 10% round 2.5rem)', scale: 1.18 }, { clipPath: 'inset(0% 0% 0% 0% round 0rem)', scale: 1, duration: 1.6, ease: 'expo.inOut' }, 0);
+        }
+        tl.fromTo(items, { autoAlpha: 0, y: 36 }, { autoAlpha: 1, y: 0, duration: dur.reveal, stagger: stagger.base }, 0.7)
           .fromTo(avatars, { autoAlpha: 0, scale: 0.3, x: -14 }, { autoAlpha: 1, scale: 1, x: 0, duration: 0.7, stagger: 0.07, ease: 'back.out(2.2)' }, 0.95)
           .fromTo(cards, { autoAlpha: 0, y: 60, scale: 0.86, rotate: (i) => (i % 2 ? 6 : -6) }, { autoAlpha: 1, y: 0, scale: 1, rotate: 0, duration: 1.2, stagger: 0.18 }, 1.05);
-        // Gentle looped float, each card on its own phase.
-        q('[data-float]').forEach((el, i) => {
-          gsap.to(el, { y: i % 2 ? 12 : -12, rotate: i % 2 ? -1.4 : 1.2, duration: 2.6 + i * 0.55, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 1.8 + i * 0.4 });
-        });
       });
       return () => mm.revert();
     },
@@ -78,14 +77,14 @@ export function Hero() {
           <div className="absolute inset-0 bg-gradient-to-r from-ink/70 via-transparent to-transparent" />
         </div>
       </div>
-      <div aria-hidden className="pointer-events-none absolute -bottom-40 right-[-10%] -z-10 size-[42rem] rounded-full bg-orange/35 blur-[120px]" />
+      <div aria-hidden className="pointer-events-none absolute -bottom-40 right-[-10%] -z-10 size-[42rem] bg-[radial-gradient(closest-side,rgb(255_129_42/0.60),transparent)]" />
       <div className="grain pointer-events-none absolute inset-0 -z-10" />
 
       {/* Floating notifications */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
         {hero.notifications.map((n, i) => (
           <div key={n.text} data-card className={`absolute ${CARD_POS[i]} ${i === 0 ? 'max-md:left-auto max-md:right-[var(--gutter)] max-md:top-[6.5rem]' : 'hidden lg:block'}`}>
-            <div data-float>
+            <div className="float-loop" style={floatVars(i)}>
               <NotificationCard {...n} className={i === 0 ? 'max-md:w-[16.5rem]' : undefined} />
             </div>
           </div>

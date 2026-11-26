@@ -10,6 +10,7 @@ export type LegalDoc = {
   sections: { heading: string; body: string[] }[];
 };
 
+// PLACEHOLDER: draft legal copy, needs counsel review before launch
 export const privacy: LegalDoc = {
   title: 'Privacy policy',
   description: 'How Content Creation Company collects, uses and protects your personal data.',

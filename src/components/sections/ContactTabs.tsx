@@ -40,7 +40,7 @@ export function ContactTabs() {
         </div>
 
         <div data-reveal>
-          <Eyebrow>{`// ${contact.tabsLabel}`}</Eyebrow>
+          <Eyebrow tone="light">{`// ${contact.tabsLabel}`}</Eyebrow>
           <div role="tablist" aria-label={contact.tabsLabel} className="mt-4 inline-flex rounded-full border-2 border-black bg-white p-1 shadow-[4px_4px_0_0_#000]">
             {contact.tabs.map((t, i) => (
               <button

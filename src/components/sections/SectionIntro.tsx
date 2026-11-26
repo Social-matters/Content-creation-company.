@@ -8,7 +8,8 @@ type Props = {
   label?: string;
   headline: HeadlineContent;
   body?: string;
-  tone?: 'dark' | 'light';
+  /** Background: 'dark' (ink), 'light' (cream/white) or 'orange'. */
+  tone?: 'dark' | 'light' | 'orange';
   size?: 'd1' | 'd2' | 'd3';
   className?: string;
   /** 'split' puts body on the right on desktop. */
@@ -21,10 +22,10 @@ export function SectionIntro({ label, headline, body, tone = 'light', size = 'd2
   return (
     <div className={cn(layout === 'split' ? 'grid items-end gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(16rem,24rem)] lg:gap-16' : 'flex flex-col gap-6', className)}>
       <div className="flex flex-col gap-5">
-        {label && <Eyebrow>{label}</Eyebrow>}
-        <Headline as={as} lines={headline} size={size} tone={tone} />
+        {label && <Eyebrow tone={tone}>{label}</Eyebrow>}
+        <Headline as={as} lines={headline} size={size} tone={tone === 'dark' ? 'dark' : 'light'} />
       </div>
-      {body && <RevealText className={cn('text-lead max-w-xl', tone === 'dark' ? 'text-cream/75' : 'text-ink/75')}>{body}</RevealText>}
+      {body && <RevealText className={cn('text-lead max-w-xl', tone === 'dark' ? 'text-cream/75' : tone === 'orange' ? 'text-black/80' : 'text-ink/75')}>{body}</RevealText>}
     </div>
   );
 }

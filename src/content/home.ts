@@ -241,6 +241,7 @@ export const plans = {
   id: 'pricing',
   label: '// Plans',
   headline: ['You run it.', { before: 'Or ', accent: 'we do.', style: 'block' }] satisfies Headline,
+  srTitle: 'Plans',
   toggle: ['Self-serve', 'Managed'] as const,
   items: {
     'Self-serve': {

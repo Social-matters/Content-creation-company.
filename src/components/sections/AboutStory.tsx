@@ -31,7 +31,7 @@ export function AboutBacker() {
     <section ref={root} className="bg-orange py-[var(--section-y)] text-black">
       <div className="container-x grid gap-10 lg:grid-cols-[1fr_auto] lg:items-center">
         <div>
-          <Eyebrow className="text-black">{about.backer.label}</Eyebrow>
+          <Eyebrow tone="orange">{about.backer.label}</Eyebrow>
           <h2 data-reveal className="mt-5 font-display text-d2">
             {about.backer.title}
           </h2>

@@ -2,8 +2,8 @@
 
 import { useRef } from 'react';
 import { gsap, useGSAP } from '@/lib/gsap';
-import { ENTRANCE_KEY, mq } from '@/lib/motion';
-import { useUI } from '@/components/providers/UIProvider';
+import { ENTRANCE_KEY, ENTRANCE_MIN_WIDTH, mq } from '@/lib/motion';
+import { useUIActions } from '@/components/providers/UIProvider';
 import { LogoMark } from '@/components/brand/LogoMark';
 import { entrance } from '@/content/site';
 
@@ -11,11 +11,11 @@ import { entrance } from '@/content/site';
  * Entrance (~2.1s): the C³ mark draws in, a counter runs 000→100, an orange
  * panel wipes up, then the whole curtain lifts to reveal the page. Marks the
  * entrance done just as the curtain starts to lift so the hero can begin.
- * Skipped on repeat visits in the session and under reduced motion.
+ * Skipped on repeat visits in the session, on phones (ENTRANCE_MIN_WIDTH) and under reduced motion.
  */
 export function Preloader() {
   const root = useRef<HTMLDivElement>(null);
-  const { markEntranceDone } = useUI();
+  const { markEntranceDone } = useUIActions();
 
   useGSAP(
     () => {
@@ -26,7 +26,7 @@ export function Preloader() {
       try {
         played = sessionStorage.getItem(ENTRANCE_KEY) === '1';
       } catch {}
-      if (played || html.classList.contains('entrance-skip') || window.matchMedia(mq.reduced).matches) {
+      if (played || window.innerWidth < ENTRANCE_MIN_WIDTH || html.classList.contains('entrance-skip') || window.matchMedia(mq.reduced).matches) {
         gsap.set(el, { display: 'none' });
         html.classList.remove('is-loading');
         markEntranceDone();

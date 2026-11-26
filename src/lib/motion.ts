@@ -49,3 +49,10 @@ export const uiEase = [0.16, 1, 0.3, 1] as const;
  * triggers are created in the same tick.
  */
 export const playOnce = { toggleActions: 'play none none none' } as const;
+
+/**
+ * The entrance sequence plays only at or above this viewport width. Phones go straight
+ * to the hero animation: the overlay costs ~2s of Speed Index on throttled mobile.
+ * Set to 0 to play it everywhere.
+ */
+export const ENTRANCE_MIN_WIDTH = 768;

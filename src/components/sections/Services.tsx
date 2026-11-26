@@ -22,9 +22,7 @@ export function Services() {
           {services.items.map((s, i) => (
             <div key={s.key} data-reveal data-reveal-delay={(i % 2) * 0.08}>
               <Card tone="ink" interactive data-cursor="View" className={cn('group flex h-full flex-col overflow-hidden p-7 sm:p-9', s.badge && 'border-orange/60')}>
-                <span aria-hidden className="pointer-events-none absolute -right-4 -top-10 font-display text-[11rem] leading-none text-cream/[0.04] transition-colors duration-500 group-hover:text-orange/15">
-                  {s.n}
-                </span>
+                <span aria-hidden data-n={s.n} className="pointer-events-none absolute -right-4 -top-10 font-display text-[11rem] leading-none text-cream/[0.04] transition-colors duration-500 before:content-[attr(data-n)] group-hover:text-orange/15" />
                 <div className="flex items-center justify-between">
                   <span className="font-mono text-sm text-orange">{s.n}</span>
                   {s.badge && <Badge tone="orange">{s.badge}</Badge>}

@@ -7,7 +7,7 @@ import { uiEase } from '@/lib/motion';
 import { nav, site, socials } from '@/content/site';
 import type { Cta, LinkItem } from '@/content/types';
 import { useSmoothScroll } from '@/components/providers/SmoothScroll';
-import { useUI } from '@/components/providers/UIProvider';
+import { useUIActions } from '@/components/providers/UIProvider';
 import { TLink } from '@/components/ui/TLink';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
@@ -19,7 +19,7 @@ type Props = { open: boolean; onClose: () => void; links: readonly LinkItem[]; c
 /** Full-screen menu (below lg) with staggered links. Esc closes; scroll is locked while open. */
 export function MobileMenu({ open, onClose, links, cta }: Props) {
   const { lenis } = useSmoothScroll();
-  const { openModal } = useUI();
+  const { openModal } = useUIActions();
   const closeBtn = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
 

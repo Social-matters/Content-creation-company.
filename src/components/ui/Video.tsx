@@ -38,12 +38,28 @@ export function Video({ media, mobile, className, mode = 'inview', active = fals
   const [playing, setPlaying] = useState(false);
   const [allowed, setAllowed] = useState(false);
   const [src, setSrc] = useState(media.src);
+  const [poster, setPoster] = useState(media.poster);
+  /** Hero videos on phones wait for the first interaction: the poster is the LCP, and no mobile data is spent until the visitor engages. */
+  const [armed, setArmed] = useState(true);
 
   useEffect(() => {
     const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- browser-only preferences, read after mount
     setAllowed(!saveData && !window.matchMedia(mq.reduced).matches);
-    if (mobile && window.matchMedia(MOBILE).matches) setSrc(mobile.src);
+    const phone = window.matchMedia(MOBILE).matches;
+    if (mobile && phone) {
+      setSrc(mobile.src);
+      setPoster(mobile.poster);
+    }
+    const events = ['pointerdown', 'touchstart', 'scroll', 'wheel', 'keydown'] as const;
+    const arm = () => {
+      setArmed(true);
+      events.forEach((ev) => window.removeEventListener(ev, arm));
+    };
+    if (eager && phone) {
+      setArmed(false);
+      events.forEach((ev) => window.addEventListener(ev, arm, { passive: true, once: true }));
+    }
     const el = wrap.current;
     if (!el) return;
     const nearIO = new IntersectionObserver(([e]) => e.isIntersecting && setNear(true), { rootMargin: '600px 0px' });
@@ -53,10 +69,11 @@ export function Video({ media, mobile, className, mode = 'inview', active = fals
     return () => {
       nearIO.disconnect();
       visIO.disconnect();
+      events.forEach((ev) => window.removeEventListener(ev, arm));
     };
-  }, [mobile]);
+  }, [mobile, eager]);
 
-  const shouldPlay = allowed && near && visible && (mode === 'inview' || active);
+  const shouldPlay = allowed && armed && near && visible && (mode === 'inview' || active);
 
   useEffect(() => {
     const v = video.current;
@@ -77,11 +94,12 @@ export function Video({ media, mobile, className, mode = 'inview', active = fals
         {/* eslint-disable-next-line jsx-a11y/alt-text -- props (incl. alt) come from getImageProps */}
         <img {...img} className="absolute inset-0 h-full w-full object-cover" style={fill} />
       </picture>
-      {src && allowed && near && (
+      {src && allowed && armed && near && (
         <video
           key={src}
           ref={video}
           src={src}
+          poster={poster}
           muted
           loop
           playsInline
@@ -89,7 +107,8 @@ export function Video({ media, mobile, className, mode = 'inview', active = fals
           aria-hidden
           tabIndex={-1}
           onPlaying={() => setPlaying(true)}
-          className={cn('absolute inset-0 h-full w-full object-cover transition-opacity duration-700', playing ? 'opacity-100' : 'opacity-0')}
+          // inset-px keeps the video 1px smaller than the poster <img>, so the poster stays the LCP element
+          className={cn('absolute inset-px h-[calc(100%-2px)] w-[calc(100%-2px)] object-cover transition-opacity duration-700', playing ? 'opacity-100' : 'opacity-0')}
           style={fill}
         />
       )}

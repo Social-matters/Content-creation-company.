@@ -5,8 +5,7 @@ import { PageTransitionProvider } from '@/components/providers/PageTransition';
 import { Preloader } from '@/components/layout/Preloader';
 import { Nav } from '@/components/layout/Nav';
 import { Footer } from '@/components/layout/Footer';
-import { ModalHost } from '@/components/forms/ModalHost';
-import { Cursor } from '@/components/ui/Cursor';
+import { LazyChrome } from '@/components/layout/LazyChrome';
 import { nav } from '@/content/site';
 
 /** Providers + chrome shared by every marketing route and the 404 page. */
@@ -27,8 +26,7 @@ export function MarketingShell({ children }: { children: ReactNode }) {
             {children}
           </main>
           <Footer />
-          <ModalHost />
-          <Cursor />
+          <LazyChrome />
         </PageTransitionProvider>
       </SmoothScrollProvider>
     </UIProvider>

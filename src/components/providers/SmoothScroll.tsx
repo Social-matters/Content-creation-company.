@@ -18,12 +18,11 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
   const [lenis, setLenis] = useState<Lenis | null>(null);
 
   useEffect(() => {
-    const refresh = () => ScrollTrigger.refresh();
-    document.fonts?.ready.then(refresh);
-    window.addEventListener('load', refresh);
+    // ScrollTrigger refreshes on window load itself; fonts can still shift line breaks after that.
+    document.fonts?.ready.then(() => ScrollTrigger.refresh());
 
     if (window.matchMedia(mq.reduced).matches) {
-      return () => window.removeEventListener('load', refresh);
+      return;
     }
 
     const instance = new Lenis({
@@ -41,7 +40,6 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
     setLenis(instance);
 
     return () => {
-      window.removeEventListener('load', refresh);
       gsap.ticker.remove(tick);
       instance.destroy();
       setLenis(null);

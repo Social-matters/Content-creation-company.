@@ -38,7 +38,7 @@ export function Plans({ withIntro = true }: { withIntro?: boolean }) {
   return (
     <section id={plans.id} className="relative overflow-hidden bg-cream py-[var(--section-y)] text-ink">
       <div className="container-x">
-        {withIntro && <SectionIntro label={plans.label} headline={plans.headline} />}
+        {withIntro ? <SectionIntro label={plans.label} headline={plans.headline} /> : <h2 className="sr-only">{plans.srTitle}</h2>}
         <div role="radiogroup" aria-label={plans.label.replace('// ', '')} className="mt-10 inline-flex rounded-full border-2 border-black bg-white p-1 shadow-[4px_4px_0_0_#000]">
           {plans.toggle.map((k) => (
             <button
@@ -70,13 +70,13 @@ export function Plans({ withIntro = true }: { withIntro?: boolean }) {
                   <div data-flip data-flip-id={`head-${k}`} className="flex items-start justify-between gap-4">
                     <div>
                       <h3 className="font-display text-d4">{p.name}</h3>
-                      <p className="mt-2 text-ink/75">{p.tagline}</p>
+                      <p className="mt-2 text-ink/85">{p.tagline}</p>
                     </div>
                     {p.popular && <span className="shrink-0 rounded-full bg-ink px-3 py-1.5 font-mono text-[0.62rem] uppercase tracking-[0.08em] text-orange">{plans.popularLabel}</span>}
                   </div>
                   <p data-flip data-flip-id={`price-${k}`} className="mt-8">
                     <span className="block font-display text-[clamp(2rem,4vw,3.4rem)] leading-none">{p.price}</span>
-                    <span className="mt-2 block text-sm text-ink/65">{p.priceNote}</span>
+                    <span className="mt-2 block text-sm text-ink/80">{p.priceNote}</span>
                   </p>
                   <ul data-flip data-flip-id={`list-${k}`} className={cn('mt-8 grid gap-3', on && 'sm:grid-cols-2')}>
                     {p.features.map((f) => (

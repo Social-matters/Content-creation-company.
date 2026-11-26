@@ -1,7 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { useUI } from '@/components/providers/UIProvider';
+import { useUIActions } from '@/components/providers/UIProvider';
 import { TLink } from './TLink';
 import { Magnetic } from './Magnetic';
 import { Icon, type IconName } from './Icon';
@@ -17,7 +17,7 @@ const variants: Record<Variant, string> = {
   primary:
     'border-2 border-black bg-orange py-2 pl-6 pr-2 text-black shadow-[4px_4px_0_0_#000] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[7px_7px_0_0_#000] active:translate-x-1 active:translate-y-1 active:shadow-none',
   ink: 'border-2 border-black bg-ink py-2 pl-6 pr-2 text-cream shadow-[4px_4px_0_0_var(--ccc-orange)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[7px_7px_0_0_var(--ccc-orange)] active:translate-x-1 active:translate-y-1 active:shadow-none',
-  'outline-dark': 'border-2 border-cream/25 py-2 pl-6 pr-2 text-cream backdrop-blur-md hover:border-cream hover:bg-cream hover:text-ink',
+  'outline-dark': 'border-2 border-cream/25 py-2 pl-6 pr-2 bg-ink/30 text-cream hover:border-cream hover:bg-cream hover:text-ink',
   'outline-light': 'border-2 border-black py-2 pl-6 pr-2 text-black hover:bg-black hover:text-cream',
   'link-dark': 'py-2 text-cream',
   'link-light': 'py-2 text-black',
@@ -46,7 +46,7 @@ type Props = {
 
 /** Brand button. Renders a route link, a modal trigger or a form button from a `Cta`. */
 export function Button({ cta, variant = 'primary', icon = 'arrow', className, magnetic = true, onClick, type = 'button', disabled }: Props) {
-  const { openModal } = useUI();
+  const { openModal } = useUIActions();
   const isLink = variant === 'link-dark' || variant === 'link-light';
 
   const inner = isLink ? (

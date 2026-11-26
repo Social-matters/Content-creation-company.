@@ -7,7 +7,7 @@ const tones = {
   black: 'bg-black text-cream',
   cream: 'bg-cream text-ink border-2 border-black',
   orange: 'bg-orange text-black border-2 border-black',
-  glass: 'bg-cream/10 text-cream border border-cream/15 backdrop-blur-md',
+  glass: 'bg-ink/60 text-cream border border-cream/15',
 } as const;
 
 /** Pill badge with the brand's orange status dot ("COMING SOON" style). */
@@ -26,6 +26,6 @@ export function Badge({ children, tone = 'black', dot = true, pulse = true, clas
 }
 
 /** Small mono section label, e.g. "// How it works". */
-export function Eyebrow({ children, className }: { children: ReactNode; className?: string }) {
-  return <p className={cn('font-mono text-[0.78rem] uppercase tracking-[0.1em] text-orange', className)}>{children}</p>;
+export function Eyebrow({ children, className, tone = 'dark' }: { children: ReactNode; className?: string; tone?: 'dark' | 'light' | 'orange' }) {
+  return <p className={cn('font-mono text-[0.78rem] uppercase tracking-[0.1em]', tone === 'light' ? 'text-orange-text' : tone === 'orange' ? 'text-black' : 'text-orange', className)}>{children}</p>;
 }

@@ -6,6 +6,9 @@
   /* Brand palette */
   --ccc-orange: #ff812a;
   --ccc-orange-deep: #e8661a;
+  /* Orange for TEXT on cream/white: small text (4.6:1) and display accents (3.4:1). */
+  --ccc-orange-text: #b34a0b;
+  --ccc-orange-display: #d4570f;
   --ccc-black: #000000;
   --ccc-ink: #141210;
   --ccc-ink-2: #1d1a17;

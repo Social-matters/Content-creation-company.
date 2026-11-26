@@ -28,7 +28,9 @@ Logo `public/brand/ccc-logo.png` (source: contentcreationcompany.in), SVG wordma
 
 | Token | Hex | Use |
 |---|---|---|
-| `--ccc-orange` | `#FF812A` | Primary accent, CTAs, highlights |
+| `--ccc-orange` | `#FF812A` | Primary accent, CTAs, highlights, any text on ink |
+| `--ccc-orange-text` | `#B34A0B` | Small orange text on cream/white (AA) |
+| `--ccc-orange-display` | `#D4570F` | Orange display accents on cream/white (AA large) |
 | `--ccc-black` | `#000000` | Borders, hard shadows, headline ink on light |
 | `--ccc-ink` | `#141210` | Dark section backgrounds |
 | `--ccc-cream` | `#F1EDE4` | Light section background |
@@ -71,6 +73,9 @@ Performance and accessibility (non-negotiable):
 - Simplify/disable pinned scrub and cursor effects on mobile; keep reveals.
 - Every GSAP setup inside `useGSAP` with a scope, cleaned up on unmount. No leaked ScrollTriggers. `ScrollTrigger.refresh()` after fonts and media load.
 - Steady 60fps. No layout shift from animations (CLS < 0.05).
+- Use `playOnce` (toggleActions) for play-once triggers, never `once: true`.
+- No backdrop-filter / CSS blur / blend modes over playing video; no per-frame GSAP loops for idle motion (use CSS keyframes).
+- Below-the-fold text reveals initialise via `whenNear` (lib/defer.ts); pins/parallax initialise eagerly.
 
 ## 8. Assets (temporary now, swapped later)
 

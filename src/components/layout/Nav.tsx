@@ -18,7 +18,7 @@ export function AudienceToggle({ className, layoutId = 'audience-pill' }: { clas
   const pathname = usePathname();
   const creators = pathname.startsWith('/creators');
   return (
-    <div role="group" aria-label="Audience" className={cn('relative flex rounded-full border border-cream/15 bg-cream/5 p-1 backdrop-blur-md', className)}>
+    <div role="group" aria-label="Audience" className={cn('relative flex rounded-full border border-cream/15 bg-ink/45 p-1', className)}>
       {nav.audience.map((a) => {
         const active = (a.href === '/creators') === creators;
         return (
@@ -83,8 +83,8 @@ export function Nav() {
         <div
           aria-hidden
           className={cn(
-            'absolute inset-0 -z-10 border-b border-cream/10 bg-ink/75 backdrop-blur-xl transition-opacity duration-500',
-            solid && !menuOpen ? 'opacity-100' : 'opacity-0',
+            'absolute inset-0 -z-10 border-b border-cream/10 bg-ink/80 transition-opacity duration-500',
+            solid && !menuOpen ? 'opacity-100 backdrop-blur-xl' : 'opacity-0',
           )}
         />
         <div className="container-x flex h-[var(--nav-h)] items-center gap-3">
@@ -97,7 +97,7 @@ export function Nav() {
             </div>
           </div>
 
-          <nav aria-label="Primary" data-nav-item className="hidden items-center rounded-full border border-cream/15 bg-cream/5 p-1 backdrop-blur-md lg:flex">
+          <nav aria-label="Primary" data-nav-item className="hidden items-center rounded-full border border-cream/15 bg-ink/45 p-1 lg:flex">
             {links.map((l) => (
               <TLink key={l.href} href={l.href} className="rounded-full px-4 py-1.5 text-[0.92rem] font-medium text-cream/80 transition-colors hover:bg-cream/10 hover:text-cream">
                 {l.label}
@@ -118,7 +118,7 @@ export function Nav() {
               onClick={() => setMenuOpen(true)}
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
-              className="grid size-11 place-items-center rounded-full border border-cream/20 bg-cream/5 backdrop-blur-md lg:hidden"
+              className="grid size-11 place-items-center rounded-full border border-cream/20 bg-ink/45 lg:hidden"
             >
               <Icon name="menu" size={20} />
               <span className="sr-only">{nav.menu}</span>

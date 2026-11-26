@@ -2,7 +2,7 @@
 
 import { useRef, type ReactNode } from 'react';
 import { gsap, useGSAP } from '@/lib/gsap';
-import { dur, ease, mq, stagger } from '@/lib/motion';
+import { dur, ease, ENTRANCE_MIN_WIDTH, mq, stagger } from '@/lib/motion';
 import { cn } from '@/lib/cn';
 import type { Cta, Headline as HeadlineContent, MediaSlot } from '@/content/types';
 import { useUI } from '@/components/providers/UIProvider';
@@ -10,7 +10,7 @@ import { Headline } from '@/components/ui/Headline';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Video } from '@/components/ui/Video';
-import { NotificationCard } from './NotificationCard';
+import { NotificationCard, floatVars } from './NotificationCard';
 
 type Props = {
   badge?: string;
@@ -42,9 +42,8 @@ export function PageHero({ badge, headline, lead, ctas, media, mobileMedia, noti
         if (ctx.conditions?.reduced) return void gsap.to(items, { autoAlpha: 1, duration: 0.5 });
         gsap.fromTo(items, { autoAlpha: 0, y: 36 }, { autoAlpha: 1, y: 0, duration: dur.reveal, stagger: stagger.base, ease: ease.reveal, delay: 0.5 });
         if (media) {
-          gsap.fromTo(q('[data-media]'), { clipPath: 'inset(10% 8% 10% 8% round 2rem)', scale: 1.15 }, { clipPath: 'inset(0% 0% 0% 0% round 0rem)', scale: 1, duration: 1.5, ease: 'expo.inOut' });
+          if (window.innerWidth >= ENTRANCE_MIN_WIDTH) gsap.fromTo(q('[data-media]'), { clipPath: 'inset(10% 8% 10% 8% round 2rem)', scale: 1.15 }, { clipPath: 'inset(0% 0% 0% 0% round 0rem)', scale: 1, duration: 1.5, ease: 'expo.inOut' });
           gsap.to(q('[data-media-wrap]'), { yPercent: 16, ease: 'none', scrollTrigger: { trigger: root.current, start: 'top top', end: 'bottom top', scrub: true } });
-          q('[data-float]').forEach((el, i) => gsap.to(el, { y: i % 2 ? 12 : -12, duration: 2.8 + i * 0.6, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
         }
       });
       return () => mm.revert();
@@ -63,14 +62,14 @@ export function PageHero({ badge, headline, lead, ctas, media, mobileMedia, noti
           </div>
         </div>
       )}
-      <div aria-hidden className="pointer-events-none absolute -right-40 top-1/4 -z-10 size-[38rem] rounded-full bg-orange/30 blur-[130px]" />
+      <div aria-hidden className="pointer-events-none absolute -right-40 top-1/4 -z-10 size-[38rem] bg-[radial-gradient(closest-side,rgb(255_129_42/0.55),transparent)]" />
       <div className="grain pointer-events-none absolute inset-0 -z-10" />
 
       {notifications && (
         <div aria-hidden className="pointer-events-none absolute inset-0 hidden lg:block">
           {notifications.map((n, i) => (
             <div key={n.text} data-in className={cn('absolute', i === 0 ? 'right-[6%] top-[22%]' : 'right-[16%] top-[44%]')}>
-              <div data-float>
+              <div className="float-loop" style={floatVars(i)}>
                 <NotificationCard {...n} />
               </div>
             </div>

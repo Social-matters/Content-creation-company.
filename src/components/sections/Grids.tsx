@@ -28,7 +28,7 @@ export function NumberedGrid({ id, label, headline, body, items, tone = 'light' 
                   dark ? 'border-cream/15 bg-ink-2 shadow-[6px_6px_0_0_var(--ccc-orange)]' : 'border-black bg-white shadow-[6px_6px_0_0_#000]',
                 )}
               >
-                <span className="font-display text-[3.2rem] leading-none text-orange">{s.n}</span>
+                <span className={cn('font-display text-[3.2rem] leading-none', dark ? 'text-orange' : 'text-orange-display')}>{s.n}</span>
                 <h3 className="mt-12 font-display text-[1.5rem] leading-none">{s.title}</h3>
                 <p className={cn('mt-3', dark ? 'text-cream/70' : 'text-ink/70')}>{s.body}</p>
               </div>
@@ -47,7 +47,7 @@ export function IconCards({ label, headline, items }: Intro & { items: readonly 
   return (
     <section ref={root} className="bg-orange py-[var(--section-y)] text-black">
       <div className="container-x">
-        <SectionIntro label={label} headline={headline} />
+        <SectionIntro label={label} headline={headline} tone="orange" />
         <ul className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {items.map((it, i) => (
             <li key={it.title} data-reveal data-reveal-delay={i * 0.06}>

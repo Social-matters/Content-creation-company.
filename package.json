@@ -10,7 +10,9 @@
     "assets": "node scripts/fetch-assets.mjs",
     "shots": "node scripts/shots.mjs",
     "typecheck": "next typegen && tsc --noEmit",
-    "smoke": "node scripts/smoke.mjs"
+    "smoke": "node scripts/smoke.mjs",
+    "assets:doc": "node scripts/assets-doc.mjs",
+    "check:content": "node scripts/check-content.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

@@ -43,7 +43,7 @@ function Shell({ titleId, eyebrow, title, intro, done, success, children }: { ti
         </motion.div>
       ) : (
         <motion.div key="form" exit={{ opacity: 0, y: -16, transition: { duration: 0.3, ease: uiEase } }} className="px-6 pb-8 pt-10 sm:px-10 sm:pb-10">
-          <Eyebrow>{eyebrow}</Eyebrow>
+          <Eyebrow tone="light">{eyebrow}</Eyebrow>
           <h2 id={titleId} className="mt-3 font-display text-d4">
             {title}
           </h2>

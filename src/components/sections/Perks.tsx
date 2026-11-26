@@ -18,7 +18,7 @@ export function Perks() {
       <div className="container-x relative">
         <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-5">
-            <Eyebrow className="text-black">{perks.label}</Eyebrow>
+            <Eyebrow tone="orange">{perks.label}</Eyebrow>
             <Headline lines={perks.headline} size="d1" tone="light" />
           </div>
           <RevealText className="text-lead max-w-md text-black/80">{perks.body}</RevealText>

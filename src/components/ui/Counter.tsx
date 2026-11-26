@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 import { gsap, useGSAP } from '@/lib/gsap';
 import { mq, revealStart, playOnce } from '@/lib/motion';
+import { whenNear } from '@/lib/defer';
 import { cn } from '@/lib/cn';
 
 const DIGITS = Array.from({ length: 20 }, (_, i) => i % 10);
@@ -25,30 +26,33 @@ export function Counter({ value, prefix = '', suffix = '', className, play, dela
   const text = value.toLocaleString('en-IN');
 
   useGSAP(
-    () => {
+    (context) => {
       const el = ref.current;
       if (!el || play === false) return;
       const cols = gsap.utils.toArray<HTMLElement>('[data-col]', el);
       const final = (i: number, c: HTMLElement) => target(Number(c.dataset.d));
-      const mm = gsap.matchMedia();
-      mm.add(mq.reduced, () => {
-        gsap.set(cols, { yPercent: final });
-      });
-      mm.add(mq.motionOK, () => {
-        gsap.fromTo(
-          cols,
-          { yPercent: 0 },
-          {
-            yPercent: final,
-            duration: 2,
-            ease: 'expo.out',
-            delay,
-            stagger: { each: 0.08, from: 'end' },
-            scrollTrigger: play === undefined ? { trigger: el, start: revealStart, ...playOnce } : undefined,
-          },
-        );
-      });
-      return () => mm.revert();
+      const setup = () => {
+        const mm = gsap.matchMedia();
+        mm.add(mq.reduced, () => {
+          gsap.set(cols, { yPercent: final });
+        });
+        mm.add(mq.motionOK, () => {
+          gsap.fromTo(
+            cols,
+            { yPercent: 0 },
+            {
+              yPercent: final,
+              duration: 2,
+              ease: 'expo.out',
+              delay,
+              stagger: { each: 0.08, from: 'end' },
+              scrollTrigger: play === undefined ? { trigger: el, start: revealStart, ...playOnce } : undefined,
+            },
+          );
+        });
+        return () => mm.revert();
+      };
+      return play === undefined ? whenNear(el, () => context.add(setup)) : setup();
     },
     { scope: ref, dependencies: [play, value], revertOnUpdate: true },
   );

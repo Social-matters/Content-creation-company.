@@ -31,7 +31,7 @@ export function CreatorCta() {
     <section ref={root} className="bg-cream py-[var(--section-y)]">
       <div className="container-x">
         <div data-card className="relative grid overflow-hidden rounded-[2.25rem] border-2 border-black bg-ink text-cream shadow-[10px_10px_0_0_var(--ccc-orange)] lg:grid-cols-[1.2fr_1fr]">
-          <div aria-hidden className="pointer-events-none absolute -bottom-32 right-1/4 size-[30rem] rounded-full bg-orange/30 blur-[110px]" />
+          <div aria-hidden className="pointer-events-none absolute -bottom-32 right-1/4 size-[30rem] bg-[radial-gradient(closest-side,rgb(255_129_42/0.55),transparent)]" />
           <div className="relative flex flex-col gap-6 p-8 sm:p-12 lg:p-16">
             <p data-reveal className="font-mono text-[0.78rem] uppercase tracking-[0.1em] text-orange">
               {creatorCta.label}

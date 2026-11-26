@@ -84,7 +84,7 @@ export const footer = {
     { label: 'Privacy', href: '/privacy' },
     { label: 'Terms', href: '/terms' },
   ] satisfies LinkItem[],
-  copyright: `© ${new Date().getFullYear()} Content Creation Company.`,
+  copyright: "© 2026 Content Creation Company.", // update yearly (literal avoids server/client year mismatch)
   wordmark: 'CCC.',
 } as const;
 

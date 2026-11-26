@@ -1,15 +1,27 @@
+import type { CSSProperties } from 'react';
 import { cn } from '@/lib/cn';
 import { Icon } from '@/components/ui/Icon';
 import { LogoMark } from '@/components/brand/LogoMark';
 
 type Tone = 'ig' | 'ccc' | 'match';
 
-/** Glassy phone-notification card used over hero media. */
+/**
+ * Per-card float phase for the CSS `.float-loop` animation (compositor-only, no per-frame JS).
+ */
+export const floatVars = (i: number) =>
+  ({
+    '--float-dur': `${2.6 + i * 0.55}s`,
+    '--float-delay': `-${i * 0.9}s`,
+    '--float-y': i % 2 ? '10px' : '-10px',
+    '--float-r': i % 2 ? '-1.2deg' : '1deg',
+  }) as CSSProperties;
+
+/** Phone-notification card used over hero media. */
 export function NotificationCard({ app, time, text, tone, className }: { app: string; time: string; text: string; tone: Tone; className?: string }) {
   return (
     <div
       className={cn(
-        'flex w-[19rem] items-center gap-3 rounded-[1.35rem] border border-cream/15 bg-ink/55 p-3 pr-4 text-cream shadow-[0_24px_60px_-20px_rgb(0_0_0/0.7)] backdrop-blur-xl',
+        'flex w-[19rem] items-center gap-3 rounded-[1.35rem] border border-cream/15 bg-ink/85 p-3 pr-4 text-cream shadow-[0_24px_60px_-20px_rgb(0_0_0/0.7)]',
         className,
       )}
     >

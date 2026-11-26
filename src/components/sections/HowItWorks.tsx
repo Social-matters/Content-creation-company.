@@ -115,7 +115,7 @@ export function HowItWorks() {
   return (
     <section ref={root} id={howItWorks.id} className="relative bg-cream text-ink">
       <div ref={pin} className="relative overflow-hidden lg:h-dvh">
-        <div aria-hidden className="pointer-events-none absolute right-[8%] top-1/2 size-[36rem] -translate-y-1/2 rounded-full bg-orange/30 blur-[110px]" />
+        <div aria-hidden className="pointer-events-none absolute right-[8%] top-1/2 size-[36rem] -translate-y-1/2 bg-[radial-gradient(closest-side,rgb(255_129_42/0.55),transparent)]" />
         <div className="container-x relative grid h-full items-center gap-14 py-[var(--section-y)] lg:grid-cols-[1fr_1fr] lg:py-0 lg:pt-[var(--nav-h)]">
           <div className="flex flex-col gap-10">
             <SectionIntro label={howItWorks.label} headline={howItWorks.headline} size="d3" />
@@ -125,14 +125,14 @@ export function HowItWorks() {
                   key={s.key}
                   data-step
                   data-active={i === 0}
-                  className="group relative border-t-2 border-black/15 py-4 transition-opacity duration-500 data-[active=false]:opacity-35"
+                  className="group relative border-t-2 border-black/15 py-4 transition-opacity duration-500 data-[active=false]:opacity-60"
                 >
                   <span data-bar aria-hidden className="absolute -top-[2px] left-0 h-[2px] w-full origin-left scale-x-0 bg-orange" />
                   <div className="flex items-baseline gap-5">
-                    <span className="font-mono text-sm text-orange">{s.n}</span>
+                    <span className="font-mono text-sm text-orange-text group-data-[active=false]:text-ink">{s.n}</span>
                     <div>
                       <h3 className="font-display text-[clamp(1.4rem,2.2vw,2rem)] leading-none">{s.title}</h3>
-                      <p className="mt-2 max-w-md text-ink/75">{s.body}</p>
+                      <p className="mt-2 max-w-md text-ink">{s.body}</p>
                     </div>
                   </div>
                 </li>

@@ -22,9 +22,9 @@ export function Testimonials() {
             <li key={t.initials} data-reveal data-reveal-delay={i * 0.08}>
               <figure className={cn('flex h-full flex-col rounded-[1.75rem] border-2 border-black bg-white p-7 shadow-[6px_6px_0_0_#000] transition-transform duration-500 hover:rotate-0 sm:p-8', TILT[i])}>
                 {PLACEHOLDER_CONTENT && (
-                  <span className="mb-6 w-fit rounded-full border border-dashed border-ink/40 px-2.5 py-1 font-mono text-[0.6rem] uppercase tracking-[0.08em] text-ink/55">{testimonials.sampleTag}</span>
+                  <span className="mb-6 w-fit rounded-full border border-dashed border-ink/40 px-2.5 py-1 font-mono text-[0.6rem] uppercase tracking-[0.08em] text-ink/75">{testimonials.sampleTag}</span>
                 )}
-                <span aria-hidden className="font-display text-[4.5rem] leading-[0.6] text-orange">
+                <span aria-hidden className="font-display text-[4.5rem] leading-[0.6] text-orange-display">
                   &ldquo;
                 </span>
                 <blockquote className="mt-2 text-[1.2rem] font-medium leading-snug">{t.quote}</blockquote>

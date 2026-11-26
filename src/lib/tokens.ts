@@ -5,6 +5,9 @@
 export const colors = {
   orange: '#FF812A',
   orangeDeep: '#E8661A',
+  /** Orange for text on light backgrounds (WCAG AA). */
+  orangeText: '#B34A0B',
+  orangeDisplay: '#D4570F',
   black: '#000000',
   ink: '#141210',
   ink2: '#1D1A17',

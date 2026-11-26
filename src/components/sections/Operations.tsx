@@ -37,7 +37,7 @@ function TiltCard({ item }: { item: (typeof operations.items)[number] }) {
           style={{ background: 'radial-gradient(22rem circle at var(--mx,50%) var(--my,50%), rgb(255 129 42 / 0.28), transparent 60%)' }}
         />
         <div className="relative flex items-start justify-between [transform:translateZ(30px)]">
-          <span className="font-display text-[3.4rem] leading-none text-orange [-webkit-text-stroke:2px_#000]">{item.n}</span>
+          <span className="font-display text-[3.4rem] leading-none text-orange-display">{item.n}</span>
           <span className="rounded-full bg-ink px-3 py-1 font-mono text-[0.65rem] uppercase tracking-[0.08em] text-cream">{item.tag}</span>
         </div>
         <div className="relative mt-auto pt-10 [transform:translateZ(20px)]">

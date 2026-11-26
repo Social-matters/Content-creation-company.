@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import { colors } from '@/lib/tokens';
 import { assets } from '@/content/assets';
 import { marquees } from '@/content/home';
-import { useUI } from '@/components/providers/UIProvider';
+import { useUIActions } from '@/components/providers/UIProvider';
 import { Headline, TiltedBlock } from '@/components/ui/Headline';
 import { Button } from '@/components/ui/Button';
 import { Badge, Eyebrow } from '@/components/ui/Badge';
@@ -32,7 +32,7 @@ function Block({ title, children, dark }: { title: string; children: ReactNode; 
 }
 
 export function Styleguide() {
-  const { openModal } = useUI();
+  const { openModal } = useUIActions();
   return (
     <div>
       <section className="bg-ink pb-16 pt-36 text-cream">

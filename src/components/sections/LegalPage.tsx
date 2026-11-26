@@ -11,7 +11,7 @@ export function LegalPage({ doc, updatedLabel }: { doc: LegalDoc; updatedLabel: 
           {doc.sections.map((s, i) => (
             <section key={s.heading} className="border-t-2 border-black/10 py-8 first:border-t-0 first:pt-0">
               <h2 className="flex items-baseline gap-4 font-display text-[1.5rem] leading-tight">
-                <span className="font-mono text-sm text-orange">{String(i + 1).padStart(2, '0')}</span>
+                <span className="font-mono text-sm text-orange-text">{String(i + 1).padStart(2, '0')}</span>
                 {s.heading}
               </h2>
               {s.body.map((p) => (
