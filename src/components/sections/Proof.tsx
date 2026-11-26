@@ -7,12 +7,13 @@ import { cn } from '@/lib/cn';
 import { proof } from '@/content/home';
 import { assets } from '@/content/assets';
 import { Video } from '@/components/ui/Video';
+import type { Headline } from '@/content/types';
 import { SectionIntro } from './SectionIntro';
 
 /** Staggered vertical offsets give the grid a loose, editorial rhythm on desktop. */
 const SHIFT = ['', 'lg:translate-y-16', 'lg:translate-y-6', 'lg:translate-y-24'];
 
-export function Proof() {
+export function Proof({ intro = proof }: { intro?: { label: string; headline: Headline; body: string } }) {
   const root = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -39,7 +40,7 @@ export function Proof() {
   return (
     <section ref={root} id={proof.id} className="relative overflow-hidden bg-cream pb-[calc(var(--section-y)+4rem)] pt-[var(--section-y)] text-ink">
       <div className="container-x">
-        <SectionIntro label={proof.label} headline={proof.headline} body={proof.body} layout="split" />
+        <SectionIntro label={intro.label} headline={intro.headline} body={intro.body} layout="split" />
         <div className="mt-16 grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-5 lg:mt-20 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-14">
           {proof.items.map((item, i) => (
             <figure key={item.key} data-proof className={cn(SHIFT[i % 4])}>
