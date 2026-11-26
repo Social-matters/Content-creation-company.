@@ -18,7 +18,6 @@ export const hero = {
     { app: 'CCC', time: '2m', text: '+12K views in the last hour', tone: 'ccc' },
     { app: 'CCC Match', time: '5m', text: 'New brief matched in 2 min', tone: 'match' },
   ],
-  scrollHint: 'Scroll',
 } as const;
 
 export const mosaic = {
@@ -38,6 +37,7 @@ export const howItWorks = {
     { key: 'review', n: '03', title: 'Review', body: 'Drafts land in one queue. Approve, or ask for a tweak.' },
     { key: 'live', n: '04', title: 'Live', body: 'Reels go out from real accounts. Watch the views land.' },
   ],
+  chips: ['Brief sent', '12 creators matched', '4 of 4 approved', '+86K views today'], // PLACEHOLDER figures mirror the mock
   mock: {
     brief: {
       title: 'New brief',

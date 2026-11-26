@@ -2,7 +2,7 @@
 
 import { useRef, type ElementType } from 'react';
 import { gsap, SplitText, useGSAP } from '@/lib/gsap';
-import { dur, ease, mq, revealStart, stagger } from '@/lib/motion';
+import { dur, ease, mq, revealStart, stagger, playOnce } from '@/lib/motion';
 import { cn } from '@/lib/cn';
 import type { AccentStyle, Headline as HeadlineContent, HeadlineLine } from '@/content/types';
 
@@ -44,7 +44,7 @@ export function Headline({ lines, as: Tag = 'h2', size = 'd2', tone = 'light', c
         gsap.set(el, { autoAlpha: 0 });
         return;
       }
-      const scrollTrigger = play === undefined ? { trigger: el, start: revealStart, once: true } : undefined;
+      const scrollTrigger = play === undefined ? { trigger: el, start: revealStart, ...playOnce } : undefined;
       const mm = gsap.matchMedia();
       mm.add({ motion: mq.motionOK, reduced: mq.reduced }, (ctx) => {
         gsap.set(el, { autoAlpha: 1 });
@@ -114,7 +114,7 @@ export function Accent({ text, style, tone }: { text: string; style: AccentStyle
  */
 export function TiltedBlock({ children, tone = 'light' }: { children: React.ReactNode; tone?: Tone }) {
   return (
-    <span className={cn('relative isolate inline-block px-[0.09em]', tone === 'dark' ? 'text-ink' : 'text-orange')}>
+    <span className={cn('relative isolate inline-block whitespace-nowrap px-[0.09em]', tone === 'dark' ? 'text-ink' : 'text-orange')}>
       <span
         data-accent-bg
         aria-hidden

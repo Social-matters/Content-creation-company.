@@ -153,7 +153,7 @@ export function Styleguide() {
             </div>
           </PhoneFrame>
           <div data-cursor="Play" className="mx-auto w-64 overflow-hidden rounded-[1.75rem] border-2 border-black shadow-[6px_6px_0_0_#000]">
-            <Video media={assets.mosaic[0]} className="aspect-[9/16]" sizes="256px" />
+            <Video media={assets.mosaic[0]} className="relative aspect-[9/16]" sizes="256px" />
           </div>
           <div className="flex flex-col items-center gap-10">
             <Logo className="h-28 w-auto" />

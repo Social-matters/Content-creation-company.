@@ -1,10 +1,33 @@
-import { Headline } from '@/components/ui/Headline';
-import { hero } from '@/content/home';
+import { Hero } from '@/components/sections/Hero';
+import { CreatorMosaic } from '@/components/sections/CreatorMosaic';
+import { HowItWorks } from '@/components/sections/HowItWorks';
+import { Services } from '@/components/sections/Services';
+import { Operations } from '@/components/sections/Operations';
+import { Comparison } from '@/components/sections/Comparison';
+import { Proof } from '@/components/sections/Proof';
+import { Stats } from '@/components/sections/Stats';
+import { Testimonials } from '@/components/sections/Testimonials';
+import { Perks } from '@/components/sections/Perks';
+import { Plans } from '@/components/sections/Plans';
+import { BrandCta } from '@/components/sections/BrandCta';
+import { CreatorCta } from '@/components/sections/CreatorCta';
 
 export default function HomePage() {
   return (
-    <section className="grid min-h-dvh place-items-center bg-ink text-cream">
-      <Headline as="h1" lines={hero.headline} size="d1" tone="dark" />
-    </section>
+    <>
+      <Hero />
+      <CreatorMosaic />
+      <HowItWorks />
+      <Services />
+      <Operations />
+      <Comparison />
+      <Proof />
+      <Stats />
+      <Testimonials />
+      <Perks />
+      <Plans />
+      <BrandCta />
+      <CreatorCta />
+    </>
   );
 }

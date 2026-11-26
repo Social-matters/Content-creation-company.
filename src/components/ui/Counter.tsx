@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 import { gsap, useGSAP } from '@/lib/gsap';
-import { mq, revealStart } from '@/lib/motion';
+import { mq, revealStart, playOnce } from '@/lib/motion';
 import { cn } from '@/lib/cn';
 
 const DIGITS = Array.from({ length: 20 }, (_, i) => i % 10);
@@ -44,7 +44,7 @@ export function Counter({ value, prefix = '', suffix = '', className, play, dela
             ease: 'expo.out',
             delay,
             stagger: { each: 0.08, from: 'end' },
-            scrollTrigger: play === undefined ? { trigger: el, start: revealStart, once: true } : undefined,
+            scrollTrigger: play === undefined ? { trigger: el, start: revealStart, ...playOnce } : undefined,
           },
         );
       });

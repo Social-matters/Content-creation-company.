@@ -2,7 +2,7 @@
 
 import { useRef, type ElementType, type ReactNode, type RefObject } from 'react';
 import { gsap, ScrollTrigger, SplitText, useGSAP } from '@/lib/gsap';
-import { dur, ease, mq, revealStart, stagger } from '@/lib/motion';
+import { dur, ease, mq, revealStart, stagger, playOnce } from '@/lib/motion';
 
 /**
  * Batch fade-up for every `[data-reveal]` element inside `scope` as it enters the viewport.
@@ -21,7 +21,6 @@ export function useRevealChildren(scope: RefObject<HTMLElement | null>) {
         gsap.set(items, { autoAlpha: 0, y: reduced ? 0 : 48 });
         ScrollTrigger.batch(items, {
           start: revealStart,
-          once: true,
           onEnter: (batch) =>
             gsap.to(batch, {
               autoAlpha: 1,
@@ -51,7 +50,7 @@ export function RevealText({ as: Tag = 'p', children, className, delay = 0, play
         gsap.set(el, { autoAlpha: 0 });
         return;
       }
-      const scrollTrigger = play === undefined ? { trigger: el, start: revealStart, once: true } : undefined;
+      const scrollTrigger = play === undefined ? { trigger: el, start: revealStart, ...playOnce } : undefined;
       const mm = gsap.matchMedia();
       mm.add({ motion: mq.motionOK, reduced: mq.reduced }, (ctx) => {
         gsap.set(el, { autoAlpha: 1 });

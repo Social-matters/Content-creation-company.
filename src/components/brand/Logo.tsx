@@ -12,7 +12,7 @@ export function Logo({ className, priority }: { className?: string; priority?: b
       alt="Content Creation Company"
       width={1470}
       height={660}
-      priority={priority}
+      loading={priority ? 'eager' : undefined}
       unoptimized
       className={cn('select-none', className)}
       draggable={false}

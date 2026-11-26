@@ -42,3 +42,10 @@ export const ENTRANCE_KEY = 'ccc:entrance-played';
 /** Framer Motion (motion) transition presets for UI state changes. */
 export const uiSpring = { type: 'spring', stiffness: 420, damping: 34, mass: 0.8 } as const;
 export const uiEase = [0.16, 1, 0.3, 1] as const;
+
+/**
+ * Play-once ScrollTrigger behaviour. Used instead of `once: true`, which kills the
+ * trigger mid-refresh and can corrupt ScrollTrigger's internal list when many
+ * triggers are created in the same tick.
+ */
+export const playOnce = { toggleActions: 'play none none none' } as const;
