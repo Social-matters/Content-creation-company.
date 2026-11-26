@@ -30,7 +30,7 @@ export function Modal({ open, onClose, labelledBy, children, className, closeLab
     document.documentElement.style.overflow = 'hidden';
 
     const focusFirst = window.setTimeout(() => {
-      const first = panel.current?.querySelector<HTMLElement>('input,select,textarea') ?? panel.current;
+      const first = panel.current?.querySelector<HTMLElement>('input:not([type="hidden"]):not([tabindex="-1"]),select,textarea') ?? panel.current;
       first?.focus({ preventScroll: true });
     }, 60);
 

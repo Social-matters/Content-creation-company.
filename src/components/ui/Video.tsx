@@ -74,7 +74,7 @@ export function Video({ media, mobile, className, mode = 'inview', active = fals
     <div ref={wrap} className={cn('overflow-hidden bg-ink-2', className)} aria-hidden={decorative || undefined}>
       <picture>
         {mobileSet && <source media={MOBILE} srcSet={mobileSet} sizes={sizes} />}
-        {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text -- props (incl. alt) come from getImageProps */}
+        {/* eslint-disable-next-line jsx-a11y/alt-text -- props (incl. alt) come from getImageProps */}
         <img {...img} className="absolute inset-0 h-full w-full object-cover" style={fill} />
       </picture>
       {src && allowed && near && (

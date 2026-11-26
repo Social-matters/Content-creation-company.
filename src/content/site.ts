@@ -96,7 +96,7 @@ export const entrance = {
 
 export const notFound = {
   code: '404',
-  title: ['This reel', "didn't post."],
+  title: ['This reel', "didn't post."] as const,
   body: "The page you're after moved, never existed, or is still in the edit.",
   cta: { label: 'Back to home', href: '/' },
 } as const;

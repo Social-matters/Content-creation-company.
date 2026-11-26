@@ -103,6 +103,9 @@ export function HowItWorks() {
 
       mm.add(mq.reduced, () => {
         el.querySelectorAll<HTMLElement>('[data-step]').forEach((s) => (s.dataset.active = 'true'));
+        // Static final state: only the Live screen.
+        gsap.set(el.querySelectorAll('[data-screen]'), { autoAlpha: 0 });
+        gsap.set(el.querySelector('[data-screen="live"]'), { autoAlpha: 1 });
       });
       return () => mm.revert();
     },

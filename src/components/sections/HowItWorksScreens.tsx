@@ -88,7 +88,7 @@ export function HowItWorksScreens() {
       </div>
 
       {/* 02 Match */}
-      <div data-screen="match" className="absolute inset-x-0 bottom-0 top-[4.4rem] flex flex-col">
+      <div data-screen="match" className="invisible absolute inset-x-0 bottom-0 top-[4.4rem] flex flex-col">
         <AppBar title={m.match.title} meta={m.match.meta} />
         <div className="flex flex-col gap-2.5 p-4">
           {m.match.creators.map((c, i) => (
@@ -116,7 +116,7 @@ export function HowItWorksScreens() {
       </div>
 
       {/* 03 Review */}
-      <div data-screen="review" className="absolute inset-x-0 bottom-0 top-[4.4rem] flex flex-col">
+      <div data-screen="review" className="invisible absolute inset-x-0 bottom-0 top-[4.4rem] flex flex-col">
         <AppBar title={m.review.title} meta={m.review.meta} />
         <div className="grid grid-cols-2 gap-2.5 p-4">
           {THUMBS.map((t) => (
@@ -135,7 +135,7 @@ export function HowItWorksScreens() {
       </div>
 
       {/* 04 Live */}
-      <div data-screen="live" className="absolute inset-x-0 bottom-0 top-[4.4rem] flex flex-col">
+      <div data-screen="live" className="invisible absolute inset-x-0 bottom-0 top-[4.4rem] flex flex-col">
         <AppBar title={m.live.title} meta={m.live.live} live />
         <div className="p-4">
           <p data-views className="font-display text-[2.3rem] leading-none">
