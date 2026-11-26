@@ -29,13 +29,17 @@ export function Counter({ value, prefix = '', suffix = '', className, play, dela
       const el = ref.current;
       if (!el || play === false) return;
       const cols = gsap.utils.toArray<HTMLElement>('[data-col]', el);
+      const final = (i: number, c: HTMLElement) => target(Number(c.dataset.d));
       const mm = gsap.matchMedia();
+      mm.add(mq.reduced, () => {
+        gsap.set(cols, { yPercent: final });
+      });
       mm.add(mq.motionOK, () => {
         gsap.fromTo(
           cols,
           { yPercent: 0 },
           {
-            yPercent: (i, c: HTMLElement) => target(Number(c.dataset.d)),
+            yPercent: final,
             duration: 2,
             ease: 'expo.out',
             delay,
@@ -56,7 +60,7 @@ export function Counter({ value, prefix = '', suffix = '', className, play, dela
         {[...text].map((c, i) =>
           /\d/.test(c) ? (
             <span key={i} className="relative inline-block h-[1em] overflow-hidden">
-              <span data-col data-d={c} className="flex flex-col" style={{ transform: `translateY(${target(Number(c))}%)` }}>
+              <span data-col data-d={c} className="flex flex-col">
                 {DIGITS.map((d, j) => (
                   <span key={j} className="block h-[1em] leading-none">
                     {d}
