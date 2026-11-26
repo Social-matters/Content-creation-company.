@@ -1,26 +1,180 @@
-@import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@import 'tailwindcss';
+@import '../styles/tokens.css';
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-orange: var(--ccc-orange);
+  --color-orange-deep: var(--ccc-orange-deep);
+  --color-black: var(--ccc-black);
+  --color-ink: var(--ccc-ink);
+  --color-ink-2: var(--ccc-ink-2);
+  --color-ink-3: var(--ccc-ink-3);
+  --color-cream: var(--ccc-cream);
+  --color-cream-2: var(--ccc-cream-2);
+  --color-stone: var(--ccc-stone);
+  --color-stone-dark: var(--ccc-stone-dark);
+  --color-white: var(--ccc-white);
+
+  --font-display: var(--font-archivo-black), 'Arial Black', Impact, sans-serif;
+  --font-sans: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+
+  /* Fluid display scale (desktop target in comments) */
+  --text-mega: clamp(4.25rem, 15.5vw, 15rem); /* 240px */
+  --text-mega--line-height: 0.84;
+  --text-d1: clamp(3.1rem, 10.2vw, 10.25rem); /* 164px */
+  --text-d1--line-height: 0.86;
+  --text-d2: clamp(2.6rem, 7.4vw, 7.25rem); /* 116px */
+  --text-d2--line-height: 0.88;
+  --text-d3: clamp(2.1rem, 5vw, 4.75rem); /* 76px */
+  --text-d3--line-height: 0.9;
+  --text-d4: clamp(1.6rem, 2.8vw, 2.6rem); /* 42px */
+  --text-d4--line-height: 0.95;
+  --text-lead: clamp(1.15rem, 1.6vw, 1.6rem);
+  --text-lead--line-height: 1.38;
+
+  --radius-sm: var(--ccc-radius-sm);
+  --radius-md: var(--ccc-radius-md);
+  --radius-lg: var(--ccc-radius-lg);
+  --radius-xl: var(--ccc-radius-xl);
+
+  --shadow-hard-sm: var(--ccc-shadow-hard-sm);
+  --shadow-hard: var(--ccc-shadow-hard);
+  --shadow-hard-lg: var(--ccc-shadow-hard-lg);
+  --shadow-soft: var(--ccc-shadow-soft);
+
+  --ease-expo: var(--ease-out-expo);
+  --ease-io: var(--ease-in-out);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ---------- Base ---------- */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: var(--ccc-ink);
+    scrollbar-color: var(--ccc-orange) var(--ccc-ink);
+  }
+  body {
+    font-family: var(--font-sans);
+    background: var(--ccc-cream);
+    color: var(--ccc-ink);
+    overflow-x: clip;
+  }
+  ::selection {
+    background: var(--ccc-orange);
+    color: var(--ccc-black);
+  }
+  :focus-visible {
+    outline: 3px solid var(--ccc-orange);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  img,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+  button {
+    cursor: pointer;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ---------- Lenis ---------- */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+/* ---------- Utilities ---------- */
+@utility font-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: -0.012em;
+}
+
+@utility container-x {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  max-width: 100rem;
+}
+
+@utility section-y {
+  padding-block: var(--section-y);
+}
+
+@utility label-mono {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* SplitText line masks: padded so tilted accent blocks and hard shadows aren't clipped */
+.ccc-line-mask {
+  padding: 0.1em 0.16em 0.18em;
+  margin: -0.1em -0.16em -0.18em;
+}
+.copy-line-mask {
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+@keyframes underline {
+  0% { transform: scaleX(1); transform-origin: right; }
+  45% { transform: scaleX(0); transform-origin: right; }
+  55% { transform: scaleX(0); transform-origin: left; }
+  100% { transform: scaleX(1); transform-origin: left; }
+}
+
+/* Film grain overlay for dark sections */
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='.55'/></svg>");
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  z-index: 1;
+}
+
+/* Entrance: skipped on repeat visits (class set by an inline script before paint) */
+html.entrance-skip [data-preloader] {
+  display: none;
+}
+html.is-loading {
+  overflow: hidden;
+}
+
+/* Native scroll for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Custom cursor hides the native one only for fine pointers with it mounted */
+@media (hover: hover) and (pointer: fine) {
+  html.has-cursor,
+  html.has-cursor *:not(input, textarea, select) {
+    cursor: none !important;
+  }
 }

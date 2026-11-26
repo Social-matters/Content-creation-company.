@@ -1,0 +1,40 @@
+/*
+ * CCC design tokens. Mirrored in src/lib/tokens.ts (used by the future React Native app).
+ * Keep both files in sync.
+ */
+:root {
+  /* Brand palette */
+  --ccc-orange: #ff812a;
+  --ccc-orange-deep: #e8661a;
+  --ccc-black: #000000;
+  --ccc-ink: #141210;
+  --ccc-ink-2: #1d1a17;
+  --ccc-ink-3: #2a2623;
+  --ccc-cream: #f1ede4;
+  --ccc-cream-2: #e7e1d5;
+  --ccc-stone: #c4bfb8;
+  --ccc-stone-dark: #8a847c;
+  --ccc-white: #ffffff;
+
+  /* Layout */
+  --gutter: clamp(1.125rem, 3.4vw, 3rem);
+  --section-y: clamp(5rem, 10vw, 9rem);
+  --ccc-radius-sm: 0.75rem;
+  --ccc-radius-md: 1.25rem;
+  --ccc-radius-lg: 1.75rem;
+  --ccc-radius-xl: 2.25rem;
+  --nav-h: 4.5rem;
+
+  /* Neo-brutalist shadows */
+  --ccc-shadow-hard-sm: 3px 3px 0 0 var(--ccc-black);
+  --ccc-shadow-hard: 5px 5px 0 0 var(--ccc-black);
+  --ccc-shadow-hard-lg: 8px 8px 0 0 var(--ccc-black);
+  --ccc-shadow-soft: 0 30px 60px -20px rgb(0 0 0 / 0.45);
+
+  /* Motion (mirrors src/lib/motion.ts) */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 0.25s;
+  --dur-reveal: 1s;
+  --dur-section: 1.4s;
+}
