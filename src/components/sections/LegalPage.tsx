@@ -1,11 +1,12 @@
+import type { ComponentProps, ComponentType } from 'react';
 import type { LegalDoc } from '@/content/legal';
 import { PageHero } from './PageHero';
 
-/** Long-form legal document: ink hero + readable single column. */
-export function LegalPage({ doc, updatedLabel }: { doc: LegalDoc; updatedLabel: string }) {
+/** Long-form legal document: ink hero + readable single column. `Hero` lets v2 pass its own hero. */
+export function LegalPage({ doc, updatedLabel, Hero = PageHero }: { doc: LegalDoc; updatedLabel: string; Hero?: ComponentType<ComponentProps<typeof PageHero>> }) {
   return (
     <>
-      <PageHero headline={[doc.title]} lead={doc.intro} size="d2" badge={`${updatedLabel} ${doc.updated}`} />
+      <Hero headline={[doc.title]} lead={doc.intro} size="d2" badge={`${updatedLabel} ${doc.updated}`} />
       <article className="bg-cream py-[var(--section-y)] text-ink">
         <div className="container-x max-w-3xl">
           {doc.sections.map((s, i) => (

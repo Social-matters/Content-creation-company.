@@ -20,18 +20,18 @@
   --font-sans: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 
-  /* Fluid display scale (desktop target in comments) */
-  --text-mega: clamp(4.25rem, 15.5vw, 15rem); /* 240px */
+  /* Fluid display scale: values live in tokens.css (--fs-*) so a version scope (.v2) can retune them. */
+  --text-mega: var(--fs-mega);
   --text-mega--line-height: 0.84;
-  --text-d1: clamp(3.1rem, 10.2vw, 10.25rem); /* 164px */
+  --text-d1: var(--fs-d1);
   --text-d1--line-height: 0.86;
-  --text-d2: clamp(2.6rem, 7.4vw, 7.25rem); /* 116px */
+  --text-d2: var(--fs-d2);
   --text-d2--line-height: 0.88;
-  --text-d3: clamp(2.1rem, 5vw, 4.75rem); /* 76px */
+  --text-d3: var(--fs-d3);
   --text-d3--line-height: 0.9;
-  --text-d4: clamp(1.6rem, 2.8vw, 2.6rem); /* 42px */
+  --text-d4: var(--fs-d4);
   --text-d4--line-height: 0.95;
-  --text-lead: clamp(1.15rem, 1.6vw, 1.6rem);
+  --text-lead: var(--fs-lead);
   --text-lead--line-height: 1.38;
 
   --radius-sm: var(--ccc-radius-sm);
@@ -188,4 +188,20 @@ html.is-loading {
   html.has-cursor *:not(input, textarea, select) {
     cursor: none !important;
   }
+}
+
+/* ---------- v2 ---------- */
+/* Hero film starts centred in the right-hand frame (desktop); GSAP takes over the transform on scroll. */
+@media (min-width: 1024px) {
+  .hero-v2-inner {
+    transform: translateX(calc(50% - var(--fr-right) - var(--fr-w) / 2)) scale(1.12);
+  }
+}
+/* "Scroll" cue: a short orange bead travelling down a hairline. */
+@keyframes scroll-cue {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(200%); }
+}
+.scroll-cue {
+  animation: scroll-cue 2.2s var(--ease-in-out) infinite;
 }

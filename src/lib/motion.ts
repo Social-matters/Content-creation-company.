@@ -56,3 +56,22 @@ export const playOnce = { toggleActions: 'play none none none' } as const;
  * Set to 0 to play it everywhere.
  */
 export const ENTRANCE_MIN_WIDTH = 768;
+
+/**
+ * v2 motion profile (/v2/*): softer distances, longer settles, and reversible triggers so
+ * elements leave the way they arrived when you scroll back. Scroll-linked pieces use `scrub`
+ * (seconds of smoothing) so motion follows the hand instead of firing at a threshold.
+ */
+export const flow = {
+  ease: 'expo.out',
+  easeSoft: 'power3.out',
+  easeInOut: 'power3.inOut',
+  dur: 1.4,
+  durLong: 1.8,
+  stagger: 0.1,
+  y: 28,
+  start: 'top 88%',
+  scrub: 1.2,
+  /** Play on the way down, rewind on the way back up. */
+  toggle: { toggleActions: 'play none none reverse' },
+} as const;

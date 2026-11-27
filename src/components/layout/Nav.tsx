@@ -1,11 +1,11 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { usePathname } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { gsap, ScrollTrigger, useGSAP } from '@/lib/gsap';
 import { uiSpring } from '@/lib/motion';
 import { cn } from '@/lib/cn';
+import { useLocalPath } from '@/lib/site-version';
 import { nav } from '@/content/site';
 import { useUI } from '@/components/providers/UIProvider';
 import { Logo } from '@/components/brand/Logo';
@@ -15,7 +15,7 @@ import { Icon } from '@/components/ui/Icon';
 import { MobileMenu } from './MobileMenu';
 
 export function AudienceToggle({ className, layoutId = 'audience-pill' }: { className?: string; layoutId?: string }) {
-  const pathname = usePathname();
+  const pathname = useLocalPath();
   const creators = pathname.startsWith('/creators');
   return (
     <div role="group" aria-label="Audience" className={cn('relative flex rounded-full border border-cream/15 bg-ink/45 p-1', className)}>
@@ -38,7 +38,7 @@ export function AudienceToggle({ className, layoutId = 'audience-pill' }: { clas
 }
 
 export function Nav() {
-  const pathname = usePathname();
+  const pathname = useLocalPath();
   const creators = pathname.startsWith('/creators');
   const links = creators ? nav.creatorLinks : nav.links;
   const cta = creators ? nav.creatorCta : nav.cta;

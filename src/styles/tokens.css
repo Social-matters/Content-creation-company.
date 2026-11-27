@@ -28,6 +28,14 @@
   --ccc-radius-xl: 2.25rem;
   --nav-h: 4.5rem;
 
+  /* Fluid display scale (desktop target in comments) */
+  --fs-mega: clamp(4.25rem, 15.5vw, 15rem); /* 240px */
+  --fs-d1: clamp(3.1rem, 10.2vw, 10.25rem); /* 164px */
+  --fs-d2: clamp(2.6rem, 7.4vw, 7.25rem); /* 116px */
+  --fs-d3: clamp(2.1rem, 5vw, 4.75rem); /* 76px */
+  --fs-d4: clamp(1.6rem, 2.8vw, 2.6rem); /* 42px */
+  --fs-lead: clamp(1.15rem, 1.6vw, 1.6rem);
+
   /* Neo-brutalist shadows */
   --ccc-shadow-hard-sm: 3px 3px 0 0 var(--ccc-black);
   --ccc-shadow-hard: 5px 5px 0 0 var(--ccc-black);
@@ -40,4 +48,20 @@
   --dur-micro: 0.25s;
   --dur-reveal: 1s;
   --dur-section: 1.4s;
+}
+
+/*
+ * v2 (/v2/*): more air, a calmer type scale. Everything that reads these variables
+ * (section padding, gutters, display sizes) retunes inside the .v2 scope.
+ */
+.v2 {
+  --gutter: clamp(1.25rem, 4.6vw, 4.75rem);
+  --section-y: clamp(7rem, 13vw, 12.5rem);
+  --nav-h: 5.25rem;
+  --fs-mega: clamp(4rem, 13vw, 13rem); /* 187px */
+  --fs-d1: clamp(2.85rem, 7.4vw, 8rem); /* 107px */
+  --fs-d2: clamp(2.4rem, 5.6vw, 5.75rem); /* 81px */
+  --fs-d3: clamp(2rem, 3.9vw, 3.9rem); /* 56px */
+  --fs-d4: clamp(1.5rem, 2.3vw, 2.25rem); /* 33px */
+  --fs-lead: clamp(1.1rem, 1.4vw, 1.4rem);
 }

@@ -14,7 +14,7 @@ const CHIP_ICONS: IconName[] = ['doc', 'sparkle', 'check', 'trend'];
 const CHIP_POS = ['-left-6 top-[14%] lg:-left-40', '-right-6 top-[30%] lg:-right-36', '-left-6 top-[56%] lg:-left-44', '-right-6 top-[74%] lg:-right-40'];
 
 /** Builds the four-step morph. One unit of timeline time per step. */
-function buildTimeline(root: HTMLElement) {
+export function buildTimeline(root: HTMLElement) {
   const q = gsap.utils.selector(root);
   const screens = ['brief', 'match', 'review', 'live'].map((s) => q(`[data-screen="${s}"]`)[0]);
   const views = q('[data-views]')[0];

@@ -2,7 +2,8 @@
 /**
  * Interaction smoke test against a running server (BASE_URL, default http://localhost:3000).
  * Exercises the entrance, modal + form validation + submission, Esc to close,
- * route wipe, plan toggle, FAQ, mobile menu and keyboard focus. Saves frames to shots/smoke/.
+ * route wipe, plan toggle, FAQ, mobile menu, keyboard focus, and the /v2 design (links,
+ * scroll scenes, route changes). Saves frames to shots/smoke/.
  *
  *   pnpm smoke
  */
@@ -139,6 +140,42 @@ const errors = [];
   const pinned = await page.$$eval('.pin-spacer', (els) => els.length);
   check('reduced motion: no pinning', pinned === 0);
   await shot(page, 'reduced-motion');
+  await ctx.close();
+}
+
+// ---------- v2 (/v2/*) ----------
+{
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  await ctx.addInitScript(() => sessionStorage.setItem('ccc:entrance-played', '1'));
+  const page = await ctx.newPage();
+  page.on('pageerror', (e) => errors.push(`v2: ${e.message}`));
+  page.on('console', (m) => m.type() === 'error' && !m.text().includes('404') && errors.push(`v2: ${m.text().slice(0, 200)}`));
+  await page.goto(base + '/v2', { waitUntil: 'networkidle' });
+  await page.waitForTimeout(2200);
+  check('v2: hero content visible', (await page.locator('[data-hero-in]').first().evaluate((e) => getComputedStyle(e).opacity)) === '1');
+  const hrefs = await page.locator('a[href^="/"]').evaluateAll((as) => as.map((a) => a.getAttribute('href')));
+  const stray = hrefs.filter((h) => !h.startsWith('/v2') && !/^\/(_next|media|brand)\//.test(h));
+  check('v2: internal links stay in /v2', stray.length === 0, stray.slice(0, 3).join(', '));
+  // Scroll every scene, then navigate away (v2 home stays mounted) and back.
+  for (let i = 0; i < 36; i++) {
+    await page.mouse.wheel(0, 700);
+    await page.waitForTimeout(110);
+  }
+  // Scroll back up with the wheel (an upward scroll is what reveals the hidden nav).
+  for (let i = 0; i < 40; i++) {
+    await page.mouse.wheel(0, -900);
+    await page.waitForTimeout(60);
+  }
+  await page.waitForTimeout(1500);
+  await page.getByRole('navigation', { name: 'Primary' }).getByRole('link', { name: 'Pricing' }).click();
+  await page.waitForURL('**/v2/pricing', { timeout: 8000 }).catch(() => {});
+  await page.waitForTimeout(1500);
+  check('v2: route wipe stays in /v2', new URL(page.url()).pathname === '/v2/pricing');
+  await page.getByRole('navigation', { name: 'Primary' }).getByRole('link', { name: 'How it works' }).click();
+  await page.waitForURL(/\/v2(#how)?$/, { timeout: 8000 }).catch(() => {});
+  await page.waitForTimeout(1800);
+  check('v2: back to home', new URL(page.url()).pathname === '/v2');
+  await shot(page, 'v2-how');
   await ctx.close();
 }
 

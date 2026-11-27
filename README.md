@@ -60,6 +60,19 @@ scripts/                     fetch-assets, asset-sources, assets-doc, shots, smo
 docs/                        reference-notes, decisions, TODO-real-content
 ```
 
+## v2 design (`/v2`)
+
+A second design of the same site lives at `/v2/*` (home, creators, pricing, about, contact, forms, legal) so the
+two can be compared on one deployment. It reads the same `src/content` files (plus `src/content/v2.ts` for the
+few v2-only lines), and is `noindex` with canonicals pointing at the v1 pages.
+
+- **Routes:** `src/app/v2/` with `MarketingShell version="v2"`. Links inside v2 stay in v2 automatically (`TLink`).
+- **Sections:** `src/components/v2/` (HeroV2, MosaicV2, HowItWorksV2, ServicesV2, OperationsV2, ProofV2, StatsV2,
+  VoicesV2, FinaleV2, PageHeroV2) and the motion primitives in `v2/flow.tsx` (`Sheet`, `FlowWords`, `useNearGSAP`).
+- **Look and feel:** the `.v2` scope in `styles/tokens.css` sets the roomier spacing and calmer type scale;
+  `flow` in `lib/motion.ts` is the softer, scroll-linked motion profile.
+- **Removing v2:** delete `src/app/v2`, `src/components/v2` and `src/content/v2.ts`; the shared hooks fall back to v1.
+
 ## Swapping content
 
 - **Copy:** every visible string lives in `src/content/*.ts` (`home.ts`, `creators.ts`, `pages.ts`, `site.ts`,

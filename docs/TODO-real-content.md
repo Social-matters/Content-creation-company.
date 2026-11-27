@@ -33,6 +33,11 @@ While the flag is `true`, testimonials show a visible "Sample quote" tag and eve
 - [ ] **Legal pages**: draft privacy policy and terms; need counsel review (DPDP Act 2023): `src/content/legal.ts`.
 - [ ] **Copyright year** is a literal ("© 2026"): `site.ts` → `footer.copyright`.
 
+## v2 (`/v2`)
+
+v2 reuses everything above, so the same placeholders apply there. One new line needs sign-off:
+- [ ] **Hero manifesto** ("You write one brief. Creators across India shoot it their way…"): `src/content/v2.ts` → `heroV2.manifesto`.
+
 ## Media (temporary stock → CCC's own content)
 
 All 45 media slots are royalty-free Mixkit stock (see `ASSETS.md`). Replace with CCC's own shoots:
