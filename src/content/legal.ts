@@ -28,8 +28,8 @@ export const privacy: LegalDoc = {
     {
       heading: 'Why we use it',
       body: [
-        'Each submission goes to the CCC team by email or into the team’s Google Sheet. They use it to respond to you, match brands with influencers and creators, and prepare quotes. We also use it to tell you about early access and to improve the service. We do not sell your personal data.',
-        'Creator rates are used only by CCC, for matching and quoting.',
+        'Each submission goes to the CCC team by email or into the team’s Google Sheet. They use it to respond to you, match brands with influencers and creators, and prepare proposals. We also use it to tell you about early access and to improve the service. We do not sell your personal data.',
+        'Creator rates are used only by CCC, for matching and proposals.',
       ],
     },
     {
@@ -54,12 +54,12 @@ export const privacy: LegalDoc = {
 export const terms: LegalDoc = {
   title: 'Terms of use',
   description: 'The terms that apply when you use the Content Creation Company website.',
-  updated: '26 November 2026',
+  updated: '28 November 2026',
   intro: 'By using this website you agree to these terms. If you do not agree, please do not use the site.',
   sections: [
     {
       heading: 'Early access',
-      body: ['Applying through this site does not create a contract. Pricing, features and availability shown are indicative until confirmed in writing.'],
+      body: ['Applying through this site does not create a contract. Features and availability described here are indicative, and nothing is agreed until it is confirmed in writing.'],
     },
     {
       heading: 'Your content',

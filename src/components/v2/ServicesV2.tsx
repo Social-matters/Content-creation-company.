@@ -6,6 +6,7 @@ import { flow, mq } from '@/lib/motion';
 import { cn } from '@/lib/cn';
 import { useNearGSAP } from './flow';
 import { servicesV2 as services } from '@/content/v2/home';
+import { serviceEnquiryHref } from '@/content/site';
 import { Video } from '@/components/ui/Video';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
@@ -13,6 +14,7 @@ import { Eyebrow } from '@/components/ui/Badge';
 import { SectionIntro } from '@/components/sections/SectionIntro';
 
 const TONE = ['bg-cream', 'bg-orange', 'bg-white', 'bg-cream-2'];
+const pricingCta = ({ key, title }: { key: string; title: string }) => ({ label: services.pricingLink, href: serviceEnquiryHref(key), context: title });
 
 /** Stand-in panel for celebrity / actor work until licensed imagery is supplied (no real people). */
 export function RosterPanel({ label, className }: { label: string; className?: string }) {
@@ -92,11 +94,8 @@ export function ServicesV2() {
                       </li>
                     ))}
                   </ul>
-                  <div className="mt-auto flex flex-wrap items-end justify-between gap-4 pt-6">
-                    <p>
-                      <span className="block font-display text-[clamp(1.6rem,2.6vw,2.4rem)] leading-none">{s.price}</span>
-                      <span className="mt-1.5 block font-mono text-[0.72rem] uppercase tracking-[0.1em] text-ink/80">{s.priceNote}</span>
-                    </p>
+                  <div className="mt-auto flex flex-wrap items-center justify-between gap-x-6 gap-y-2 pt-6">
+                    <Button cta={pricingCta(s)} variant="link-light" />
                     {s.more && <Button cta={s.more} variant="link-light" />}
                   </div>
                 </div>
@@ -144,15 +143,12 @@ export function ServicesV2() {
                 <div className="relative aspect-[16/10] overflow-hidden">
                   <Video media={c.media} sizes="(min-width: 640px) 22vw, 90vw" decorative className="absolute inset-0 transition-transform duration-700 group-hover:scale-[1.04]" />
                 </div>
-                <div className="flex flex-1 flex-col gap-3 p-5">
+                <div className="flex flex-1 flex-col gap-3 p-4 xl:p-5">
                   <h4 className="font-display text-[1.15rem] leading-tight">{c.title}</h4>
                   <p className="text-[0.92rem] text-cream/70">{c.body}</p>
-                  <div className="mt-auto flex items-end justify-between gap-3 pt-3">
-                    <p>
-                      <span className="block font-display text-[1.05rem] leading-none text-orange">{c.price}</span>
-                      <span className="mt-1 block font-mono text-[0.62rem] uppercase tracking-[0.1em] text-cream/60">{c.priceNote}</span>
-                    </p>
-                    {c.more && <Button cta={c.more} variant="link-dark" className="text-[0.7rem]" />}
+                  <div className="mt-auto flex flex-col items-start pt-3">
+                    <Button cta={pricingCta(c)} variant="link-dark" className="whitespace-nowrap gap-2! text-[0.68rem]! tracking-[0.03em]! text-orange!" />
+                    {c.more && <Button cta={c.more} variant="link-dark" className="whitespace-nowrap gap-2! text-[0.68rem]! tracking-[0.03em]!" />}
                   </div>
                 </div>
               </li>

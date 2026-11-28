@@ -17,6 +17,7 @@ export const serviceNeeds = {
   visit: 'content',
   exhibition: 'content',
 } as const satisfies Record<string, (typeof brandNeeds)[number]['value']>;
+export type ServiceKey = keyof typeof serviceNeeds;
 
 // PLACEHOLDER: budget bands to confirm with CCC
 export const budgets = [
@@ -63,7 +64,7 @@ export const formCopyV2 = {
     basePrice: 'Your base rate (₹)',
     basePricePlaceholder: '5000',
     priceUnit: 'Rate is',
-    priceNote: 'Only CCC sees your rate. We use it for matching and quoting.',
+    priceNote: 'Only CCC sees your rate. We use it for matching and proposals.',
     submit: 'Apply to join',
   },
   contact: {

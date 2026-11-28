@@ -21,11 +21,12 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       { source: '/v2/creators', destination: '/', permanent: true },
-      { source: '/v2/pricing', destination: '/pricing', permanent: false },
+      { source: '/v2/pricing', destination: '/contact#join-the-network', permanent: true },
       { source: '/v2', destination: '/', permanent: true },
       { source: '/v2/:path*', destination: '/:path*', permanent: true },
       { source: '/creators', destination: '/', permanent: true },
-      { source: '/pricing', destination: '/', permanent: false },
+      // No public pricing: people ask for it.
+      { source: '/pricing', destination: '/contact#join-the-network', permanent: true },
       // No separate application pages: everything lands on the one section.
       { source: '/start-a-campaign', destination: '/contact?apply=brand#join-the-network', permanent: true },
       { source: '/join-as-creator', destination: '/contact#join-the-network', permanent: true },

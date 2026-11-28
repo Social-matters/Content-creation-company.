@@ -53,6 +53,7 @@ export function Button({ cta, variant = 'primary', icon = 'arrow', className, ma
     <>
       <span className="relative">
         {cta.label}
+        {cta.context && <span className="sr-only">: {cta.context}</span>}
         <span className="absolute inset-x-0 -bottom-1 h-[2px] origin-right scale-x-100 bg-current transition-transform duration-500 ease-[cubic-bezier(.16,1,.3,1)] group-hover:origin-left group-hover:animate-[underline_.7s_cubic-bezier(.16,1,.3,1)]" />
       </span>
       <Icon name={icon} size={16} className="transition-transform duration-300 group-hover:translate-x-1" />

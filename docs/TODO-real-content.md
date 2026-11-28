@@ -17,9 +17,8 @@ Files are under `src/content/`.
 | How-it-works mock | 12,40,000 views, +120K today, 12 of 340 fit, follower and ER figures | `v2/home.ts` → `howV2.mock`, `howV2.chips` |
 | Hero notifications | "+120K views in the last hour", handles | `v2/home.ts` → `heroV2.notifications` |
 
-## Prices to confirm
-- [ ] **Influencer Campaigns** "Custom quote", **Celebrity & TV Serial Actor Tie-ups** "On request", **Model Shoots** "Custom quote": `v2/home.ts` → `servicesV2`.
-- [ ] **Budget bands** on the brand form (Under ₹50K … ₹10L+): `v2/forms.ts` → `budgets`.
+## Form option bands
+- [ ] **Budget bands** on the brand form (Under ₹50K … ₹10L+): `v2/forms.ts` → `budgets`. No prices are shown anywhere on the site.
 
 ## People, names and quotes (invented, do not ship)
 - **Handles** (`@ananya.styles`, `@rohan.eats`, `@meera.makes`) in hero notifications, the shortlist mock and the live feed: `v2/home.ts`.
@@ -28,13 +27,15 @@ Files are under `src/content/`.
 - **Celebrities and TV actors**: no names or images anywhere. Supply licensed images and any names you want shown; until then the site uses "Roster placeholder" cards and set footage.
 
 ## Claims to confirm
-- [ ] **Comparison, CCC column**: AI-scored audience-quality vetting, celebrity/TV actor access arranged, models and crew provided, AI brief + matching built in, pay-on-performance available, contracts/payments/reporting handled, flat package pricing: `v2/home.ts` → `comparisonV2`.
+- [ ] **Comparison, CCC column**: AI-scored audience-quality vetting, celebrity/TV actor access arranged, models and crew provided, AI brief + matching built in, pay-on-performance available, contracts/payments/reporting handled: `v2/home.ts` → `comparisonV2`.
 - [ ] **AI Influencer Matching "Live: try it now"** badge: `v2/home.ts` → `servicesV2.influencer[3].badge`.
 - [ ] **"No minimum follower count"** (creator card on About): `v2/home.ts` → `creatorCtaV2.note`.
 - [ ] **Celebrity page copy** (endorsements, appearances, serial actor tie-ups; "Roster shared on request"): `v2/pages.ts` → `celebritiesPage`.
 - [ ] **Model Shoots page copy** (crew, studio, edited delivery): `v2/pages.ts` → `modelShootsPage`.
 - [ ] **Launch cities** (mosaic copy + city marquee): `v2/home.ts` → `mosaicV2.body`, `marqueesV2.cities`.
 - [ ] **Hero manifesto**: `v2/home.ts` → `heroV2.manifesto`.
+- [ ] **About page problem statement**, including "middlemen who keep 40% of the fee": confirm or reword. `pages.ts` → `about.problem`.
+- [ ] **Founding-brand perks** ("priority placement at launch", "priority slots, first pick of campaigns, and a direct line to the team"): `forms.ts` → `brand.intro`, `v2/home.ts` → `finaleV2.body`.
 - [ ] **Compliance wording** (e.g. ASCI disclosures): deliberately left out until you confirm.
 - [ ] **Social Matters wording** on About: `pages.ts` → `about.backer.body`.
 - [ ] **Social handles/URLs** (Instagram, LinkedIn, YouTube, X): `site.ts` → `socials`.

@@ -5,6 +5,7 @@ import { createContext, useCallback, useContext, useEffect, useRef, type ReactNo
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { mq } from '@/lib/motion';
 import { focusSectionHeading } from '@/lib/focus-section';
+import { joinSection } from '@/content/site';
 import { useSmoothScroll } from './SmoothScroll';
 import { LogoMark } from '@/components/brand/LogoMark';
 
@@ -36,8 +37,9 @@ export function PageTransitionProvider({ children }: { children: ReactNode }) {
     (href: string) => {
       const url = new URL(href, window.location.href);
       if (url.pathname === window.location.pathname) {
-        // A new query (which form to open) has to reach the URL; a bare anchor only scrolls.
-        if (url.search && url.search !== window.location.search) router.push(href, { scroll: false });
+        // The query picks which form is open, so it has to reach the URL. Plain anchors only scroll.
+        const picksForm = url.search || url.hash === `#${joinSection.id}`;
+        if (picksForm && url.search !== window.location.search) router.push(href, { scroll: false });
         // Two frames: the mobile menu has to release the scroll lock first.
         requestAnimationFrame(() => requestAnimationFrame(() => (url.hash ? arrive(url.hash) : scrollTo(0))));
         return;

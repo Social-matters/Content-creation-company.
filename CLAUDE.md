@@ -19,7 +19,7 @@ There is one site. The earlier original design (v1) was removed on 2026-11-28 an
 
 ### Nav rules
 - One brand-facing site: **no Brands/Creators toggle** and no audience-dependent copy. Nav = Influencers · Celebrities · Model Shoots · How it works, then **Join the network** (links to `/contact#join-the-network`). No login anywhere (owner's decision).
-- No pricing page and no plans section (owner's decision). Service cards may show a short price line.
+- **No public pricing anywhere** (owner's decision): no prices, rupee amounts, price units or fee terms in pages, content, metadata or structured data. No pricing page or plans section. Each service card shows **Contact for pricing**, linking to `join-the-network` with `?service=`. The budget-range and base-rate form inputs stay: we collect those, we don't show prices.
 - Influencers, creators and models join through a quiet footer link and the band at the end of the home page ("Join our influencer network"), never the header.
 
 ### Copy rules

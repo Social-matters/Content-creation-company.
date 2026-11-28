@@ -6,6 +6,7 @@
  */
 import type { Cta, Headline, MediaSlot } from '../types';
 import { assets } from '../assets';
+import type { ServiceKey } from './forms';
 import type { NotificationTone } from '@/components/sections/NotificationCard';
 import { joinNetwork, messageHref } from '../site';
 
@@ -73,8 +74,8 @@ export const joinBandV2 = {
   cta: joinNetwork,
 } as const;
 
-type ServiceCard = { key: string; n: string; title: string; body: string; price: string; priceNote: string; facts: string[]; badge: string | null; media: MediaSlot | null; more: Cta | null };
-type CompactCard = { key: string; title: string; body: string; price: string; priceNote: string; facts: string[]; media: MediaSlot; more: Cta | null };
+type ServiceCard = { key: ServiceKey; n: string; title: string; body: string; facts: string[]; badge: string | null; media: MediaSlot | null; more: Cta | null };
+type CompactCard = { key: ServiceKey; title: string; body: string; facts: string[]; media: MediaSlot; more: Cta | null };
 
 /**
  * Services. Influencer side first and large (stacked cards); creator content second and
@@ -86,14 +87,14 @@ export const servicesV2 = {
   headline: ['Influence,', { accent: 'at any scale.', style: 'orange' }] satisfies Headline,
   body: 'From a hundred nano-influencers to a TV star. Every option ends the same way: posts live, numbers on the board.',
   split: { primary: 'Influencer marketing', secondary: 'Creator content' },
+  /** Every card ends with this instead of a price. */
+  pricingLink: 'Contact for pricing',
   influencer: [
     {
       key: 'campaigns',
       n: '01',
       title: 'Influencer Campaigns',
       body: 'Nano to macro influencers, targeted by niche and city, with fixed deliverables agreed up front.',
-      price: 'Custom quote', // PLACEHOLDER: pricing to confirm
-      priceNote: 'per campaign',
       facts: ['Nano to macro', 'Niche + city targeting', 'Fixed deliverables'],
       badge: null,
       media: assets.mosaic[3],
@@ -104,8 +105,6 @@ export const servicesV2 = {
       n: '02',
       title: 'Celebrity & TV Serial Actor Tie-ups',
       body: 'Endorsements, appearances and branded content with celebrities and television serial actors.',
-      price: 'On request', // PLACEHOLDER: pricing to confirm
-      priceNote: 'per tie-up',
       facts: ['Endorsements', 'Appearances', 'Branded content'],
       badge: null,
       media: assets.sets[1], // set atmosphere only; licensed talent imagery to come
@@ -115,10 +114,8 @@ export const servicesV2 = {
       key: 'performance',
       n: '03',
       title: 'Pay-On-Performance',
-      body: 'Three videos built to perform. A tiered success fee kicks in only when the numbers land.',
-      price: '₹10K',
-      priceNote: 'setup',
-      facts: ['3 videos', 'Tiered success fee'],
+      body: 'Three videos built to perform, judged on the numbers they land.',
+      facts: ['3 videos', 'Results-led'],
       badge: null,
       media: assets.categories.food,
       more: null,
@@ -128,8 +125,6 @@ export const servicesV2 = {
       n: '04',
       title: 'AI Influencer Matching',
       body: 'Enter a goal. AI matches influencers, drafts the brief and predicts performance before you book.',
-      price: 'Self-serve',
-      priceNote: 'pay per influencer',
       facts: ['AI matching', 'Auto briefs', 'Performance prediction'],
       badge: 'Live: try it now',
       media: assets.categories.beauty,
@@ -143,11 +138,9 @@ export const servicesV2 = {
     body: 'Models, creators and shoot days for the assets behind your campaigns.',
     items: [
       {
-        key: 'models',
+        key: 'model-shoots',
         title: 'Model Shoots',
         body: 'We provide the models and run the shoot: product, lookbook, e-commerce and campaign.',
-        price: 'Custom quote', // PLACEHOLDER: pricing to confirm
-        priceNote: 'per shoot',
         facts: ['Models provided', 'Studio or location'],
         media: assets.ctaBrand,
         more: { label: 'Model shoots', href: '/model-shoots' },
@@ -156,8 +149,6 @@ export const servicesV2 = {
         key: 'visit',
         title: 'Creator Visit',
         body: 'A curated squad shoots at your café, salon, gym or showroom. One day on set, weeks of content.',
-        price: '₹25K – ₹1L',
-        priceNote: 'per visit',
         facts: ['2–10 creators', 'At your location'],
         media: assets.categories.lifestyle,
         more: null,
@@ -166,8 +157,6 @@ export const servicesV2 = {
         key: 'exhibition',
         title: 'Content Exhibition',
         body: "One venue, a rotating line-up of creators. You walk out with a quarter's worth of content in a single day.",
-        price: 'From ₹75,000',
-        priceNote: 'per brand',
         facts: ['5–25 reels', 'One venue, one day'],
         media: assets.ctaCreator,
         more: null,
@@ -381,7 +370,7 @@ export const clientsV2 = {
 /** Closing call at the end of the home page. */
 export const finaleV2 = {
   headline: ['Your feed', "won't fill", { accent: 'itself.', style: 'block' }] satisfies Headline,
-  body: 'Founding-brand slots are open. Lock your pricing before launch.',
+  body: 'Founding-brand slots are open. Priority slots, first pick of campaigns, and a direct line to the team.',
   ctas: [
     { label: 'Start a campaign', modal: 'campaign' },
     { label: 'Book a call', href: messageHref, meta: '15 min' },

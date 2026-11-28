@@ -149,7 +149,7 @@ export function leadEmail(lead: StoredLead): Email {
   const fields = fieldRows(lead);
   const meta = metaRows(lead);
   const title = TITLES[lead.kind];
-  const internal = lead.kind === 'creator' ? 'Base price is internal: for CCC matching and quoting only.' : '';
+  const internal = lead.kind === 'creator' ? 'Base price is internal: for CCC matching and proposals only.' : '';
   const reply = 'Reply to this email to answer the sender directly.';
   const note = (s: string) => `<p style="margin:16px 0 0;font-family:${SANS};font-size:13px;line-height:19px;color:#6B655E;">${escapeHtml(s)}</p>`;
   const html = layout(

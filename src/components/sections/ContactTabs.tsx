@@ -34,7 +34,7 @@ export function ContactTabs() {
     if (wanted) {
       setNeed(wanted);
       setTab(TAB.brand);
-    } else if (apply && apply in TAB) setTab(TAB[apply as keyof typeof TAB]);
+    } else setTab(apply && apply in TAB ? TAB[apply as keyof typeof TAB] : TAB.creator);
   }, []);
   const forms = [
     <ContactForm key="message" titleId="contact-message" />,

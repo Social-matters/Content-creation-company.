@@ -31,7 +31,7 @@ export const formCopy = {
   brand: {
     eyebrow: '// For brands',
     title: "I'm a brand.",
-    intro: 'Tell us about your brand. Founding-brand slots come with locked pricing for year one and priority placement at launch.',
+    intro: 'Tell us about your brand. Founding brands get priority placement at launch.',
     fields: {
       name: 'Your name',
       brand: 'Brand name',

@@ -14,6 +14,8 @@ export const site = {
 
 /** The one place people apply: the top of the contact page. Every apply link points here. */
 export const joinSection = { id: 'join-the-network', href: '/contact#join-the-network' } as const;
+/** The brand form with this service's need pre-ticked. */
+export const serviceEnquiryHref = (service: string) => `/contact?service=${service}#${joinSection.id}`;
 /** Same place with the message form open, for people who want to talk rather than apply. */
 export const messageHref = '/contact?apply=message#join-the-network';
 
