@@ -103,6 +103,26 @@ To use your own footage, change the slot in `scripts/asset-sources.mjs`:
 then `pnpm assets --force hero && pnpm assets:doc`. File names don't change, so no code edits.
 `provider: 'pexels'` with a `query` works once `PEXELS_API_KEY` is set. Licences are tracked in `ASSETS.md`.
 
+## Where form submissions go
+
+Email, a Google Sheet, or both. Production needs at least one set up completely, or the server raises a
+configuration error. With both, one confirmed copy counts as success and the other failure is logged.
+
+### Google Sheet
+
+1. **Make the sheet private:** *Share* → *General access* → **Restricted**. Add only the people who should see leads.
+2. In the sheet: *Extensions* → *Apps Script*. Replace the code with `integrations/google-sheet/Code.gs` and save.
+3. *Project Settings* (gear) → *Script properties* → add `LEADS_SECRET`: a long random password (at least 16 characters).
+4. *Deploy* → *New deployment* → type **Web app**. *Execute as*: **Me**. *Who has access*: **Anyone**. Authorise it
+   when asked. "Anyone" lets the website reach the script; requests without the password are refused. (A Google
+   Workspace admin can block "Anyone"; then the account's admin has to allow it.)
+5. Set `SHEETS_WEBHOOK_URL` (the web app URL ending in `/exec`) and `SHEETS_WEBHOOK_SECRET` (the same password) in
+   `.env.local`, and in Vercel (*Settings → Environment Variables*), then redeploy.
+6. Send one form. A **Leads** tab appears with a header row and your entry.
+
+After editing the script: *Deploy* → *Manage deployments* → edit → *New version*, which keeps the same URL.
+Submissions that look like formulas are stored as plain text.
+
 ## Form emails
 
 Every form is emailed to the CCC team through [Resend](https://resend.com), from a Server Action only: brand
@@ -142,8 +162,8 @@ early-access signup (the v1 forms use the same pipeline). The login box is UI on
 
 | Situation | What happens |
 |---|---|
-| Development, no `RESEND_API_KEY` | Submission is printed to the terminal with a warning that **no email was sent**; the form shows success |
-| Production, any of the three variables missing | Clear `Email configuration error` at server start; every request fails until fixed |
+| Development, nothing configured | Submission is printed to the terminal with a warning that **nothing was sent or saved**; the form shows success |
+| Production, no complete destination | Clear `Lead delivery configuration error` at server start; server requests fail until fixed |
 | Resend rejects or times out | Full error logged on the server; the visitor sees a friendly message and keeps what they typed |
 | More than 5 submissions from one IP in 10 minutes | Refused with a "wait a few minutes" message |
 | Honeypot field filled | Pretends to succeed, sends nothing |
@@ -167,7 +187,7 @@ initialise lazily (`lib/defer.ts`) to keep hydration light. See `CLAUDE.md` for 
 ## Deploy (Vercel)
 
 Zero-config Next.js on Vercel; `vercel.json` pins the Mumbai region (`bom1`) for India-first latency.
-**Before deploying**, add `RESEND_API_KEY`, `LEADS_TO_EMAIL` and `LEADS_FROM_EMAIL` in the Vercel project (*Settings → Environment Variables*, for Production and Preview). Without them the deployed server raises the configuration error. Add `pnpm check:content` to the production
+**Before deploying**, add the Google Sheet or email variables (see "Where form submissions go") in the Vercel project (*Settings → Environment Variables*, for Production and Preview). Without them the deployed server raises the configuration error. Add `pnpm check:content` to the production
 build step (or CI) to block deploys while placeholders remain.
 
 ## How Phase 2 and Phase 3 plug in

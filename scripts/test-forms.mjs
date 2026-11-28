@@ -73,7 +73,8 @@ async function ready(server) {
   }
   throw new Error(`server did not start:\n${server.log}`);
 }
-const baseEnv = { RESEND_API_KEY: 're_test_mock', RESEND_BASE_URL: resendUrl, LEADS_TO_EMAIL: INBOX, LEADS_FROM_EMAIL: FROM, SEND_CONFIRMATION_EMAIL: 'false' };
+const noSheet = { SHEETS_WEBHOOK_URL: '', SHEETS_WEBHOOK_SECRET: '' }; // never touch a real sheet from .env.local
+const baseEnv = { ...noSheet, RESEND_API_KEY: 're_test_mock', RESEND_BASE_URL: resendUrl, LEADS_TO_EMAIL: INBOX, LEADS_FROM_EMAIL: FROM, SEND_CONFIRMATION_EMAIL: 'false' };
 
 const browser = await chromium.launch();
 const pageErrors = [];
@@ -384,11 +385,64 @@ try {
     confirm.child.kill();
   }
 
-  // ---------- Production without email settings ----------
+  // ---------- Google Sheet destination ----------
+  {
+    const rows = [];
+    const sheetMock = { mode: 'ok' };
+    const web = http.createServer((req, res) => {
+      let body = '';
+      req.on('data', (c) => (body += c));
+      req.on('end', () => {
+        if (sheetMock.mode === 'signin') return res.writeHead(200, { 'Content-Type': 'text/html' }).end('<html>Sign in</html>');
+        const data = JSON.parse(body);
+        if (sheetMock.mode === 'ok') rows.push(data);
+        res.writeHead(200, { 'Content-Type': 'application/json' }).end(JSON.stringify({ ok: sheetMock.mode === 'ok' }));
+      });
+    });
+    await new Promise((r) => web.listen(0, '127.0.0.1', r));
+    const sheetEnv = { SHEETS_WEBHOOK_URL: `http://127.0.0.1:${web.address().port}/exec`, SHEETS_WEBHOOK_SECRET: 'test-secret-0123456789' };
+    const send = async (server, message) => {
+      const { ctx, page } = await visit(server, '/v2/contact');
+      const form = await contactForm(page);
+      await text(form, 'Your name', '=HYPERLINK("http://evil.test","x")');
+      await text(form, 'Email', 'sheet@example.com');
+      await text(form, 'Message', message);
+      await consent(form).check();
+      await form.getByRole('button', { name: /send message/i }).click();
+      const ok = await page.getByRole('status').first().waitFor({ timeout: 12000 }).then(() => true, () => false);
+      await ctx.close();
+      return ok;
+    };
+
+    const only = startNext(3108, { ...baseEnv, ...sheetEnv, RESEND_API_KEY: '', LEADS_TO_EMAIL: '', LEADS_FROM_EMAIL: '' });
+    await ready(only);
+    const emails = mail.length;
+    const ok = await send(only, '+SUM(1,1) and the rest of the message');
+    const row = rows.at(-1);
+    const cell = (name) => row?.row[row.headers.indexOf(name)];
+    check('sheet only: success after the sheet confirms, no email', ok && rows.length === 1 && mail.length === emails);
+    check('sheet: secret sent, columns line up', row?.secret === sheetEnv.SHEETS_WEBHOOK_SECRET && row.headers.length === row.row.length && cell('Email') === 'sheet@example.com' && cell('Form') === 'Contact form' && cell('Page') === '/v2/contact' && cell('Submitted').endsWith(' IST') && cell('Brand') === '');
+    check('sheet: formulas are forced to text', cell('Name')?.startsWith("'=HYPERLINK") && cell('Message')?.startsWith("'+SUM"), `${cell('Name')} | ${cell('Message')}`);
+    for (const mode of ['reject', 'signin']) {
+      sheetMock.mode = mode;
+      check(`sheet ${mode === 'reject' ? 'refuses the row' : 'answers with a sign-in page'}: no success shown`, !(await send(only, 'This one must not look saved.')));
+    }
+    only.child.kill();
+
+    const both = startNext(3109, { ...baseEnv, ...sheetEnv });
+    await ready(both);
+    sheetMock.mode = 'reject';
+    const before = mail.length;
+    check('email + sheet, sheet down: email still counts, failure logged', (await send(both, 'Email should still arrive.')) && mail.length === before + 1 && both.log.includes('saved, but not everywhere'));
+    both.child.kill();
+    web.close();
+  }
+
+  // ---------- Production with nowhere to send ----------
   {
     const bare = startNext(3107, { ...baseEnv, RESEND_API_KEY: '', LEADS_TO_EMAIL: '', LEADS_FROM_EMAIL: '' });
     const status = await ready(bare);
-    check('production without settings: clear configuration error', status === 500 && bare.log.includes('Email configuration error: missing RESEND_API_KEY, LEADS_TO_EMAIL, LEADS_FROM_EMAIL'), `HTTP ${status}\n${bare.log.slice(0, 400)}`);
+    check('production without settings: clear configuration error', status === 500 && bare.log.includes('Lead delivery configuration error: nowhere to send submissions'), `HTTP ${status}\n${bare.log.slice(0, 400)}`);
     bare.child.kill();
   }
 

@@ -14,7 +14,7 @@ import path from 'node:path';
 const base = process.env.BASE_URL ?? 'http://localhost:3000';
 /** With a real key in .env.local, submitting would email the team a fake lead: skip unless SMOKE_SEND=1. */
 const envFile = path.resolve(import.meta.dirname, '../.env.local');
-const hasRealKey = fs.existsSync(envFile) && /^[ \t]*RESEND_API_KEY[ \t]*=[ \t]*[^\s#]/m.test(fs.readFileSync(envFile, 'utf8'));
+const hasRealKey = fs.existsSync(envFile) && /^[ \t]*(RESEND_API_KEY|SHEETS_WEBHOOK_URL)[ \t]*=[ \t]*[^\s#]/m.test(fs.readFileSync(envFile, 'utf8'));
 const maySend = !hasRealKey || process.env.SMOKE_SEND === '1';
 const out = path.resolve(import.meta.dirname, '../shots/smoke');
 fs.mkdirSync(out, { recursive: true });

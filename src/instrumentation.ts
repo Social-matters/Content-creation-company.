@@ -1,6 +1,6 @@
-import { getMailConfig } from '@/lib/email/config';
+import { getLeadConfig } from '@/lib/lead-config';
 
-/** Runs once when a server instance starts: a production server with incomplete email settings fails loudly. */
+/** Runs once when a server instance starts: a production server with nowhere to put leads fails loudly. */
 export function register() {
-  getMailConfig();
+  getLeadConfig();
 }

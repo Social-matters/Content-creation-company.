@@ -1,14 +1,15 @@
 import 'server-only';
 import { Resend } from 'resend';
-import { getMailConfig, type MailConfig } from './email/config';
+import { getLeadConfig, type MailConfig, type SheetConfig } from './lead-config';
+import { appendToSheet } from './sheet';
 import { LOGO_ATTACHMENT, confirmationEmail, leadEmail } from './email/template';
 import type { Lead, LeadContext } from './schemas';
 
 /**
  * Lead delivery adapter. Swap the implementation without touching forms:
- *   - RESEND_API_KEY set          → emailed to LEADS_TO_EMAIL via Resend
- *   - development without a key   → logged to the console, nothing sent
- *   - production without a key    → configuration error (also raised at server start)
+ *   - email and/or Google Sheet, whichever is configured (see lead-config.ts)
+ *   - development with neither    → logged to the console, nothing sent
+ *   - production with neither     → configuration error (also raised at server start)
  * A database adapter (Phase 2 dashboards) only needs to implement `save`.
  * `save` must throw unless delivery is confirmed: the form shows success only when it resolves.
  */
@@ -52,14 +53,28 @@ const emailAdapter = (config: MailConfig): LeadAdapter => ({
 const consoleAdapter: LeadAdapter = {
   name: 'console',
   async save(lead) {
-    console.warn('[lead] NO EMAIL WAS SENT: RESEND_API_KEY is not set (development only). Add it to .env.local to send for real.');
+    console.warn('[lead] NOTHING WAS SENT OR SAVED: no email or Google Sheet is configured (development only). See .env.example.');
     console.info(`[lead] ${leadEmail(lead).subject}\n${leadEmail(lead).text}`);
   },
 };
 
+const sheetAdapter = (config: SheetConfig): LeadAdapter => ({ name: 'google-sheet', save: (lead) => appendToSheet(config, lead) });
+
+/** Delivers to every destination. One confirmed copy is enough; the others' failures are logged. */
+const everywhere = (adapters: LeadAdapter[]): LeadAdapter => ({
+  name: adapters.map((a) => a.name).join('+'),
+  async save(lead) {
+    const results = await Promise.allSettled(adapters.map((a) => a.save(lead)));
+    const failures = results.flatMap((r, i) => (r.status === 'rejected' ? [`${adapters[i].name}: ${r.reason}`] : []));
+    if (failures.length === adapters.length) throw new Error(failures.join(' | '));
+    if (failures.length) console.error(`[lead] ${lead.id} was saved, but not everywhere: ${failures.join(' | ')}`);
+  },
+});
+
 export function getLeadAdapter(): LeadAdapter {
-  const config = getMailConfig();
-  return config ? emailAdapter(config) : consoleAdapter;
+  const { mail, sheet } = getLeadConfig();
+  const adapters = [...(mail ? [emailAdapter(mail)] : []), ...(sheet ? [sheetAdapter(sheet)] : [])];
+  return adapters.length ? everywhere(adapters) : consoleAdapter;
 }
 
 export async function saveLead(lead: Lead, context: LeadContext) {

@@ -28,13 +28,13 @@ export const privacy: LegalDoc = {
     {
       heading: 'Why we use it',
       body: [
-        'Each submission is emailed to the CCC team, who use it to respond to you, match brands with influencers and creators, and prepare quotes. We also use it to tell you about early access and to improve the service. We do not sell your personal data.',
+        'Each submission goes to the CCC team by email or into the team’s Google Sheet. They use it to respond to you, match brands with influencers and creators, and prepare quotes. We also use it to tell you about early access and to improve the service. We do not sell your personal data.',
         'Creator rates are used only by CCC, for matching and quoting.',
       ],
     },
     {
       heading: 'Who we share it with',
-      body: ['Service providers that help us run the site and deliver email (including Resend, which sends form submissions to our inbox), under contracts that protect your data. Brands and creators only see each other’s details once both sides agree to work together.'],
+      body: ['Service providers that help us run the site and deliver email (including Resend, which sends form submissions to our inbox, and Google, which stores our spreadsheets), under contracts that protect your data. Brands and creators only see each other’s details once both sides agree to work together.'],
     },
     {
       heading: 'How long we keep it',

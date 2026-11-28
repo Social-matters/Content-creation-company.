@@ -146,6 +146,13 @@ function layout(title: string, preheader: string, body: string) {
 /** Continuation lines are indented so a multi-line value can't pose as another field. */
 const textRows = (rows: Row[]) => rows.map(([label, value]) => `${label}: ${value.replace(/\r\n|\r|\n/g, '\n    ')}`).join('\n');
 
+/** The same fields as the email, as a fixed set of columns (blank where a form doesn't ask). */
+export function leadColumns(lead: StoredLead): Row[] {
+  const values = new Map<string, string>([...metaRows(lead), ...fieldRows(lead)]);
+  const names = ['Submitted', 'Form', ...FIELDS.map(([, label]) => label), 'Page', ...UTM_KEYS, 'Reference'];
+  return names.map((name) => [name, values.get(name) ?? '']);
+}
+
 export function leadEmail(lead: StoredLead): Email {
   const fields = fieldRows(lead);
   const meta = metaRows(lead);

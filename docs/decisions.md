@@ -64,4 +64,7 @@ Decisions made without asking (per "decide, note it, continue"). Newest last.
 | 58 | 2026-11-28 | **Consent link opens in a new tab.** | A same-tab visit would close a modal and lose what was typed. |
 | 59 | 2026-11-28 | **v2 header: "Log in" removed; "Start a campaign" became "Apply", linking to `/v2/contact`** (desktop and mobile menu). Hero and in-page "Start a campaign" buttons still open the campaign form. v1 header unchanged. | Owner's request about the header. |
 | 60 | 2026-11-28 | **`Button` keeps link CTAs as links even with a click handler.** | The mobile menu passes `onClose`, which turned a link CTA into a button that went nowhere. |
+| 61 | 2026-11-28 | **Google Sheet added as a lead destination** (Apps Script web app + shared secret), alongside email; production needs at least one of the two. Supersedes the "all three email variables" rule in #53. | Owner: "or link to the sheet". No Google Cloud project or service-account key needed; the sheet can stay Restricted. |
+| 62 | 2026-11-28 | **Cells that could be formulas are forced to text** (website and script). With two destinations, one confirmed copy is success. | A visitor-typed formula could read other leads. Asking a visitor to retry a saved lead would duplicate it. |
+| 63 | 2026-11-28 | **The sheet's address is not stored in the repository.** | Public repo. |
 

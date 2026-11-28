@@ -122,8 +122,8 @@ Performance and accessibility (non-negotiable):
 - [ ] `README.md` covers setup, scripts, structure, swapping content/assets, and how Phase 2/3 plug in
 - [ ] Clean commits per phase
 
-## Form emails
-- Every lead form is emailed via Resend from the server action only (`lib/leads.ts`, `lib/email/`). The login box is UI only.
+## Form submissions
+- Every lead form goes to email (Resend) and/or the team's Google Sheet, from the server action only (`lib/leads.ts`, `lib/lead-config.ts`, `lib/sheet.ts`, `integrations/google-sheet/`). The login box is UI only.
 - Never hardcode or commit the recipient address or any key: they live in `.env.local` and Vercel. The repo is public.
 - A new form gets its own `kind` in `lib/schemas.ts` (same schema client and server), the consent checkbox, a subject in `lib/email/template.ts` and a case in `scripts/test-forms.mjs`. Run `pnpm test:forms`.
 - Escape all user text in emails; clean it before it goes into a subject.
