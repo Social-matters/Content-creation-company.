@@ -3,18 +3,17 @@
 import { useRef } from 'react';
 import { gsap, ScrollTrigger, useGSAP } from '@/lib/gsap';
 import { mq } from '@/lib/motion';
-import { howItWorks } from '@/content/home';
-import { howV2 } from '@/content/v2/home';
+import { howV2 as howItWorks } from '@/content/v2/home';
 import { PhoneFrame } from '@/components/ui/PhoneFrame';
 import { Icon, type IconName } from '@/components/ui/Icon';
 import { Eyebrow } from '@/components/ui/Badge';
 import { Headline } from '@/components/ui/Headline';
 import { buildTimeline } from '@/components/sections/HowItWorks';
-import { HowItWorksScreens } from '@/components/sections/HowItWorksScreens';
+import { HowItWorksScreensV2 } from './HowItWorksScreensV2';
 import { Sheet } from './flow';
 
 const STEPS = howItWorks.steps.length;
-const CHIP_ICONS: IconName[] = ['doc', 'sparkle', 'check', 'trend'];
+const CHIP_ICONS: IconName[] = ['doc', 'sparkle', 'star', 'trend'];
 const CHIP_POS = ['-left-36 top-[10%]', '-right-32 top-[30%]', '-left-40 top-[58%]', '-right-36 top-[78%]'];
 
 /** One step on stage at a time; the rail fills as the scene scrubs. */
@@ -40,7 +39,7 @@ export function HowItWorksV2() {
       if (!el || !pin.current) return;
       const mm = gsap.matchMedia();
       mm.add(`${mq.motionOK} and ${mq.desktop}`, () => {
-        const tl = buildTimeline(el);
+        const tl = buildTimeline(el, howItWorks.mock.live.total);
         setStep(el, 0);
         const st = ScrollTrigger.create({
           trigger: pin.current,
@@ -55,7 +54,7 @@ export function HowItWorksV2() {
         return () => st.kill();
       });
       mm.add(`${mq.motionOK} and ${mq.mobile}`, () => {
-        const tl = buildTimeline(el);
+        const tl = buildTimeline(el, howItWorks.mock.live.total);
         tl.eventCallback('onUpdate', () => setStep(el, tl.progress()));
         tl.timeScale(0.4).repeat(-1).repeatDelay(1.4);
         setStep(el, 0);
@@ -105,7 +104,7 @@ export function HowItWorksV2() {
                   className="flex max-w-[30rem] flex-col gap-4 transition-[opacity,transform] duration-[450ms] ease-[cubic-bezier(.16,1,.3,1)] [grid-area:1/1] data-[state=active]:translate-y-0 data-[state=active]:opacity-100 data-[state=active]:delay-[280ms] data-[state=active]:duration-[1000ms] data-[state=after]:translate-y-6 data-[state=after]:opacity-0 data-[state=before]:-translate-y-6 data-[state=before]:opacity-0"
                 >
                   <span className="font-mono text-sm text-orange-text">
-                    {s.n} {howV2.stepOf} {String(STEPS).padStart(2, '0')}
+                    {s.n} {howItWorks.stepOf} {String(STEPS).padStart(2, '0')}
                   </span>
                   <h3 className="font-display text-d4">{s.title}</h3>
                   <p className="text-lead text-ink/75">{s.body}</p>
@@ -129,7 +128,7 @@ export function HowItWorksV2() {
 
           <div className="relative mx-auto w-[min(76vw,18.5rem)] lg:w-[clamp(16.5rem,20vw,19.5rem)]">
             <PhoneFrame>
-              <HowItWorksScreens />
+              <HowItWorksScreensV2 />
             </PhoneFrame>
             {howItWorks.chips.map((t, i) => (
               <div

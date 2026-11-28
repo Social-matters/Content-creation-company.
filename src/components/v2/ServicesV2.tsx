@@ -2,34 +2,46 @@
 
 import { useRef, type CSSProperties } from 'react';
 import { gsap } from '@/lib/gsap';
-import { mq } from '@/lib/motion';
+import { flow, mq } from '@/lib/motion';
 import { cn } from '@/lib/cn';
 import { useNearGSAP } from './flow';
-import { services } from '@/content/home';
-import { assets } from '@/content/assets';
-import type { MediaSlot } from '@/content/types';
+import { servicesV2 as services } from '@/content/v2/home';
 import { Video } from '@/components/ui/Video';
 import { Button } from '@/components/ui/Button';
+import { Icon } from '@/components/ui/Icon';
+import { Eyebrow } from '@/components/ui/Badge';
 import { SectionIntro } from '@/components/sections/SectionIntro';
 
-/** Presentation only: which manifest clip illustrates each offer. */
-const MEDIA: Record<(typeof services.items)[number]['key'], MediaSlot> = {
-  exhibition: assets.ctaBrand,
-  visit: assets.categories.lifestyle,
-  performance: assets.categories.food,
-  marketplace: assets.categories.beauty,
-};
 const TONE = ['bg-cream', 'bg-orange', 'bg-white', 'bg-cream-2'];
 
+/** Stand-in panel for celebrity / actor work until licensed imagery is supplied (no real people). */
+export function RosterPanel({ label, className }: { label: string; className?: string }) {
+  return (
+    <div className={cn('absolute inset-0 grid place-items-center overflow-hidden bg-ink-3', className)}>
+      <div aria-hidden className="absolute inset-x-0 top-0 h-3/4 bg-[radial-gradient(55%_75%_at_50%_0%,rgb(255_129_42/0.5),transparent)]" />
+      <div aria-hidden className="absolute inset-x-[12%] bottom-[18%] h-px bg-cream/10" />
+      <div className="relative flex flex-col items-center gap-3 text-center">
+        <span className="grid size-14 place-items-center rounded-full border border-cream/20 text-orange">
+          <Icon name="star" size={22} />
+        </span>
+        <span className="font-mono text-[0.65rem] uppercase tracking-[0.12em] text-cream/70">{label}</span>
+      </div>
+    </div>
+  );
+}
+
 /**
- * Four offers as a stack: each card sticks, and the one underneath eases back (scale + dim)
- * while the next slides over it. Works on phones too; static under reduced motion.
+ * Services, weighted: four influencer offers as a stack of large cards (each sticks and eases
+ * back as the next slides over), then a split bar, then the creator-content offers as a
+ * compact row. Static under reduced motion.
  */
 export function ServicesV2() {
   const root = useRef<HTMLElement>(null);
+  const { influencer, creator, split } = services;
 
   useNearGSAP(root, (el) => {
-    const cards = gsap.utils.toArray<HTMLElement>('[data-card]', el);
+    const q = gsap.utils.selector(el);
+    const cards = q('[data-card]');
     const mm = gsap.matchMedia();
     mm.add(mq.motionOK, () => {
       cards.forEach((card, i) => {
@@ -39,10 +51,12 @@ export function ServicesV2() {
         gsap.to(card.querySelector('[data-card-inner]'), { scale: 0.9, yPercent: -3, ease: 'none', scrollTrigger: st });
         gsap.fromTo(card.querySelector('[data-dim]'), { autoAlpha: 0 }, { autoAlpha: 1, ease: 'none', scrollTrigger: st });
       });
-      // Media inside each card drifts a touch slower than the card itself.
-      cards.forEach((card) => {
-        gsap.fromTo(card.querySelector('[data-card-media]'), { yPercent: -6, scale: 1.12 }, { yPercent: 6, scale: 1.12, ease: 'none', scrollTrigger: { trigger: card, start: 'top bottom', end: 'bottom top', scrub: true } });
+      q('[data-card-media]').forEach((m) => {
+        gsap.fromTo(m, { yPercent: -6, scale: 1.12 }, { yPercent: 6, scale: 1.12, ease: 'none', scrollTrigger: { trigger: m, start: 'top bottom', end: 'bottom top', scrub: true } });
       });
+      // Split bar fills with the scroll; compact cards rise in.
+      gsap.fromTo(q('[data-split]'), { scaleX: 0 }, { scaleX: 1, ease: 'none', stagger: 0.25, scrollTrigger: { trigger: q('[data-split-bar]')[0], start: 'top 90%', end: 'top 55%', scrub: flow.scrub } });
+      gsap.fromTo(q('[data-compact]'), { y: 40, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: flow.dur, stagger: flow.stagger, ease: flow.ease, scrollTrigger: { trigger: q('[data-compact-grid]')[0], start: flow.start, ...flow.toggle } });
     });
     return () => mm.revert();
   });
@@ -51,21 +65,20 @@ export function ServicesV2() {
     <section ref={root} id={services.id} className="relative bg-ink pb-[var(--section-y)] pt-[var(--section-y)] text-cream">
       <div className="container-x">
         <SectionIntro label={services.label} headline={services.headline} body={services.body} tone="dark" layout="split" />
+
+        {/* Influencer marketing: the main story */}
         <ol className="mt-[clamp(4rem,8vw,7rem)] flex flex-col gap-[12vh]">
-          {services.items.map((s, i) => (
-            <li
-              key={s.key}
-              data-card
-              className="sticky top-[calc(var(--nav-h)+1rem+var(--i)*1.1rem)]"
-              style={{ '--i': i } as CSSProperties}
-            >
+          {influencer.map((s, i) => (
+            <li key={s.key} id={s.key === 'celebrity' ? 'celebrities' : undefined} data-card className="sticky top-[calc(var(--nav-h)+1rem+var(--i)*1.1rem)]" style={{ '--i': i } as CSSProperties}>
               <article data-card-inner className={cn('relative grid origin-top overflow-hidden rounded-[2rem] border-2 border-black text-ink will-change-transform md:grid-cols-[1.05fr_1fr] lg:min-h-[min(36rem,68vh)]', TONE[i])}>
                 <div className="flex flex-col gap-6 p-7 sm:p-10 lg:p-14">
                   <div className="flex items-center justify-between gap-4">
-                    <span className="font-mono text-sm">{s.n} / 0{services.items.length}</span>
+                    <span className="font-mono text-sm">
+                      {s.n} / 0{influencer.length}
+                    </span>
                     {s.badge && (
                       <span className="flex items-center gap-2 rounded-full bg-ink px-3 py-1.5 font-mono text-[0.65rem] uppercase tracking-[0.1em] text-cream">
-                        <span className="size-1.5 rounded-full bg-orange" />
+                        <span className="size-1.5 animate-pulse rounded-full bg-orange motion-reduce:animate-none" />
                         {s.badge}
                       </span>
                     )}
@@ -79,23 +92,77 @@ export function ServicesV2() {
                       </li>
                     ))}
                   </ul>
-                  <p className="mt-auto pt-6">
-                    <span className="block font-display text-[clamp(1.6rem,2.6vw,2.4rem)] leading-none">{s.price}</span>
-                    <span className="mt-1.5 block font-mono text-[0.72rem] uppercase tracking-[0.1em] text-ink/80">{s.priceNote}</span>
-                  </p>
+                  <div className="mt-auto flex flex-wrap items-end justify-between gap-4 pt-6">
+                    <p>
+                      <span className="block font-display text-[clamp(1.6rem,2.6vw,2.4rem)] leading-none">{s.price}</span>
+                      <span className="mt-1.5 block font-mono text-[0.72rem] uppercase tracking-[0.1em] text-ink/80">{s.priceNote}</span>
+                    </p>
+                    {s.more && <Button cta={s.more} variant="link-light" />}
+                  </div>
                 </div>
                 <div className="relative m-3 min-h-[16rem] overflow-hidden rounded-[1.5rem] border-2 border-black md:m-4 md:min-h-0">
-                  <div data-card-media className="absolute inset-0">
-                    <Video media={MEDIA[s.key]} sizes="(min-width: 768px) 45vw, 90vw" decorative className="absolute inset-0" />
-                  </div>
+                  {s.media ? (
+                    <div data-card-media className="absolute inset-0">
+                      <Video media={s.media} sizes="(min-width: 768px) 45vw, 90vw" decorative className="absolute inset-0" />
+                    </div>
+                  ) : (
+                    <RosterPanel label={services.rosterPlaceholder} />
+                  )}
                 </div>
                 <div data-dim aria-hidden className="pointer-events-none invisible absolute inset-0 bg-ink/55" />
               </article>
             </li>
           ))}
         </ol>
-        <div className="mt-16 flex justify-center">
-          <Button cta={services.cta} variant="outline-dark" />
+
+        {/* Split bar: the weighting, shown rather than claimed */}
+        <div data-split-bar aria-hidden className="mt-[clamp(5rem,10vw,9rem)] flex gap-1.5">
+          <div className="flex basis-[70%] flex-col gap-3">
+            <span className="h-1.5 overflow-hidden rounded-full bg-cream/10">
+              <span data-split className="block h-full origin-left rounded-full bg-orange" />
+            </span>
+            <span className="font-mono text-[0.68rem] uppercase tracking-[0.12em] text-cream/60">{split.primary}</span>
+          </div>
+          <div className="flex basis-[30%] flex-col gap-3">
+            <span className="h-1.5 overflow-hidden rounded-full bg-cream/10">
+              <span data-split className="block h-full origin-left rounded-full bg-cream" />
+            </span>
+            <span className="font-mono text-[0.68rem] uppercase tracking-[0.12em] text-cream/60">{split.secondary}</span>
+          </div>
+        </div>
+
+        {/* Creator content: the supporting story, compact */}
+        <div id={creator.id} className="mt-14 grid scroll-mt-28 gap-10 lg:grid-cols-[minmax(0,0.7fr)_minmax(0,2fr)] lg:gap-14">
+          <div className="flex flex-col gap-4">
+            <Eyebrow>{creator.label}</Eyebrow>
+            <h3 className="font-display text-d4">{creator.title}</h3>
+            <p className="max-w-xs text-cream/70">{creator.body}</p>
+          </div>
+          <ul data-compact-grid className="grid gap-4 sm:grid-cols-3">
+            {creator.items.map((c) => (
+              <li key={c.key} data-compact className="group flex flex-col overflow-hidden rounded-[1.4rem] border border-cream/12 bg-ink-2 transition-[transform,border-color] duration-500 ease-[cubic-bezier(.16,1,.3,1)] hover:-translate-y-1 hover:border-cream/30">
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <Video media={c.media} sizes="(min-width: 640px) 22vw, 90vw" decorative className="absolute inset-0 transition-transform duration-700 group-hover:scale-[1.04]" />
+                </div>
+                <div className="flex flex-1 flex-col gap-3 p-5">
+                  <h4 className="font-display text-[1.15rem] leading-tight">{c.title}</h4>
+                  <p className="text-[0.92rem] text-cream/70">{c.body}</p>
+                  <div className="mt-auto flex items-end justify-between gap-3 pt-3">
+                    <p>
+                      <span className="block font-display text-[1.05rem] leading-none text-orange">{c.price}</span>
+                      <span className="mt-1 block font-mono text-[0.62rem] uppercase tracking-[0.1em] text-cream/60">{c.priceNote}</span>
+                    </p>
+                    {c.more && <Button cta={c.more} variant="link-dark" className="text-[0.7rem]" />}
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="mt-16 flex flex-wrap justify-center gap-3">
+          <Button cta={services.ctas[0]} />
+          <Button cta={services.ctas[1]} variant="outline-dark" icon="calendar" />
         </div>
       </div>
     </section>

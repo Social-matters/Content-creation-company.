@@ -8,7 +8,7 @@ import { LogoMark } from '@/components/brand/LogoMark';
 const m = howItWorks.mock;
 const THUMBS = [assets.ui.coffee, assets.ui.pizza, assets.ui.toast, assets.ui.wok];
 
-function AppBar({ title, meta, live }: { title: string; meta: string; live?: boolean }) {
+export function AppBar({ title, meta, live }: { title: string; meta: string; live?: boolean }) {
   return (
     <div className="flex items-center justify-between border-b-2 border-black/10 px-4 pb-3">
       <div className="flex items-center gap-2">

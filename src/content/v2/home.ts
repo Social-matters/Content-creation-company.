@@ -4,7 +4,8 @@
  * v1 copy lives in ../home.ts and is untouched. Every invented figure, handle or name is
  * marked PLACEHOLDER and listed in docs/TODO-real-content.md.
  */
-import type { Cta, Headline } from '../types';
+import type { Cta, Headline, MediaSlot } from '../types';
+import { assets } from '../assets';
 import type { NotificationTone } from '@/components/sections/NotificationCard';
 import { joinNetwork } from './site';
 
@@ -65,18 +66,284 @@ export const mosaicV2 = {
   ] as { m?: number; tag?: string; type?: 'Influencer' | 'TV Actor' | 'Model' }[],
 } as const;
 
-export const howV2 = {
-  stepOf: 'of',
-} as const;
-
-export const proofV2 = {
-  hint: 'Swipe',
-} as const;
-
 /** Quiet band near the end of the home page: the influencer / creator / model way in. */
 export const joinBandV2 = {
   label: 'Influencer, creator or model?',
   title: 'Join our influencer network.',
   body: 'Paid briefs from brands that fit your audience. We handle contracts, payments and the follow-ups.',
   cta: joinNetwork,
+} as const;
+
+type ServiceCard = { key: string; n: string; title: string; body: string; price: string; priceNote: string; facts: string[]; badge: string | null; media: MediaSlot | null; more: Cta | null };
+type CompactCard = { key: string; title: string; body: string; price: string; priceNote: string; facts: string[]; media: MediaSlot; more: Cta | null };
+
+/**
+ * Services. Influencer side first and large (stacked cards); creator content second and
+ * compact. `split` labels the divider bar that shows the weighting without printing a ratio.
+ */
+export const servicesV2 = {
+  id: 'services',
+  label: '// What we run',
+  headline: ['Influence,', { accent: 'at any scale.', style: 'orange' }] satisfies Headline,
+  body: 'From a hundred nano-influencers to a TV star. Every option ends the same way: posts live, numbers on the board.',
+  split: { primary: 'Influencer marketing', secondary: 'Creator content' },
+  influencer: [
+    {
+      key: 'campaigns',
+      n: '01',
+      title: 'Influencer Campaigns',
+      body: 'Nano to macro influencers, targeted by niche and city, with fixed deliverables agreed up front.',
+      price: 'Custom quote', // PLACEHOLDER: pricing to confirm
+      priceNote: 'per campaign',
+      facts: ['Nano to macro', 'Niche + city targeting', 'Fixed deliverables'],
+      badge: null,
+      media: assets.mosaic[3],
+      more: null,
+    },
+    {
+      key: 'celebrity',
+      n: '02',
+      title: 'Celebrity & TV Serial Actor Tie-ups',
+      body: 'Endorsements, appearances and branded content with celebrities and television serial actors.',
+      price: 'On request', // PLACEHOLDER: pricing to confirm
+      priceNote: 'per tie-up',
+      facts: ['Endorsements', 'Appearances', 'Branded content'],
+      badge: null,
+      media: null, // roster placeholder panel until licensed imagery arrives
+      more: { label: 'Celebrity tie-ups', href: '/celebrities' },
+    },
+    {
+      key: 'performance',
+      n: '03',
+      title: 'Pay-On-Performance',
+      body: 'Three videos built to perform. A tiered success fee kicks in only when the numbers land.',
+      price: '₹10K',
+      priceNote: 'setup',
+      facts: ['3 videos', 'Tiered success fee'],
+      badge: null,
+      media: assets.categories.food,
+      more: null,
+    },
+    {
+      key: 'matching',
+      n: '04',
+      title: 'AI Influencer Matching',
+      body: 'Enter a goal. AI matches influencers, drafts the brief and predicts performance before you book.',
+      price: 'Self-serve',
+      priceNote: 'pay per influencer',
+      facts: ['AI matching', 'Auto briefs', 'Performance prediction'],
+      badge: 'Live: try it now',
+      media: assets.categories.beauty,
+      more: null,
+    },
+  ] as ServiceCard[],
+  creator: {
+    id: 'model-shoots',
+    label: '// Creator content',
+    title: 'Need the content itself?',
+    body: 'Models, creators and shoot days for the assets behind your campaigns.',
+    items: [
+      {
+        key: 'models',
+        title: 'Model Shoots',
+        body: 'We provide the models and run the shoot: product, lookbook, e-commerce and campaign.',
+        price: 'Custom quote', // PLACEHOLDER: pricing to confirm
+        priceNote: 'per shoot',
+        facts: ['Models provided', 'Studio or location'],
+        media: assets.ctaBrand,
+        more: { label: 'Model shoots', href: '/model-shoots' },
+      },
+      {
+        key: 'visit',
+        title: 'Creator Visit',
+        body: 'A curated squad shoots at your café, salon, gym or showroom. One day on set, weeks of content.',
+        price: '₹25K – ₹1L',
+        priceNote: 'per visit',
+        facts: ['2–10 creators', 'At your location'],
+        media: assets.categories.lifestyle,
+        more: null,
+      },
+      {
+        key: 'exhibition',
+        title: 'Content Exhibition',
+        body: "One venue, a rotating line-up of creators. You walk out with a quarter's worth of content in a single day.",
+        price: 'From ₹75,000',
+        priceNote: 'per brand',
+        facts: ['5–25 reels', 'One venue, one day'],
+        media: assets.ctaCreator,
+        more: null,
+      },
+    ] as CompactCard[],
+  },
+  ctas: [
+    { label: 'Start a campaign', modal: 'campaign' },
+    { label: 'Book a call', href: '/contact', meta: '15 min' },
+  ] satisfies Cta[],
+  rosterPlaceholder: 'Roster placeholder',
+} as const;
+
+/** How it works: Brief → Match → Approve → Live. Mock figures are illustrative. */
+export const howV2 = {
+  id: 'how',
+  label: '// How it works',
+  headline: ['From DM to deliverable', { before: 'in four ', accent: 'moves.', style: 'orange' }] satisfies Headline,
+  stepOf: 'of',
+  steps: [
+    { key: 'brief', n: '01', title: 'Brief', body: 'Tell us the product, the audience and the cities. Two minutes, no deck.' },
+    { key: 'match', n: '02', title: 'Match', body: 'AI shortlists influencers whose audience actually fits. Add a celebrity or a model shoot to the same brief.' },
+    { key: 'approve', n: '03', title: 'Approve', body: 'Drafts, talent confirmations and shoot bookings land in one queue. Approve, or ask for a tweak.' },
+    { key: 'live', n: '04', title: 'Live', body: 'Posts go out from real accounts. Watch the views land.' },
+  ],
+  chips: ['Brief sent', '12 influencers shortlisted', 'Celebrity request approved', '+120K views today'], // PLACEHOLDER figures mirror the mock
+  mock: {
+    brief: {
+      title: 'New brief',
+      status: 'Draft',
+      fields: [
+        { label: 'Product', value: 'Cold brew, 250 ml can' },
+        { label: 'Audience', value: '18–30, metro cities' },
+      ],
+      needsLabel: 'You need',
+      needs: ['Influencers', 'Celebrity', 'Model shoot'],
+      citiesLabel: 'Cities',
+      cities: ['Mumbai', 'Pune', 'Bengaluru'],
+      countLabel: 'Influencers',
+      count: 12,
+      button: 'Send brief',
+    },
+    match: {
+      title: 'Influencer shortlist',
+      meta: '12 of 340 fit',
+      accept: 'Accept',
+      accepted: 'Accepted',
+      engagement: 'ER',
+      // PLACEHOLDER: illustrative profiles (abstract avatars, no real people)
+      items: [
+        { handle: '@ananya.styles', niche: 'Fashion · Mumbai', tier: 'Micro', followers: '48K', er: '5.2%' },
+        { handle: '@rohan.eats', niche: 'Food · Pune', tier: 'Mid', followers: '112K', er: '4.1%' },
+        { handle: '@meera.makes', niche: 'Lifestyle · Bengaluru', tier: 'Micro', followers: '23K', er: '6.8%' },
+      ],
+    },
+    approve: {
+      title: 'Approvals',
+      meta: '3 items',
+      // PLACEHOLDER: illustrative requests; no real celebrity or actor
+      items: [
+        { kind: 'Celebrity request', title: 'TV actor · story + reel', status: 'Confirmed', icon: 'star' },
+        { kind: 'Model booking', title: '2 models · Sat, 10 am', status: 'Booked', icon: 'calendar' },
+        { kind: 'Reel draft', title: '@ananya.styles · 30s', status: 'Approved', icon: 'play' },
+      ],
+    },
+    live: {
+      title: 'Views',
+      live: 'Live',
+      total: 1240000, // PLACEHOLDER: sample campaign
+      today: '+120K today',
+      caption: 'Sample campaign · 12 influencers · day 14',
+      feed: [
+        { handle: '@ananya.styles', text: 'posted a reel', value: '18.2K' },
+        { handle: '@rohan.eats', text: 'story mention', value: '6.4K' },
+        { handle: '@meera.makes', text: 'posted a reel', value: '31K' },
+      ],
+    },
+  },
+} as const;
+
+export const marqueesV2 = {
+  formats: ['Influencer campaigns', 'Celebrity tie-ups', 'Model shoots', 'Reels', 'Stories', 'UGC', 'AI matching', 'Pay on performance'],
+  cities: ['Mumbai', 'Delhi', 'Bengaluru', 'Hyderabad', 'Pune', 'Chennai', 'Kolkata', 'Ahmedabad'], // PLACEHOLDER: confirm launch cities
+} as const;
+
+export const operationsV2 = {
+  label: '// The machine',
+  headline: ['You brief.', { before: 'We run ', accent: 'the rest.', style: 'block' }] satisfies Headline,
+  body: 'Everything between "we should do influencers" and "that reel did numbers" is our job.',
+  items: [
+    { n: '01', title: 'Shortlisting', body: 'Influencers scored for real audience and engagement, not follower count.', tag: 'Vetted' },
+    { n: '02', title: 'Negotiation & contracts', body: 'Rates, usage rights and contracts agreed for you.', tag: 'Handled' },
+    { n: '03', title: 'Briefing', body: 'Your goal turned into a brief influencers can follow.', tag: 'AI-drafted' },
+    { n: '04', title: 'Content approval', body: 'Every draft checked against the brief before you see it.', tag: 'QC' },
+    { n: '05', title: 'Posting schedule', body: 'Posts timed across accounts so the campaign lands together.', tag: 'Planned' },
+    { n: '06', title: 'Tracking', body: 'Views, saves and shares pulled daily from every post.', tag: 'Daily' },
+    { n: '07', title: 'Payments', body: 'Influencer payouts and GST invoices, handled.', tag: 'Paperwork' },
+    { n: '08', title: 'Reporting', body: 'One weekly report with numbers that mean something.', tag: 'Weekly' },
+  ],
+} as const;
+
+type ProofItem = { media: MediaSlot | null; caption: string };
+
+/**
+ * Proof, grouped by talent type. Influencer tiles carry their category; celebrity tiles are
+ * roster placeholders (no real celebrity imagery until licensed images are supplied).
+ */
+export const proofV2 = {
+  id: 'proof',
+  label: '// Proof by type',
+  headline: ['Feeds, faces', { before: 'and ', accent: 'sets.', style: 'orange' }] satisfies Headline,
+  body: 'Influencer reels, celebrity and actor tie-ups, and model shoots. The kind of content each one gets.',
+  hint: 'Swipe',
+  jumpLabel: 'Jump to',
+  rosterPlaceholder: 'Roster placeholder',
+  groups: [
+    {
+      key: 'influencers',
+      title: 'Influencers',
+      line: 'Reels, stories and live drops from accounts people already follow.',
+      categories: ['Food & Beverage', 'Fashion', 'Beauty & Skincare', 'Fitness', 'Lifestyle', 'Travel', 'Tech & Gadgets', 'Home & Decor'],
+      items: [
+        { media: assets.categories.food, caption: 'Food & Beverage' },
+        { media: assets.categories.fashion, caption: 'Fashion' },
+        { media: assets.categories.beauty, caption: 'Beauty & Skincare' },
+        { media: assets.categories.fitness, caption: 'Fitness' },
+        { media: assets.categories.lifestyle, caption: 'Lifestyle' },
+        { media: assets.categories.travel, caption: 'Travel' },
+      ] as ProofItem[],
+    },
+    {
+      key: 'celebrities',
+      title: 'Celebrities & actors',
+      line: 'Endorsements, appearances and branded content. Roster shared on request.',
+      categories: [] as string[],
+      items: [
+        { media: null, caption: 'TV serial actor' },
+        { media: null, caption: 'Celebrity endorsement' },
+      ] as ProofItem[],
+    },
+    {
+      key: 'models',
+      title: 'Model shoots',
+      line: 'Lookbook, e-commerce and campaign shoots, models provided.',
+      categories: [] as string[],
+      items: [
+        { media: assets.ctaBrand, caption: 'Campaign shoot' },
+        { media: assets.mosaic[1], caption: 'Jewellery lookbook' },
+        { media: assets.mosaic[13], caption: 'Ethnic wear' },
+      ] as ProofItem[],
+    },
+  ],
+} as const;
+
+export const statsV2 = {
+  label: '// Early numbers',
+  headline: ['Small start.', { accent: 'Big intent.', style: 'orange' }] satisfies Headline,
+  sampleTag: 'Sample figures · replace before launch',
+  // PLACEHOLDER: every figure below is invented
+  items: [
+    { value: 2400, suffix: '+', label: 'Influencers onboarded' },
+    { value: 25, suffix: '+', label: 'Celebrities & actors on roster' },
+    { value: 40, suffix: '+', label: 'Shoots delivered' },
+    { value: 6, suffix: '', label: 'Cities' },
+  ],
+} as const;
+
+export const testimonialsV2 = {
+  label: '// Word on the street',
+  headline: ['Heard from', { accent: 'early users.', style: 'orange' }] satisfies Headline,
+  sampleTag: 'Sample quote · replace before launch',
+  // PLACEHOLDER: invented sample quotes. Replace with real, attributable testimonials.
+  items: [
+    { quote: 'Our shortlist came back in a day, and every influencer on it actually matched our buyers.', name: 'Founder', role: 'D2C skincare brand, Mumbai', initials: 'SB' },
+    { quote: 'The briefs are clear, payments land on time, and I only get brands that fit my audience.', name: 'Lifestyle influencer', role: '48K followers, Bengaluru', initials: 'LI' },
+    { quote: 'Pay-on-performance made it an easy yes for our CFO. We only paid more when the reels actually worked.', name: 'Marketing lead', role: 'Food brand, Delhi', initials: 'FB' },
+  ],
 } as const;

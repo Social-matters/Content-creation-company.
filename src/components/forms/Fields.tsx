@@ -1,6 +1,7 @@
 'use client';
 
 import { forwardRef, useId, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from 'react';
+import type { UseFormRegisterReturn } from 'react-hook-form';
 import { cn } from '@/lib/cn';
 import { formCopy } from '@/content/forms';
 
@@ -93,3 +94,36 @@ export const Honeypot = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInp
     </div>
   );
 });
+
+/** Pill checkboxes (multi-select) or radios (single) for react-hook-form; pass `register(name)` as `inputProps`. */
+export function ChipGroupField({
+  label,
+  error,
+  className,
+  options,
+  inputProps,
+  type = 'checkbox',
+}: Common & { options: readonly { value: string; label: string }[]; inputProps: UseFormRegisterReturn; type?: 'checkbox' | 'radio' }) {
+  const id = useId();
+  const errId = `${id}-err`;
+  return (
+    <fieldset className={cn('flex flex-col gap-3', className)} aria-describedby={error ? errId : undefined} aria-invalid={!!error}>
+      <legend className="mb-3 font-mono text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-ink">{label}</legend>
+      <div className="flex flex-wrap gap-2">
+        {options.map((o) => (
+          <label key={o.value} className="cursor-pointer">
+            <input type={type} value={o.value} className="peer sr-only" {...inputProps} />
+            <span className="inline-flex items-center rounded-full border-2 border-black bg-white px-4 py-2 text-[0.92rem] font-semibold transition-[background-color,box-shadow,transform] duration-200 hover:bg-cream-2 peer-checked:bg-orange peer-focus-visible:-translate-y-0.5 peer-focus-visible:shadow-[4px_4px_0_0_var(--ccc-orange)]">
+              {o.label}
+            </span>
+          </label>
+        ))}
+      </div>
+      {error && (
+        <p id={errId} role="alert" className="text-[0.85rem] font-medium text-[#c2410c]">
+          {error}
+        </p>
+      )}
+    </fieldset>
+  );
+}

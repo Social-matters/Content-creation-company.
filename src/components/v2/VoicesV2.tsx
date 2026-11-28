@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { testimonials } from '@/content/home';
+import { testimonialsV2 as testimonials } from '@/content/v2/home';
 import { PLACEHOLDER_CONTENT } from '@/content/status';
 import { useRevealChildren } from '@/components/ui/Reveal';
 import { SectionIntro } from '@/components/sections/SectionIntro';

@@ -167,10 +167,11 @@ const errors = [];
     await page.waitForTimeout(60);
   }
   await page.waitForTimeout(1500);
-  await page.getByRole('navigation', { name: 'Primary' }).getByRole('link', { name: 'Pricing' }).click();
-  await page.waitForURL('**/v2/pricing', { timeout: 8000 }).catch(() => {});
+  await page.getByRole('navigation', { name: 'Primary' }).getByRole('link', { name: 'Celebrities' }).click();
+  await page.waitForURL('**/v2/celebrities', { timeout: 8000 }).catch(() => {});
   await page.waitForTimeout(1500);
-  check('v2: route wipe stays in /v2', new URL(page.url()).pathname === '/v2/pricing');
+  check('v2: route wipe stays in /v2', new URL(page.url()).pathname === '/v2/celebrities');
+  check('v2: no audience toggle', (await page.locator('[aria-label="Audience"]').count()) === 0);
   await page.getByRole('navigation', { name: 'Primary' }).getByRole('link', { name: 'How it works' }).click();
   await page.waitForURL(/\/v2(#how)?$/, { timeout: 8000 }).catch(() => {});
   await page.waitForTimeout(1800);

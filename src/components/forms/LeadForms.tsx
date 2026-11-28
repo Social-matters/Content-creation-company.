@@ -5,18 +5,21 @@ import { AnimatePresence, motion } from 'motion/react';
 import { useState, useTransition, type ReactNode } from 'react';
 import { useForm, type FieldValues, type Path, type UseFormSetError } from 'react-hook-form';
 import { submitLead } from '@/app/actions';
-import { brandLeadSchema, creatorLeadSchema, loginSchema, type BrandLeadInput, type CreatorLeadInput, type LoginInput } from '@/lib/schemas';
+import { brandLeadSchema, brandLeadSchemaV2, creatorLeadSchema, creatorLeadSchemaV2, loginSchema, type BrandLeadInput, type CreatorLeadInput, type LoginInput } from '@/lib/schemas';
+import { useSiteVersion } from '@/lib/site-version';
+import { brandNeeds, budgets, formCopyV2, talentTypes, timelines } from '@/content/v2/forms';
 import { categories, followerTiers, formCopy, phonePrefix } from '@/content/forms';
 import { Button } from '@/components/ui/Button';
 import { Eyebrow } from '@/components/ui/Badge';
 import { uiEase } from '@/lib/motion';
-import { Honeypot, SelectField, TextAreaField, TextField } from './Fields';
+import { ChipGroupField, Honeypot, SelectField, TextAreaField, TextField } from './Fields';
 import { Success } from './Success';
 
 const categoryOptions = categories.map((c) => ({ value: c, label: c }));
 const tierOptions = followerTiers.map((t) => ({ value: t.value, label: t.label }));
 
 type FormProps = { titleId: string; onDone?: () => void };
+type Need = (typeof brandNeeds)[number]['value'];
 
 function useSubmit<T extends FieldValues>(setError: UseFormSetError<T>) {
   const [done, setDone] = useState(false);
@@ -69,9 +72,14 @@ function Footer({ pending, failed, label }: { pending: boolean; failed: boolean;
   );
 }
 
-export function BrandForm({ titleId, onDone }: FormProps) {
+/** Brand application. Inside /v2 it also asks what they need (optionally pre-ticked), budget and timeline. */
+export function BrandForm({ titleId, onDone, need }: FormProps & { need?: Need }) {
   const c = formCopy.brand;
-  const { register, handleSubmit, setError, formState } = useForm<BrandLeadInput>({ resolver: zodResolver(brandLeadSchema), defaultValues: { kind: 'brand' } });
+  const v2 = useSiteVersion().version === 'v2';
+  const { register, handleSubmit, setError, formState } = useForm<BrandLeadInput>({
+    resolver: zodResolver(v2 ? (brandLeadSchemaV2 as unknown as typeof brandLeadSchema) : brandLeadSchema),
+    defaultValues: { kind: 'brand', ...(v2 && need ? { needs: [need] } : {}) },
+  });
   const { done, failed, pending, submit } = useSubmit(setError);
   const e = formState.errors;
   return (
@@ -85,6 +93,13 @@ export function BrandForm({ titleId, onDone }: FormProps) {
         <TextField label={c.fields.phone} placeholder={c.placeholders.phone} type="tel" inputMode="tel" autoComplete="tel-national" prefix={phonePrefix} error={e.phone?.message} {...register('phone')} />
         <SelectField label={c.fields.category} options={categoryOptions} error={e.category?.message} {...register('category')} />
         <TextField label={c.fields.city} placeholder={c.placeholders.city} autoComplete="address-level2" error={e.city?.message} {...register('city')} />
+        {v2 && (
+          <>
+            <ChipGroupField className="sm:col-span-2" label={formCopyV2.brand.needs} options={brandNeeds} error={e.needs?.message} inputProps={register('needs')} />
+            <SelectField label={formCopyV2.brand.budget} options={budgets} error={e.budget?.message} {...register('budget')} />
+            <SelectField label={formCopyV2.brand.timeline} options={timelines} error={e.timeline?.message} {...register('timeline')} />
+          </>
+        )}
         <TextAreaField className="sm:col-span-2" label={c.fields.description} placeholder={c.placeholders.description} error={e.description?.message} {...register('description')} />
         <Footer pending={pending} failed={failed} label={c.submit} />
       </form>
@@ -92,16 +107,23 @@ export function BrandForm({ titleId, onDone }: FormProps) {
   );
 }
 
+/** Creator application. Inside /v2 it's the influencer-network application and asks "I am a". */
 export function CreatorForm({ titleId, onDone }: FormProps) {
   const c = formCopy.creator;
-  const { register, handleSubmit, setError, formState } = useForm<CreatorLeadInput>({ resolver: zodResolver(creatorLeadSchema), defaultValues: { kind: 'creator' } });
+  const v2 = useSiteVersion().version === 'v2';
+  const head = v2 ? { eyebrow: formCopyV2.creator.eyebrow, title: formCopyV2.creator.title, intro: formCopyV2.creator.intro } : c;
+  const { register, handleSubmit, setError, formState } = useForm<CreatorLeadInput>({
+    resolver: zodResolver(v2 ? (creatorLeadSchemaV2 as unknown as typeof creatorLeadSchema) : creatorLeadSchema),
+    defaultValues: { kind: 'creator' },
+  });
   const { done, failed, pending, submit } = useSubmit(setError);
   const e = formState.errors;
   return (
-    <Shell titleId={titleId} eyebrow={c.eyebrow} title={c.title} intro={c.intro} done={done} success={<Success {...c.success} onDone={onDone} />}>
+    <Shell titleId={titleId} eyebrow={head.eyebrow} title={head.title} intro={head.intro} done={done} success={<Success {...c.success} onDone={onDone} />}>
       <form onSubmit={handleSubmit(submit)} noValidate className="relative mt-8 grid gap-5 sm:grid-cols-2">
         <input type="hidden" {...register('kind')} />
         <Honeypot {...register('website')} />
+        {v2 && <ChipGroupField type="radio" className="sm:col-span-2" label={formCopyV2.creator.type} options={talentTypes} error={e.type?.message} inputProps={register('type')} />}
         <TextField label={c.fields.name} placeholder={c.placeholders.name} autoComplete="name" error={e.name?.message} {...register('name')} />
         <TextField label={c.fields.instagram} placeholder={c.placeholders.instagram} autoCapitalize="none" spellCheck={false} error={e.instagram?.message} {...register('instagram')} />
         <TextField label={c.fields.email} placeholder={c.placeholders.email} type="email" autoComplete="email" error={e.email?.message} {...register('email')} />
@@ -111,7 +133,7 @@ export function CreatorForm({ titleId, onDone }: FormProps) {
         <TextField label={c.fields.city} placeholder={c.placeholders.city} autoComplete="address-level2" error={e.city?.message} {...register('city')} />
         <TextField label={c.fields.languages} placeholder={c.placeholders.languages} error={e.languages?.message} {...register('languages')} />
         <TextAreaField className="sm:col-span-2" label={c.fields.description} placeholder={c.placeholders.description} error={e.description?.message} {...register('description')} />
-        <Footer pending={pending} failed={failed} label={c.submit} />
+        <Footer pending={pending} failed={failed} label={v2 ? formCopyV2.creator.submit : c.submit} />
       </form>
     </Shell>
   );

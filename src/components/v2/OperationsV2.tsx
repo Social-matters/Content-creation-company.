@@ -3,7 +3,7 @@
 import { Fragment, useRef } from 'react';
 import { gsap } from '@/lib/gsap';
 import { flow, mq } from '@/lib/motion';
-import { operations } from '@/content/home';
+import { operationsV2 as operations } from '@/content/v2/home';
 import { Eyebrow } from '@/components/ui/Badge';
 import { RevealText } from '@/components/ui/Reveal';
 import { TiltedBlock } from '@/components/ui/Headline';
@@ -27,7 +27,7 @@ function statement() {
  * "You brief. We run the rest." builds word by word with the scroll; the eight jobs follow as
  * an editorial list whose hairlines draw in. Rows lift a little on hover.
  */
-export function OperationsV2() {
+export function OperationsV2({ under = 'bg-ink' }: { under?: string }) {
   const root = useRef<HTMLElement>(null);
   const { lines, accent } = statement();
 
@@ -47,7 +47,7 @@ export function OperationsV2() {
   });
 
   return (
-    <section ref={root} className="relative isolate bg-ink py-[var(--section-y)] text-ink">
+    <section ref={root} className={`relative isolate py-[var(--section-y)] text-ink ${under}`}>
       <Sheet tone="cream" />
       <div className="container-x">
         <Eyebrow tone="light">{operations.label}</Eyebrow>

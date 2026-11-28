@@ -3,7 +3,8 @@
 import { useRef } from 'react';
 import { gsap } from '@/lib/gsap';
 import { flow, mq } from '@/lib/motion';
-import { stats } from '@/content/home';
+import { statsV2 as stats } from '@/content/v2/home';
+import { PLACEHOLDER_CONTENT } from '@/content/status';
 import { SectionIntro } from '@/components/sections/SectionIntro';
 import { Counter } from '@/components/ui/Counter';
 import { Sheet, useNearGSAP } from './flow';
@@ -25,6 +26,9 @@ export function StatsV2({ under = 'bg-ink' }: { under?: string }) {
       <Sheet tone="cream" />
       <div className="container-x">
         <SectionIntro label={stats.label} headline={stats.headline} />
+        {PLACEHOLDER_CONTENT && (
+          <span className="mt-6 inline-block rounded-full border border-dashed border-ink/40 px-3 py-1.5 font-mono text-[0.62rem] uppercase tracking-[0.08em] text-ink/75">{stats.sampleTag}</span>
+        )}
         <dl data-stats className="mt-[clamp(4rem,8vw,7rem)] grid grid-cols-2 gap-x-6 gap-y-14 lg:grid-cols-4 lg:gap-x-10">
           {stats.items.map((s) => (
             <div key={s.label} className="relative flex flex-col gap-4 pt-8">

@@ -39,8 +39,8 @@ const resendAdapter = (apiKey: string, to: string): LeadAdapter => ({
   async save(lead) {
     const subject = lead.kind === 'brand' ? `New brand lead: ${lead.brand}` : lead.kind === 'creator' ? `New creator: @${lead.instagram}` : `Login interest: ${lead.email}`;
     const rows = Object.entries(lead)
-      .filter(([k]) => k !== 'website')
-      .map(([k, v]) => `<tr><td style="padding:4px 12px 4px 0;color:#888">${k}</td><td>${escapeHtml(String(v))}</td></tr>`)
+      .filter(([k, v]) => k !== 'website' && v !== undefined)
+      .map(([k, v]) => `<tr><td style="padding:4px 12px 4px 0;color:#888">${k}</td><td>${escapeHtml(Array.isArray(v) ? v.join(', ') : String(v))}</td></tr>`)
       .join('');
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
