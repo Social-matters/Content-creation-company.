@@ -3,7 +3,8 @@
 import { useRef } from 'react';
 import { gsap } from '@/lib/gsap';
 import { flow, mq } from '@/lib/motion';
-import { brandCta, creatorCta } from '@/content/home';
+import { brandCta } from '@/content/home';
+import { joinBandV2 as join } from '@/content/v2/home';
 import { assets } from '@/content/assets';
 import { useNearGSAP } from './flow';
 import { useRevealChildren } from '@/components/ui/Reveal';
@@ -13,9 +14,9 @@ import { Video } from '@/components/ui/Video';
 
 /**
  * Closing call. A circular "portal" opens onto a shoot day as the section arrives, ringed in
- * orange; the creator invitation sits quietly underneath.
+ * orange; the influencer-network invitation sits quietly underneath.
  */
-export function FinaleV2({ withCreator = true }: { withCreator?: boolean }) {
+export function FinaleV2() {
   const root = useRef<HTMLElement>(null);
   useRevealChildren(root);
 
@@ -57,21 +58,14 @@ export function FinaleV2({ withCreator = true }: { withCreator?: boolean }) {
           </div>
         </div>
 
-        {withCreator && (
-          <div data-reveal className="relative mt-[clamp(5rem,12vw,10rem)] flex flex-col gap-8 border-t border-cream/10 pt-10 lg:flex-row lg:items-end lg:justify-between">
-            <div className="flex flex-col gap-3">
-              <p className="font-mono text-[0.75rem] uppercase tracking-[0.12em] text-orange">{creatorCta.label}</p>
-              <p className="font-display text-d4">
-                {creatorCta.headline.map((l) => (typeof l === 'string' ? l : `${l.before ?? ''}${l.accent}`)).join(' ')}
-              </p>
-              <p className="max-w-md text-cream/65">{creatorCta.body}</p>
-            </div>
-            <div className="flex flex-wrap items-center gap-6">
-              <Button cta={creatorCta.ctas[0]} variant="outline-dark" />
-              <Button cta={creatorCta.ctas[1]} variant="link-dark" />
-            </div>
+        <div data-reveal className="relative mt-[clamp(5rem,12vw,10rem)] flex flex-col gap-8 border-t border-cream/10 pt-10 lg:flex-row lg:items-end lg:justify-between">
+          <div className="flex flex-col gap-3">
+            <p className="font-mono text-[0.75rem] uppercase tracking-[0.12em] text-orange">{join.label}</p>
+            <p className="font-display text-d4">{join.title}</p>
+            <p className="max-w-md text-cream/65">{join.body}</p>
           </div>
-        )}
+          <Button cta={join.cta} variant="outline-dark" />
+        </div>
       </div>
     </section>
   );

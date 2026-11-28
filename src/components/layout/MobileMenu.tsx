@@ -11,13 +11,14 @@ import { useUIActions } from '@/components/providers/UIProvider';
 import { TLink } from '@/components/ui/TLink';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
+import { Logo } from '@/components/brand/Logo';
 import { AudienceToggle } from './Nav';
 import { SocialLinks } from './SocialLinks';
 
-type Props = { open: boolean; onClose: () => void; links: readonly LinkItem[]; cta: Cta };
+type Props = { open: boolean; onClose: () => void; links: readonly LinkItem[]; cta: Cta; /** v1 shows the Brands/Creators toggle; v2 shows the logo. */ audience?: boolean };
 
 /** Full-screen menu (below lg) with staggered links. Esc closes; scroll is locked while open. */
-export function MobileMenu({ open, onClose, links, cta }: Props) {
+export function MobileMenu({ open, onClose, links, cta, audience = true }: Props) {
   const { lenis } = useSmoothScroll();
   const { openModal } = useUIActions();
   const closeBtn = useRef<HTMLButtonElement>(null);
@@ -60,7 +61,7 @@ export function MobileMenu({ open, onClose, links, cta }: Props) {
         >
           <div className="grain pointer-events-none absolute inset-0" />
           <div className="container-x relative flex h-[var(--nav-h)] items-center justify-between">
-            <AudienceToggle layoutId="audience-pill-menu" />
+            {audience ? <AudienceToggle layoutId="audience-pill-menu" /> : <Logo className="h-9 w-auto" />}
             <button ref={closeBtn} type="button" onClick={onClose} className="grid size-11 place-items-center rounded-full border border-cream/20 bg-cream/5">
               <Icon name="x" size={20} />
               <span className="sr-only">{nav.close}</span>
@@ -105,7 +106,7 @@ export function MobileMenu({ open, onClose, links, cta }: Props) {
             transition={{ delay: 0.5, duration: 0.7, ease: uiEase }}
           >
             <Button cta={cta} onClick={onClose} magnetic={false} className="self-start" />
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex flex-wrap items-center justify-between gap-4">
               <a href={`mailto:${site.email}`} className="font-mono text-sm text-cream/70 underline-offset-4 hover:underline">
                 {site.email}
               </a>

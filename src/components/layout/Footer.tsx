@@ -4,14 +4,25 @@ import { useRef } from 'react';
 import { gsap, useGSAP } from '@/lib/gsap';
 import { mq } from '@/lib/motion';
 import { footer, site, socials } from '@/content/site';
+import type { Cta, LinkItem } from '@/content/types';
+import { useUIActions } from '@/components/providers/UIProvider';
 import { Logo } from '@/components/brand/Logo';
 import { TLink } from '@/components/ui/TLink';
 import { Icon } from '@/components/ui/Icon';
 import { useRevealChildren } from '@/components/ui/Reveal';
 import { SocialLinks } from './SocialLinks';
 
-export function Footer() {
+export type FooterContent = Omit<typeof footer, 'columns' | 'tagline'> & {
+  tagline: string;
+  columns: readonly { title: string; links: readonly LinkItem[] }[];
+  /** Quiet secondary path (v2: "Join our influencer network"), opens its modal. */
+  join?: Cta;
+};
+
+export function Footer({ content = footer }: { content?: FooterContent }) {
   const root = useRef<HTMLElement>(null);
+  const { openModal } = useUIActions();
+  const join = content.join;
   useRevealChildren(root);
 
   useGSAP(
@@ -45,9 +56,15 @@ export function Footer() {
             <TLink href="/" aria-label="Content Creation Company, home" className="w-fit">
               <Logo className="h-14 w-auto" />
             </TLink>
-            <p className="max-w-sm text-lg text-cream/70">{footer.tagline}</p>
+            <p className="max-w-sm text-lg text-cream/70">{content.tagline}</p>
+            {join?.modal && (
+              <button type="button" onClick={() => join.modal && openModal(join.modal)} className="group inline-flex w-fit items-center gap-2 text-[0.95rem] font-semibold text-cream/80 underline decoration-orange decoration-2 underline-offset-4 transition-colors hover:text-orange">
+                {join.label}
+                <Icon name="arrow" size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+              </button>
+            )}
             <div>
-              <p className="font-mono text-[0.72rem] uppercase tracking-[0.1em] text-cream/50">{footer.contactTitle}</p>
+              <p className="font-mono text-[0.72rem] uppercase tracking-[0.1em] text-cream/50">{content.contactTitle}</p>
               <a href={`mailto:${site.email}`} className="group mt-2 inline-flex items-center gap-2 text-xl font-semibold text-cream transition-colors hover:text-orange sm:text-2xl">
                 {site.email}
                 <Icon name="arrowUpRight" size={22} className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1" />
@@ -56,7 +73,7 @@ export function Footer() {
             </div>
           </div>
           <div className="grid grid-cols-2 gap-10 sm:grid-cols-4">
-            {footer.columns.map((col) => (
+            {content.columns.map((col) => (
               <nav key={col.title} aria-label={col.title} data-reveal>
                 <p className="font-mono text-[0.72rem] uppercase tracking-[0.1em] text-orange">{col.title}</p>
                 <ul className="mt-5 flex flex-col gap-3">
@@ -71,7 +88,7 @@ export function Footer() {
               </nav>
             ))}
             <div data-reveal>
-              <p className="font-mono text-[0.72rem] uppercase tracking-[0.1em] text-orange">{footer.socialTitle}</p>
+              <p className="font-mono text-[0.72rem] uppercase tracking-[0.1em] text-orange">{content.socialTitle}</p>
               <ul className="mt-5 flex flex-col gap-3">
                 {socials.map((s) => (
                   <li key={s.label}>
@@ -87,10 +104,10 @@ export function Footer() {
 
         <div className="mt-16 flex flex-col-reverse gap-6 border-t border-cream/10 pt-6 font-mono text-[0.72rem] uppercase tracking-[0.08em] text-cream/50 sm:flex-row sm:items-center sm:justify-between">
           <p>
-            {footer.copyright} <span className="text-orange">{site.credit}</span>
+            {content.copyright} <span className="text-orange">{site.credit}</span>
           </p>
           <div className="flex items-center gap-6">
-            {footer.legal.map((l) => (
+            {content.legal.map((l) => (
               <TLink key={l.href} href={l.href} className="hover:text-cream">
                 {l.label}
               </TLink>
@@ -102,7 +119,7 @@ export function Footer() {
 
       <div data-wordmark aria-hidden className="relative z-[1] mt-6 select-none overflow-hidden px-[var(--gutter)] leading-[0.78]">
         <p className="flex justify-between font-display text-[clamp(7rem,33vw,34rem)] text-orange">
-          {[...footer.wordmark].map((c, i) => (
+          {[...content.wordmark].map((c, i) => (
             <span key={i} data-wordmark-char className="inline-block will-change-transform">
               {c}
             </span>

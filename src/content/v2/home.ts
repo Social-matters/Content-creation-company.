@@ -6,6 +6,7 @@
  */
 import type { Cta, Headline } from '../types';
 import type { NotificationTone } from '@/components/sections/NotificationCard';
+import { joinNetwork } from './site';
 
 export const heroV2 = {
   badge: 'Now onboarding founding brands',
@@ -70,4 +71,12 @@ export const howV2 = {
 
 export const proofV2 = {
   hint: 'Swipe',
+} as const;
+
+/** Quiet band near the end of the home page: the influencer / creator / model way in. */
+export const joinBandV2 = {
+  label: 'Influencer, creator or model?',
+  title: 'Join our influencer network.',
+  body: 'Paid briefs from brands that fit your audience. We handle contracts, payments and the follow-ups.',
+  cta: joinNetwork,
 } as const;

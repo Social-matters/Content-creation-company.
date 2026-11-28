@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { marquees } from '@/content/home';
 import { Marquee } from '@/components/ui/Marquee';
-import { Plans } from '@/components/sections/Plans';
 import { HeroV2 } from '@/components/v2/HeroV2';
 import { MosaicV2 } from '@/components/v2/MosaicV2';
 import { HowItWorksV2 } from '@/components/v2/HowItWorksV2';
@@ -26,7 +25,6 @@ export default function HomeV2() {
       <Marquee items={marquees.formats} speed={45} className="border-y-2 border-black bg-orange py-5 text-black" itemClassName="font-display text-[clamp(1.4rem,2.6vw,2.4rem)]" />
       <StatsV2 under="bg-orange" />
       <VoicesV2 />
-      <Plans />
       <FinaleV2 />
     </>
   );

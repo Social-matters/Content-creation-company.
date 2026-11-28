@@ -7,6 +7,7 @@ import { Nav } from '@/components/layout/Nav';
 import { Footer } from '@/components/layout/Footer';
 import { LazyChrome } from '@/components/layout/LazyChrome';
 import { nav } from '@/content/site';
+import { footerV2, navV2 } from '@/content/v2/site';
 import { SiteVersionProvider, type SiteVersion } from '@/lib/site-version';
 
 const BASE: Record<SiteVersion, string> = { v1: '', v2: '/v2' };
@@ -29,11 +30,11 @@ export function MarketingShell({ children, version = 'v1' }: { children: ReactNo
                 {nav.skip}
               </a>
               <Preloader />
-              <Nav />
+              {version === 'v2' ? <Nav fixed={navV2} /> : <Nav />}
               <main id="main" tabIndex={-1} className="outline-none">
                 {children}
               </main>
-              <Footer />
+              {version === 'v2' ? <Footer content={footerV2} /> : <Footer />}
               <LazyChrome />
             </PageTransitionProvider>
           </SmoothScrollProvider>

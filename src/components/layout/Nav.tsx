@@ -7,6 +7,7 @@ import { uiSpring } from '@/lib/motion';
 import { cn } from '@/lib/cn';
 import { useLocalPath } from '@/lib/site-version';
 import { nav } from '@/content/site';
+import type { Cta, LinkItem } from '@/content/types';
 import { useUI } from '@/components/providers/UIProvider';
 import { Logo } from '@/components/brand/Logo';
 import { TLink } from '@/components/ui/TLink';
@@ -37,11 +38,15 @@ export function AudienceToggle({ className, layoutId = 'audience-pill' }: { clas
   );
 }
 
-export function Nav() {
+/**
+ * Pill nav. v1: Brands/Creators audience toggle that swaps links and CTA by route.
+ * `fixed` (v2): one brand-facing set of links and CTA, no audience toggle.
+ */
+export function Nav({ fixed }: { fixed?: { links: readonly LinkItem[]; cta: Cta } }) {
   const pathname = useLocalPath();
-  const creators = pathname.startsWith('/creators');
-  const links = creators ? nav.creatorLinks : nav.links;
-  const cta = creators ? nav.creatorCta : nav.cta;
+  const creators = !fixed && pathname.startsWith('/creators');
+  const links = fixed?.links ?? (creators ? nav.creatorLinks : nav.links);
+  const cta = fixed?.cta ?? (creators ? nav.creatorCta : nav.cta);
   const { openModal, entranceDone } = useUI();
   const [menuOpen, setMenuOpen] = useState(false);
   const [solid, setSolid] = useState(false);
@@ -92,9 +97,11 @@ export function Nav() {
             <TLink href="/" aria-label="Content Creation Company, home" data-nav-item className="shrink-0">
               <Logo className="h-9 w-auto sm:h-10" priority />
             </TLink>
-            <div data-nav-item className="hidden sm:block">
-              <AudienceToggle />
-            </div>
+            {!fixed && (
+              <div data-nav-item className="hidden sm:block">
+                <AudienceToggle />
+              </div>
+            )}
           </div>
 
           <nav aria-label="Primary" data-nav-item className="hidden items-center rounded-full border border-cream/15 bg-ink/45 p-1 lg:flex">
@@ -126,7 +133,7 @@ export function Nav() {
           </div>
         </div>
       </header>
-      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} links={links} cta={cta} />
+      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} links={links} cta={cta} audience={!fixed} />
     </>
   );
 }

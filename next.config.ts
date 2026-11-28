@@ -17,6 +17,13 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  /** v2 is a single brand-facing site: no creators page, no pricing page. Old links land on the v2 home. */
+  async redirects() {
+    return [
+      { source: '/v2/creators', destination: '/v2', permanent: true },
+      { source: '/v2/pricing', destination: '/v2', permanent: true },
+    ];
+  },
   async headers() {
     return [
       {
