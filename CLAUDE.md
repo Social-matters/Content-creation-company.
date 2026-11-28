@@ -27,7 +27,6 @@ There is one site. The earlier original design (v1) was removed on 2026-11-28 an
 - Never imply a real celebrity endorses CCC. No identifiable celebrity or actor imagery: use set atmosphere (hands, gear, lights) or the "Roster placeholder" card until licensed images arrive.
 - No compliance claims (e.g. "ASCI-compliant disclosures") until CCC confirms them.
 - Client logos come only from files the owner supplies, via `pnpm logos` (never scraped or substituted). Raw files stay in the git-ignored `.incoming/`.
-- The comparison is CCC vs DIY influencer outreach only, and its last row stays honest about where DIY is the better choice.
 
 ---
 
@@ -35,7 +34,7 @@ There is one site. The earlier original design (v1) was removed on 2026-11-28 an
 
 - **Next.js (App Router) + TypeScript (strict)**
 - **Tailwind CSS v4**, design tokens as CSS variables in `src/styles/tokens.css`, mirrored in `src/lib/tokens.ts` (the future React Native app reuses the TS tokens). Keep both in sync.
-- **GSAP** (core, ScrollTrigger, SplitText, Flip) with `@gsap/react` (`useGSAP`) for all scroll and timeline animation. Plugins are registered once in `src/lib/gsap.ts`; import gsap from there.
+- **GSAP** (core, ScrollTrigger, SplitText) with `@gsap/react` (`useGSAP`) for all scroll and timeline animation. Plugins are registered once in `src/lib/gsap.ts`; import gsap from there.
 - **Lenis** smooth scroll, synced with GSAP's ticker (`lenis.on('scroll', ScrollTrigger.update)`, `gsap.ticker.add`, `gsap.ticker.lagSmoothing(0)`).
 - **motion** (Framer Motion) only for small UI state transitions (modals, toggles, tabs). Never mix it with GSAP on the same element.
 - **next/font** for fonts, **next/image** for images, **Zod** + React Hook Form for forms.

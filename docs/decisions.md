@@ -84,4 +84,5 @@ Decisions made without asking (per "decide, note it, continue"). Newest last.
 | 78 | 2026-11-28 | **`/pricing` redirects to `/contact#join-the-network`** (the request said `/#join-the-network`; the section is on the contact page, #69). | |
 | 79 | 2026-11-28 | **Kept:** the budget-range and base-rate inputs and their ₹ labels, the rate in team emails, process wording ("availability and fees", "with rates"), "Roster shared on request" and the sample testimonial that mentions paying more for performance. | None of these is a published price. |
 | 80 | 2026-11-28 | **"Quoting" became "proposals"** in the rate note, team email and privacy policy; the terms no longer say pricing is "shown". Both legal pages still need counsel review. | The site shows no pricing. |
+| 81 | 2026-11-28 | **v5 §5: the "How we compare" section is removed**, with its content, component and animations. The unused GSAP Flip plugin (left over from v1's plan toggle) is dropped too. | Nothing linked to it. Proof now flows straight into the cream stats panel, which already rises over ink. |
 

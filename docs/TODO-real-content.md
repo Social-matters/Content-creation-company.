@@ -27,7 +27,6 @@ Files are under `src/content/`.
 - **Celebrities and TV actors**: no names or images anywhere. Supply licensed images and any names you want shown; until then the site uses "Roster placeholder" cards and set footage.
 
 ## Claims to confirm
-- [ ] **Comparison, CCC column**: AI-scored audience-quality vetting, celebrity/TV actor access arranged, models and crew provided, AI brief + matching built in, pay-on-performance available, contracts/payments/reporting handled: `v2/home.ts` → `comparisonV2`.
 - [ ] **AI Influencer Matching "Live: try it now"** badge: `v2/home.ts` → `servicesV2.influencer[3].badge`.
 - [ ] **"No minimum follower count"** (creator card on About): `v2/home.ts` → `creatorCtaV2.note`.
 - [ ] **Celebrity page copy** (endorsements, appearances, serial actor tie-ups; "Roster shared on request"): `v2/pages.ts` → `celebritiesPage`.

@@ -1,6 +1,6 @@
 # Content Creation Company — marketing site (Phase 1)
 
-The public site for **Content Creation Company (CCC)**, an influencer-marketing company with creator content to match. Next.js 16 · TypeScript · Tailwind v4 · GSAP (ScrollTrigger, SplitText, Flip) · Lenis · motion.
+The public site for **Content Creation Company (CCC)**, an influencer-marketing company with creator content to match. Next.js 16 · TypeScript · Tailwind v4 · GSAP (ScrollTrigger, SplitText) · Lenis · motion.
 
 Phase 1 of 3: marketing site (this repo) → Phase 2 brand/creator dashboards → Phase 3 mobile app.
 
@@ -51,7 +51,7 @@ src/
   components/
     providers/               SmoothScroll (Lenis⇄GSAP), UIProvider (modals, entrance), PageTransition (orange wipe)
     layout/                  MarketingShell, Nav, MobileMenu, Footer, Preloader, LazyChrome
-    sections/                sections shared by inner pages (grids, apply form, legal, comparison)
+    sections/                sections shared by inner pages (grids, enquiry form, contact tabs, legal)
     v2/                      home sections, inner-page hero, motion helpers (flow.tsx)
     forms/                   LeadForms (brand, network, contact, early access), fields, success state, ModalHost
     ui/                      Button, Badge, Headline (SplitText + tilted block), Counter, Marquee,
