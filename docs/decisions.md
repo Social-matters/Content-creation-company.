@@ -77,4 +77,6 @@ Decisions made without asking (per "decide, note it, continue"). Newest last.
 | 71 | 2026-11-28 | **The form tabs open on "Join the network"** unless the link asks for another (`?apply=message|brand|creator`, or `?service=…`, which also pre-ticks the need). Change `TAB.creator` in `ContactTabs.tsx` to alter the default. | It matches the new heading and the header button. |
 | 72 | 2026-11-28 | **The tilted block wraps to two lines on phones** for this heading only. | "JOIN THE NETWORK." doesn't fit 390px at a readable size on one line. |
 | 73 | 2026-11-28 | **Kept:** the two enquiry forms on Celebrities and Model Shoots, and the "Start a campaign" / "Join our influencer network" pop-ups. | They aren't pages and weren't named in the request. Flagged for the owner. |
+| 74 | 2026-11-28 | **v5 §3: the header and mobile-menu button reads "Join the network"** and goes to `/contact#join-the-network`, then focuses the heading. The "smooth-scroll on the home page" case applies on the contact page, where the section lives. | Follows the owner's placement choice (#69). Supersedes the "Apply" label. |
+| 75 | 2026-11-28 | **"Book a call" and the footer "Contact" link open the message tab** of the same section. | With "Join the network" open by default, a brand asking to talk would otherwise land on the influencer form. |
 

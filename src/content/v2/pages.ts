@@ -4,9 +4,10 @@
  * those come from CCC (see docs/TODO-real-content.md).
  */
 import type { Cta, Headline } from '../types';
+import { messageHref } from '../site';
 
 const enquire = { label: 'Enquire now', href: '#enquire' } satisfies Cta;
-const call = { label: 'Book a call', href: '/contact', meta: '15 min' } satisfies Cta;
+const call = { label: 'Book a call', href: messageHref, meta: '15 min' } satisfies Cta;
 
 // CONFIRM: service description needs CCC sign-off (no names, roster or results until supplied)
 export const celebritiesPage = {

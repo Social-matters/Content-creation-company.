@@ -18,7 +18,7 @@ There is one site. The earlier original design (v1) was removed on 2026-11-28 an
 - Hero: "Influence. Content. Results." with the tilted block on "Results.".
 
 ### Nav rules
-- One brand-facing site: **no Brands/Creators toggle** and no audience-dependent copy. Nav = Influencers · Celebrities · Model Shoots · How it works, then **Apply** (links to `/contact`). No login anywhere (owner's decision).
+- One brand-facing site: **no Brands/Creators toggle** and no audience-dependent copy. Nav = Influencers · Celebrities · Model Shoots · How it works, then **Join the network** (links to `/contact#join-the-network`). No login anywhere (owner's decision).
 - No pricing page and no plans section (owner's decision). Service cards may show a short price line.
 - Influencers, creators and models join through a quiet footer link and the band at the end of the home page ("Join our influencer network"), never the header.
 

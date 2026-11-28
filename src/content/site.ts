@@ -12,6 +12,11 @@ export const site = {
   locale: 'en_IN',
 } as const;
 
+/** The one place people apply: the top of the contact page. Every apply link points here. */
+export const joinSection = { id: 'join-the-network', href: '/contact#join-the-network' } as const;
+/** Same place with the message form open, for people who want to talk rather than apply. */
+export const messageHref = '/contact?apply=message#join-the-network';
+
 /** One brand-facing nav. Influencers join through the footer and the band on the home page. */
 export const nav = {
   links: [
@@ -20,14 +25,11 @@ export const nav = {
     { label: 'Model Shoots', href: '/model-shoots' },
     { label: 'How it works', href: '/#how' },
   ] satisfies LinkItem[],
-  cta: { label: 'Apply', href: '/contact' } satisfies Cta,
+  cta: { label: 'Join the network', href: joinSection.href } satisfies Cta,
   menu: 'Menu',
   close: 'Close',
   skip: 'Skip to content',
 } as const;
-
-/** The one place people apply: the top of the contact page. Every apply link points here. */
-export const joinSection = { id: 'join-the-network', href: '/contact#join-the-network' } as const;
 
 export const joinNetwork = { label: 'Join our influencer network', modal: 'creator' } satisfies Cta;
 
@@ -57,7 +59,7 @@ export const footer = {
       title: 'Company',
       links: [
         { label: 'About', href: '/about' },
-        { label: 'Contact', href: '/contact' },
+        { label: 'Contact', href: messageHref },
         { label: 'Start a campaign', href: '/contact?apply=brand#join-the-network' },
       ],
     },

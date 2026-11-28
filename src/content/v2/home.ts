@@ -7,7 +7,7 @@
 import type { Cta, Headline, MediaSlot } from '../types';
 import { assets } from '../assets';
 import type { NotificationTone } from '@/components/sections/NotificationCard';
-import { joinNetwork } from '../site';
+import { joinNetwork, messageHref } from '../site';
 
 export const heroV2 = {
   badge: 'Now onboarding founding brands',
@@ -15,7 +15,7 @@ export const heroV2 = {
   sub: 'From micro-influencers to TV stars, with models and shoots on tap. One platform, one outcome.',
   ctas: [
     { label: 'Start a campaign', modal: 'campaign' },
-    { label: 'Book a call', href: '/contact', meta: '15 min' },
+    { label: 'Book a call', href: messageHref, meta: '15 min' },
   ] satisfies Cta[],
   stat: { value: 2400, suffix: '+', label: 'influencers onboarding' }, // PLACEHOLDER: invented figure
   // PLACEHOLDER: illustrative activity; handles are invented
@@ -176,7 +176,7 @@ export const servicesV2 = {
   },
   ctas: [
     { label: 'Start a campaign', modal: 'campaign' },
-    { label: 'Book a call', href: '/contact', meta: '15 min' },
+    { label: 'Book a call', href: messageHref, meta: '15 min' },
   ] satisfies Cta[],
   rosterPlaceholder: 'Roster placeholder',
 } as const;
@@ -384,7 +384,7 @@ export const finaleV2 = {
   body: 'Founding-brand slots are open. Lock your pricing before launch.',
   ctas: [
     { label: 'Start a campaign', modal: 'campaign' },
-    { label: 'Book a call', href: '/contact', meta: '15 min' },
+    { label: 'Book a call', href: messageHref, meta: '15 min' },
   ] satisfies Cta[],
 } as const;
 
