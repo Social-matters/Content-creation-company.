@@ -72,6 +72,17 @@ export const assets = {
   creatorsHero: video('creators-hero', 1920, 1080, 'A creator recording at a desk with a camera rig'),
   creatorsHeroMobile: video('creators-hero-mobile', 720, 1280, 'A creator recording at a desk with a camera rig'),
 
+  /** v2: set atmosphere for celebrity / TV work (hands and gear only, no identifiable talent). */
+  sets: [
+    video('set-1', 540, 960, 'Camera monitor framing a product shot on a studio set'),
+    video('set-2', 540, 960, 'Operator adjusting a camera rig on a studio set'),
+  ],
+  /** v2: model shoots. */
+  models: [
+    video('model-1', 720, 1280, 'Fashion shoot in a creative studio with a photographer and a model'),
+    video('model-2', 540, 960, 'Model in a white dress posing against a white backdrop'),
+  ],
+
   /** Product stills for mock UI panels (no faces). */
   ui: {
     pizza: still('ui-pizza', 360, 640, 'Pepperoni pizza close-up'),

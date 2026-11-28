@@ -109,7 +109,7 @@ export const servicesV2 = {
       priceNote: 'per tie-up',
       facts: ['Endorsements', 'Appearances', 'Branded content'],
       badge: null,
-      media: null, // roster placeholder panel until licensed imagery arrives
+      media: assets.sets[1], // set atmosphere only; licensed talent imagery to come
       more: { label: 'Celebrity tie-ups', href: '/celebrities' },
     },
     {
@@ -270,7 +270,8 @@ export const operationsV2 = {
   ],
 } as const;
 
-type ProofItem = { media: MediaSlot | null; caption: string };
+/** `roster`: set footage standing in for talent we can't show yet; tagged as a placeholder. */
+type ProofItem = { media: MediaSlot | null; caption: string; roster?: boolean };
 
 /**
  * Proof, grouped by talent type. Influencer tiles carry their category; celebrity tiles are
@@ -305,8 +306,8 @@ export const proofV2 = {
       line: 'Endorsements, appearances and branded content. Roster shared on request.',
       categories: [] as string[],
       items: [
-        { media: null, caption: 'TV serial actor' },
-        { media: null, caption: 'Celebrity endorsement' },
+        { media: assets.sets[0], caption: 'Celebrity endorsement', roster: true },
+        { media: assets.sets[1], caption: 'TV serial actor', roster: true },
       ] as ProofItem[],
     },
     {
@@ -315,9 +316,9 @@ export const proofV2 = {
       line: 'Lookbook, e-commerce and campaign shoots, models provided.',
       categories: [] as string[],
       items: [
-        { media: assets.ctaBrand, caption: 'Campaign shoot' },
-        { media: assets.mosaic[1], caption: 'Jewellery lookbook' },
-        { media: assets.mosaic[13], caption: 'Ethnic wear' },
+        { media: assets.models[0], caption: 'Studio campaign shoot' },
+        { media: assets.models[1], caption: 'Lookbook' },
+        { media: assets.mosaic[1], caption: 'Jewellery shoot' },
       ] as ProofItem[],
     },
   ],

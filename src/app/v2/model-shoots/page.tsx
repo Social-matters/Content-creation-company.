@@ -10,7 +10,7 @@ export const metadata: Metadata = { title: p.meta.title, description: p.meta.des
 export default function ModelShootsPageV2() {
   return (
     <>
-      <PageHeroV2 {...p.hero} media={assets.ctaBrand} />
+      <PageHeroV2 {...p.hero} media={assets.ctaBrand} mobileMedia={assets.models[1]} />
       <NumberedGrid {...p.included} />
       <NumberedGrid {...p.how} tone="dark" />
       <ApplySection kind="brand" id="enquire" need="models" {...p.enquiry} />

@@ -142,6 +142,9 @@ export function ProofV2() {
                           ) : (
                             <RosterPanel label={proof.rosterPlaceholder} />
                           )}
+                          {item.roster && item.media && (
+                            <span className="absolute left-3 top-3 rounded-full border border-dashed border-cream/50 bg-ink/80 px-2.5 py-1 font-mono text-[0.6rem] uppercase tracking-[0.08em] text-cream">{proof.rosterPlaceholder}</span>
+                          )}
                         </div>
                         <figcaption className="mt-4 font-display text-[clamp(1rem,1.3vw,1.2rem)] leading-tight">{item.caption}</figcaption>
                       </figure>

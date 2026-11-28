@@ -538,5 +538,53 @@
       "video": 0,
       "poster": 2
     }
+  },
+  "set-1": {
+    "kind": "video",
+    "width": 540,
+    "height": 960,
+    "alt": "Camera crew setting up a shot on a commercial set",
+    "source": "https://mixkit.co/free-stock-video/44066/",
+    "license": "Mixkit Stock Video Free License",
+    "kb": {
+      "video": 308,
+      "poster": 16
+    }
+  },
+  "set-2": {
+    "kind": "video",
+    "width": 540,
+    "height": 960,
+    "alt": "Behind the scenes of a studio video shoot",
+    "source": "https://mixkit.co/free-stock-video/44079/",
+    "license": "Mixkit Stock Video Free License",
+    "kb": {
+      "video": 234,
+      "poster": 18
+    }
+  },
+  "model-1": {
+    "kind": "video",
+    "width": 720,
+    "height": 1280,
+    "alt": "Fashion shoot in a creative studio with a photographer and a model",
+    "source": "https://mixkit.co/free-stock-video/50639/",
+    "license": "Mixkit Stock Video Free License",
+    "kb": {
+      "video": 722,
+      "poster": 18
+    }
+  },
+  "model-2": {
+    "kind": "video",
+    "width": 540,
+    "height": 960,
+    "alt": "Model in a white dress posing against a white backdrop",
+    "source": "https://mixkit.co/free-stock-video/52279/",
+    "license": "Mixkit Stock Video Free License",
+    "kb": {
+      "video": 455,
+      "poster": 17
+    }
   }
 }

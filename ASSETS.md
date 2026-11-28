@@ -54,6 +54,10 @@ Regenerate after changing `scripts/asset-sources.mjs`: `pnpm assets && pnpm asse
 | `cta-creator` | media/cta-creator.mp4 (1211 KB), .webp (52 KB) | https://mixkit.co/free-stock-video/42315/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
 | `creators-hero` | media/creators-hero.mp4 (2292 KB), .webp (105 KB) | https://mixkit.co/free-stock-video/34485/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
 | `creators-hero-mobile` | media/creators-hero-mobile.mp4 (857 KB), .webp (37 KB) | https://mixkit.co/free-stock-video/34485/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
+| `set-1` | media/set-1.mp4 (308 KB), .webp (16 KB) | https://mixkit.co/free-stock-video/44066/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
+| `set-2` | media/set-2.mp4 (234 KB), .webp (18 KB) | https://mixkit.co/free-stock-video/44079/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
+| `model-1` | media/model-1.mp4 (722 KB), .webp (18 KB) | https://mixkit.co/free-stock-video/50639/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
+| `model-2` | media/model-2.mp4 (455 KB), .webp (17 KB) | https://mixkit.co/free-stock-video/52279/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
 | `ui-pizza` | media/ui-pizza.webp (17 KB) | https://mixkit.co/free-stock-video/44001/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
 | `ui-coffee` | media/ui-coffee.webp (6 KB) | https://mixkit.co/free-stock-video/43941/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
 | `ui-toast` | media/ui-toast.webp (17 KB) | https://mixkit.co/free-stock-video/43922/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |

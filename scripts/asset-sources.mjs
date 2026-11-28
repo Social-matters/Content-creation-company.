@@ -62,6 +62,12 @@ export const sources = [
   { slot: 'creators-hero', provider: 'mixkit', id: 34485, kind: 'video', w: 1920, h: 1080, t: 10, crf: 27, res: 1080, alt: 'A creator recording at her desk with a camera rig' },
   { slot: 'creators-hero-mobile', provider: 'mixkit', id: 34485, kind: 'video', w: 720, h: 1280, t: 10, crf: 27, fx: 0.55, alt: 'A creator recording at her desk with a camera rig' },
 
+  // ---- v2: set atmosphere (celebrity / TV work, no identifiable talent) and model shoots ----
+  { slot: 'set-1', provider: 'mixkit', id: 44066, ...cat, alt: 'Camera monitor framing a product shot on a studio set' },
+  { slot: 'set-2', provider: 'mixkit', id: 44079, ...cat, alt: 'Operator adjusting a camera rig on a studio set' },
+  { slot: 'model-1', provider: 'mixkit', id: 50639, kind: 'video', w: 720, h: 1280, t: 8, crf: 27, res: 1080, alt: 'Fashion shoot in a creative studio with a photographer and a model' },
+  { slot: 'model-2', provider: 'mixkit', id: 52279, ...cat, alt: 'Model in a white dress posing against a white backdrop' },
+
   // ---- Product stills for mock UI (no faces) ----
   { slot: 'ui-pizza', provider: 'mixkit', id: 44001, ...still, alt: 'Pepperoni pizza close-up' },
   { slot: 'ui-coffee', provider: 'mixkit', id: 43941, ...still, alt: 'Coffee being poured' },
