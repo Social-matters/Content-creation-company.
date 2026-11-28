@@ -5,6 +5,7 @@ import { gsap, useGSAP } from '@/lib/gsap';
 import { mq, playOnce } from '@/lib/motion';
 import { cn } from '@/lib/cn';
 import { comparison } from '@/content/home';
+import type { Headline } from '@/content/types';
 import { Icon } from '@/components/ui/Icon';
 import { SectionIntro } from './SectionIntro';
 
@@ -35,8 +36,23 @@ function Value({ raw, highlight }: { raw: string; highlight?: boolean }) {
   );
 }
 
-export function Comparison() {
+export type ComparisonContent = {
+  label: string;
+  headline: Headline;
+  body: string;
+  /** First column is CCC (highlighted). v1 has three columns, v2 two. */
+  columns: readonly string[];
+  rows: readonly { label: string; values: readonly string[] }[];
+};
+
+/** CCC vs the alternatives. Highlighted CCC column; on phones each row is a card. */
+export function Comparison({ content = comparison }: { content?: ComparisonContent }) {
   const root = useRef<HTMLElement>(null);
+  const n = content.columns.length;
+  const pair = n === 2;
+  /** Column widths (%): label column, then equal value columns. */
+  const labelW = pair ? 28 : 25;
+  const colW = (100 - labelW) / n;
 
   useGSAP(
     () => {
@@ -59,26 +75,26 @@ export function Comparison() {
     <section ref={root} className="relative overflow-hidden bg-ink py-[var(--section-y)] text-cream">
       <div className="grain pointer-events-none absolute inset-0" />
       <div className="container-x relative">
-        <SectionIntro label={comparison.label} headline={comparison.headline} body={comparison.body} tone="dark" layout="split" />
+        <SectionIntro label={content.label} headline={content.headline} body={content.body} tone="dark" layout="split" />
 
         {/* Desktop / tablet table */}
         <div data-table className="relative mt-16 hidden md:block">
-          <div data-col-hl aria-hidden className="absolute inset-y-0 left-[25%] w-[25%] rounded-[1.6rem] border-2 border-black bg-orange shadow-[8px_8px_0_0_#000]" />
+          <div data-col-hl aria-hidden className="absolute inset-y-0 rounded-[1.6rem] border-2 border-black bg-orange shadow-[8px_8px_0_0_#000]" style={{ left: `${labelW}%`, width: `${colW}%` }} />
           <table className="relative w-full table-fixed border-separate border-spacing-0 text-left">
-            <caption className="sr-only">{comparison.headline.map((l) => (typeof l === 'string' ? l : `${l.before ?? ''}${l.accent}`)).join(' ')}</caption>
+            <caption className="sr-only">{content.headline.map((l) => (typeof l === 'string' ? l : `${l.before ?? ''}${l.accent}`)).join(' ')}</caption>
             <thead>
               <tr>
-                <th scope="col" className="w-1/4 p-5" />
-                {comparison.columns.map((c, i) => (
-                  <th key={c} scope="col" className={cn('w-1/4 p-5 align-bottom font-display text-[1.25rem] leading-none', i === 0 ? 'text-black' : 'text-cream/80')}>
+                <th scope="col" className="p-5" style={{ width: `${labelW}%` }} />
+                {content.columns.map((c, i) => (
+                  <th key={c} scope="col" className={cn('p-5 align-bottom font-display text-[1.25rem] leading-none', i === 0 ? 'text-black' : 'text-cream/80')} style={{ width: `${colW}%` }}>
                     {c}
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {comparison.rows.map((r) => (
-                <tr key={r.label} data-row>
+              {content.rows.map((r) => (
+                <tr key={r.label} data-row className="transition-colors duration-300 hover:bg-cream/[0.035]">
                   <th scope="row" className="border-t border-cream/10 p-5 align-top font-mono text-[0.75rem] font-normal uppercase tracking-[0.08em] text-cream/55">
                     {r.label}
                   </th>
@@ -95,13 +111,13 @@ export function Comparison() {
 
         {/* Mobile: one card per row */}
         <div className="mt-12 flex flex-col gap-4 md:hidden">
-          {comparison.rows.map((r) => (
-            <div key={r.label} data-row className="rounded-[1.4rem] border border-cream/15 bg-ink-2 p-5">
+          {content.rows.map((r) => (
+            <div key={r.label} data-row className={cn('rounded-[1.4rem] border border-cream/15 bg-ink-2', pair ? 'p-4' : 'p-5')}>
               <p className="font-mono text-[0.72rem] uppercase tracking-[0.08em] text-orange">{r.label}</p>
-              <dl className="mt-4 flex flex-col gap-3">
+              <dl className={cn('mt-4', pair ? 'grid grid-cols-2 gap-2 text-[0.92rem]' : 'flex flex-col gap-3')}>
                 {r.values.map((v, i) => (
-                  <div key={i} className={cn('flex flex-col gap-1', i === 0 && 'rounded-xl border-2 border-black bg-orange p-3 text-black')}>
-                    <dt className={cn('text-[0.72rem] font-semibold uppercase', i === 0 ? 'text-black/70' : 'text-cream/45')}>{comparison.columns[i]}</dt>
+                  <div key={i} className={cn('flex flex-col gap-1', i === 0 ? 'rounded-xl border-2 border-black bg-orange p-3 text-black' : pair && 'rounded-xl border border-cream/10 p-3')}>
+                    <dt className={cn('text-[0.72rem] font-semibold uppercase', i === 0 ? 'text-black/70' : 'text-cream/60')}>{content.columns[i]}</dt>
                     <dd className={i === 0 ? 'font-semibold' : 'text-cream/80'}>
                       <Value raw={v} highlight={i === 0} />
                     </dd>

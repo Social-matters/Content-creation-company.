@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import { marqueesV2 } from '@/content/v2/home';
+import { comparisonV2, marqueesV2 } from '@/content/v2/home';
 import { Marquee } from '@/components/ui/Marquee';
+import { Comparison } from '@/components/sections/Comparison';
 import { HeroV2 } from '@/components/v2/HeroV2';
 import { MosaicV2 } from '@/components/v2/MosaicV2';
 import { HowItWorksV2 } from '@/components/v2/HowItWorksV2';
@@ -28,6 +29,7 @@ export default function HomeV2() {
       <OperationsV2 under="bg-orange" />
       <Marquee items={marqueesV2.cities} direction={-1} speed={40} className={`${band} bg-ink text-cream`} itemClassName={bandText} />
       <ProofV2 />
+      <Comparison content={comparisonV2} />
       <StatsV2 />
       <VoicesV2 />
       <FinaleV2 />

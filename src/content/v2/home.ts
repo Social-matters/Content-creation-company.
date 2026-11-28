@@ -323,6 +323,28 @@ export const proofV2 = {
   ],
 } as const;
 
+/**
+ * CCC vs DIY influencer outreach (the agency column is gone in v2). Values may be prefixed
+ * "yes:" / "no:" for a mark. The last row says honestly where DIY is the better choice.
+ */
+export const comparisonV2 = {
+  label: '// How we compare',
+  headline: ['Skip the DMs.', { before: 'Skip the ', accent: 'guesswork.', style: 'orange' }] satisfies Headline,
+  body: "The honest version: where we win, and where you'd still pick the alternative.",
+  columns: ['Content Creation Company', 'DIY influencer outreach'],
+  // CONFIRM: every claim in the CCC column needs sign-off before launch
+  rows: [
+    { label: 'Pricing model', values: ['Flat per package + optional performance fee', 'Per-influencer negotiation'] },
+    { label: 'Influencer verification', values: ['yes:AI-scored, audience-quality vetted', 'no:You guess'] },
+    { label: 'Celebrities & TV actors', values: ['yes:Arranged for you', 'no:Cold DMs and managers'] },
+    { label: 'Models & shoot crew', values: ['yes:Provided', 'no:You hire and coordinate'] },
+    { label: 'AI brief + matching', values: ['yes:Built in', 'no:None'] },
+    { label: 'Pay-on-performance', values: ['yes:Available', 'no:Rarely'] },
+    { label: 'Contracts, payments, reporting', values: ['yes:Handled', 'no:Manual follow-ups'] },
+    { label: 'Best for', values: ['Brands that need volume and speed', 'A one-off collab with an influencer you already know'] },
+  ],
+};
+
 export const statsV2 = {
   label: '// Early numbers',
   headline: ['Small start.', { accent: 'Big intent.', style: 'orange' }] satisfies Headline,
