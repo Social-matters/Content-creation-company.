@@ -15,7 +15,7 @@ import type { Lead, LeadContext } from './schemas';
  */
 export type StoredLead = Lead & LeadContext & { id: string; receivedAt: string };
 
-export interface LeadAdapter {
+interface LeadAdapter {
   name: string;
   save(lead: StoredLead): Promise<void>;
 }
@@ -71,7 +71,7 @@ const everywhere = (adapters: LeadAdapter[]): LeadAdapter => ({
   },
 });
 
-export function getLeadAdapter(): LeadAdapter {
+function getLeadAdapter(): LeadAdapter {
   const { mail, sheet } = getLeadConfig();
   const adapters = [...(mail ? [emailAdapter(mail)] : []), ...(sheet ? [sheetAdapter(sheet)] : [])];
   return adapters.length ? everywhere(adapters) : consoleAdapter;

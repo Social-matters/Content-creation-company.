@@ -32,7 +32,7 @@ const tierOptions = followerTiers.map((t) => ({ value: t.value, label: t.label }
 
 type FormProps = { titleId: string; onDone?: () => void };
 /** The enquiry forms on the Celebrities and Model Shoots pages: the brand form with one need pre-ticked. */
-export type EnquiryKind = 'celebrity' | 'model-shoot';
+type EnquiryKind = 'celebrity' | 'model-shoot';
 const ENQUIRY = { celebrity: { schema: celebritySchema, need: 'celebrity' }, 'model-shoot': { schema: modelShootSchema, need: 'models' } } as const;
 
 /** Every form shares one resolver type; the schema that actually runs is picked by `kind`. */

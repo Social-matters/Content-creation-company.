@@ -9,7 +9,7 @@ import type { StoredLead } from './leads';
 const TIMEOUT_MS = 15_000;
 
 /** A cell starting with = + - @ would run as a formula (and could leak other rows): force it to text. */
-export const asText = (value: string) => (/^[=+\-@\t\r]/.test(value) ? `'${value}` : value);
+const asText = (value: string) => (/^[=+\-@\t\r]/.test(value) ? `'${value}` : value);
 
 export async function appendToSheet(config: SheetConfig, lead: StoredLead) {
   const columns = leadColumns(lead);

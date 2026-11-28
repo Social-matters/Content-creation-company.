@@ -16,12 +16,12 @@ export type Email = { subject: string; html: string; text: string };
 export const LOGO_ATTACHMENT = { filename: 'ccc-logo.png', content: LOGO_PNG_BASE64, contentType: 'image/png', contentId: 'ccc-logo' };
 
 const ESCAPES: Record<string, string> = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
-export const escapeHtml = (s: string) => s.replace(/[&<>"']/g, (c) => ESCAPES[c]);
+const escapeHtml = (s: string) => s.replace(/[&<>"']/g, (c) => ESCAPES[c]);
 
 /** Control characters, line/paragraph separators and text-direction overrides. */
 const UNSAFE_IN_HEADER = /[\p{Cc}\u2028\u2029\u200e\u200f\u202a-\u202e\u2066-\u2069]+/gu;
 /** One safe line of user text for a subject: no newlines or control characters, bounded length. */
-export const subjectPart = (s: string, max = 80) => s.replace(UNSAFE_IN_HEADER, ' ').replace(/\s+/g, ' ').trim().slice(0, max);
+const subjectPart = (s: string, max = 80) => s.replace(UNSAFE_IN_HEADER, ' ').replace(/\s+/g, ' ').trim().slice(0, max);
 
 const labelOf = (list: readonly { value: string; label: string }[], value: string) => list.find((o) => o.value === value)?.label ?? value;
 const rupees = (digits: string) => `₹${Number(digits).toLocaleString('en-IN')}`;
@@ -44,7 +44,7 @@ const TITLES: Record<StoredLead['kind'], string> = {
   'early-access': 'New early-access signup',
 };
 
-export function leadSubject(lead: StoredLead): string {
+function leadSubject(lead: StoredLead): string {
   switch (lead.kind) {
     case 'brand':
       return `[CCC] New brand enquiry: ${subjectPart(lead.brand)} (${lead.needs.map((n) => labelOf(brandNeeds, n)).join(', ')})`;
@@ -94,7 +94,7 @@ function fieldRows(lead: StoredLead): Row[] {
   return FIELDS.flatMap(([key, label, show]) => (record[key] === undefined ? [] : [[label, (show ? show(record[key] as never) : String(record[key])).replace(UNSAFE_IN_BODY, '')] as Row]));
 }
 
-export const istTime = (iso: string) => `${new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'medium', timeStyle: 'medium' }).format(new Date(iso))} IST`;
+const istTime = (iso: string) => `${new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'medium', timeStyle: 'medium' }).format(new Date(iso))} IST`;
 
 function metaRows(lead: StoredLead): Row[] {
   return [

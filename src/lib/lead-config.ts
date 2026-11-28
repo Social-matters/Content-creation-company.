@@ -9,9 +9,9 @@
  */
 export type MailConfig = { apiKey: string; to: string; from: string; sendConfirmation: boolean };
 export type SheetConfig = { url: string; secret: string };
-export type LeadConfig = { mail: MailConfig | null; sheet: SheetConfig | null };
+type LeadConfig = { mail: MailConfig | null; sheet: SheetConfig | null };
 
-export class LeadConfigError extends Error {
+class LeadConfigError extends Error {
   constructor(message: string) {
     super(`Lead delivery configuration error: ${message} See "Where form submissions go" in README.md.`);
     this.name = 'LeadConfigError';

@@ -5,7 +5,7 @@ import { leadContextSchema, leadSchema } from '@/lib/schemas';
 import { saveLead } from '@/lib/leads';
 import { clientIp, takeSlot } from '@/lib/rate-limit';
 
-export type LeadResult = { ok: true } | { ok: false; reason: 'invalid'; fieldErrors: Record<string, string[]> } | { ok: false; reason: 'rate' | 'delivery' };
+type LeadResult = { ok: true } | { ok: false; reason: 'invalid'; fieldErrors: Record<string, string[]> } | { ok: false; reason: 'rate' | 'delivery' };
 
 /**
  * Validates again on the server with the same schema as the browser (never trust the client),

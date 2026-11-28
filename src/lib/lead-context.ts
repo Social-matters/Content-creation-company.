@@ -4,7 +4,7 @@
  * Browser-safe and dependency-free (it's part of the main bundle).
  */
 export const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'] as const;
-export type UtmKey = (typeof UTM_KEYS)[number];
+type UtmKey = (typeof UTM_KEYS)[number];
 
 const STORE = 'ccc:utm';
 

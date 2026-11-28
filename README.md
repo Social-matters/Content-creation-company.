@@ -19,7 +19,7 @@ pnpm dev                       # http://localhost:3000
 | `pnpm dev` / `build` / `start` | Next.js dev server / production build / serve the build |
 | `pnpm lint` · `pnpm typecheck` | ESLint · route typegen + `tsc --noEmit` |
 | `pnpm shots [route…] [--w=1440,768,390] [--entrance] [--reduced]` | Scrolls routes in Playwright, saves screenshots to `shots/`, prints console errors |
-| `pnpm smoke` | Interaction test: entrance, modal, validation, lead submit, Esc, route wipe, header button, mobile menu, skip link, reduced motion. Skips the submit if `.env.local` has a key (`SMOKE_SEND=1` sends it) |
+| `pnpm smoke` | Interaction test: entrance, modal, validation, lead submit, Esc, route wipe, "Join the network" and "Contact for pricing" links, old-address redirects, a crawl of every internal link and anchor, skip link, mobile menu, reduced motion. Skips the submit if `.env.local` has a key (`SMOKE_SEND=1` sends it) |
 | `pnpm test:forms` | Builds, then submits every form against a mock Resend server and checks each email. Never sends real mail |
 | `pnpm logos [dir]` | Processes client logos from `.incoming/client-logos/` into `public/brand/clients/` + `src/content/clients.ts` |
 | `pnpm assets [slot] [--force]` | Downloads + compresses media into `public/media/` (ffmpeg) |
@@ -29,8 +29,8 @@ pnpm dev                       # http://localhost:3000
 `pnpm shots` / `pnpm smoke` need a running server (`BASE_URL`, default `http://localhost:3000`) and Playwright's
 Chromium (`npx playwright install chromium`). On Git Bash for Windows prefix route args with `MSYS_NO_PATHCONV=1`.
 
-> `pnpm start` is a production server: it needs the three email variables below, or every request fails with a
-> configuration error.
+> `pnpm start` is a production server: it needs a Google Sheet or email destination (see "Where form submissions
+> go"), or server requests fail with a configuration error.
 
 > **Dev-server quirk:** if a page shows a hydration mismatch right after you edited a client component,
 > restart `pnpm dev` (stale server bundle). Production builds are unaffected.

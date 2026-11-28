@@ -22,6 +22,12 @@ There is one site. The earlier original design (v1) was removed on 2026-11-28 an
 - **No public pricing anywhere** (owner's decision): no prices, rupee amounts, price units or fee terms in pages, content, metadata or structured data. No pricing page or plans section. Each service card shows **Contact for pricing**, linking to `join-the-network` with `?service=`. The budget-range and base-rate form inputs stay: we collect those, we don't show prices.
 - Influencers, creators and models join through a quiet footer link and the band at the end of the home page ("Join our influencer network"), never the header.
 
+### Standing rules (change request v5)
+- **No public pricing anywhere**: contact for pricing (see Nav rules above for the details).
+- **No separate application page.** Everything funnels to the `join-the-network` section at the top of `/contact` (`joinSection` in `content/site.ts`). New apply links use it; arriving there focuses the heading, never a form field.
+- **No comparison section** ("How we compare", or CCC versus anyone).
+- **No audience-chooser section** (Brands / Creators / Everyone else cards, or an audience toggle).
+
 ### Copy rules
 - No invented facts. No celebrity or actor names, roster sizes or results unless CCC provides them. Every number, name and testimonial is `// PLACEHOLDER` (claims to verify: `// CONFIRM`) and listed in `docs/TODO-real-content.md`; placeholder stats and quotes show a visible "Sample" tag while `PLACEHOLDER_CONTENT` is on.
 - Never imply a real celebrity endorses CCC. No identifiable celebrity or actor imagery: use set atmosphere (hands, gear, lights) or the "Roster placeholder" card until licensed images arrive.

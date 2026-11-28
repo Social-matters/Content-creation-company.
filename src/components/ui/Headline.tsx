@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, type ElementType } from "react";
-import { gsap, SplitText, useGSAP, type ScrollTrigger } from "@/lib/gsap";
+import { gsap, SplitText, useGSAP } from "@/lib/gsap";
 import { whenNear } from "@/lib/defer";
 import { ease, flow, mq } from "@/lib/motion";
 import { cn } from "@/lib/cn";
@@ -141,7 +141,7 @@ function Line({ line, tone }: { line: HeadlineLine; tone: Tone }) {
   );
 }
 
-export function Accent({
+function Accent({
   text,
   style,
   tone,

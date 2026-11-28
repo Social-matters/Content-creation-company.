@@ -4,7 +4,7 @@ import type { SVGProps } from 'react';
  * Geometric CCC mark: three concentric "C" arcs + superscript 3 (C³),
  * a simplified echo of the favicon. Stroke-based so it can be drawn in.
  */
-export const MARK_ARCS = [
+const MARK_ARCS = [
   'M82.2 23 A42 42 0 1 0 82.2 77',
   'M72.2 31.4 A29 29 0 1 0 72.2 68.6',
   'M62.3 39.7 A16 16 0 1 0 62.3 60.3',

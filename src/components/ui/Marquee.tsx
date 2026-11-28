@@ -102,7 +102,7 @@ export function Marquee({ items, direction = 1, speed = 70, className, itemClass
   );
 }
 
-export function Star({ className }: { className?: string }) {
+function Star({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" className={cn('h-[0.62em] w-[0.62em]', className)} fill="currentColor" aria-hidden>
       <path d="M12 0l2.6 8.4L23 6l-6.2 6L23 18l-8.4-2.4L12 24l-2.6-8.4L1 18l6.2-6L1 6l8.4 2.4z" />
