@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, type RefObject } from 'react';
+import { useEffect, useRef, useState, type RefObject } from 'react';
 import { gsap, useGSAP } from '@/lib/gsap';
 import { whenNear } from '@/lib/defer';
 import { flow, mq } from '@/lib/motion';
@@ -20,6 +20,41 @@ export function useNearGSAP(scope: RefObject<HTMLElement | null>, setup: (el: HT
       return whenNear(el, () => context.add(() => setup(el)), margin);
     },
     { scope },
+  );
+}
+
+/**
+ * True once `ref` is at least `threshold` in view (then stays true). Used to hold back a
+ * hero film on stacked layouts until it's mostly on screen, so the first screen's main paint
+ * is the headline, not a sliver of poster at the fold.
+ */
+export function useShownOnView(ref: RefObject<Element | null>, threshold = 0.6) {
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => e.isIntersecting && (setShown(true), io.disconnect()), { threshold });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [ref, threshold]);
+  return shown;
+}
+
+/** Curtain + zoom reveal for a hero frame on stacked layouts, once `shown` (desktop reveals on entrance). */
+export function useStackedReveal(scope: RefObject<HTMLElement | null>, shown: boolean, zoom = '[data-media-zoom]') {
+  useGSAP(
+    () => {
+      if (!shown || window.matchMedia(mq.desktop).matches) return;
+      const q = gsap.utils.selector(scope);
+      const mm = gsap.matchMedia();
+      mm.add({ motion: mq.motionOK, reduced: mq.reduced }, (ctx) => {
+        if (ctx.conditions?.reduced) return void gsap.set(q('[data-curtain]'), { autoAlpha: 0 });
+        gsap.fromTo(q('[data-curtain]'), { scaleY: 1 }, { scaleY: 0, duration: 1.4, ease: 'expo.inOut' });
+        gsap.fromTo(q(zoom), { scale: 1.22 }, { scale: 1, duration: 2.2, ease: flow.ease });
+      });
+      return () => mm.revert();
+    },
+    { scope, dependencies: [shown] },
   );
 }
 

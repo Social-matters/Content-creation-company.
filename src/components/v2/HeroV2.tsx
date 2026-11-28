@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useRef, type CSSProperties } from 'react';
 import { gsap, useGSAP } from '@/lib/gsap';
 import { flow, mq } from '@/lib/motion';
+import { cn } from '@/lib/cn';
 import { heroV2 as hero } from '@/content/v2/home';
 import { assets } from '@/content/assets';
 import { useUI } from '@/components/providers/UIProvider';
@@ -12,7 +13,7 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Counter } from '@/components/ui/Counter';
 import { Video } from '@/components/ui/Video';
-import { FlowWords } from './flow';
+import { FlowWords, useShownOnView, useStackedReveal } from './flow';
 import { NotificationCycle } from './NotificationCycle';
 
 /**
@@ -33,7 +34,11 @@ const frameVars = {
  */
 export function HeroV2() {
   const root = useRef<HTMLElement>(null);
+  const frame = useRef<HTMLDivElement>(null);
   const { entranceDone } = useUI();
+  /** Stacked layouts: the film paints once 60% of the frame is in view (desktop ignores this; the hiding class is max-lg only). */
+  const filmShown = useShownOnView(frame);
+  useStackedReveal(root, filmShown);
 
   // Entrance, gated on the preloader.
   useGSAP(
@@ -52,11 +57,12 @@ export function HeroV2() {
           gsap.to([...items, ...pops], { autoAlpha: 1, duration: 0.6 });
           return;
         }
-        gsap
-          .timeline({ defaults: { ease: flow.ease } })
-          .fromTo(q('[data-curtain]'), { scaleY: 1 }, { scaleY: 0, duration: 1.7, ease: 'expo.inOut' }, 0.05)
-          .fromTo(q('[data-media-zoom]'), { scale: 1.28 }, { scale: 1, duration: 2.6 }, 0.15)
-          .fromTo(items, { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: flow.dur, stagger: 0.11 }, 0.6)
+        const tl = gsap.timeline({ defaults: { ease: flow.ease } });
+        // Desktop reveals the film with the entrance; stacked layouts reveal it on view (below).
+        if (window.matchMedia(mq.desktop).matches) {
+          tl.fromTo(q('[data-curtain]'), { scaleY: 1 }, { scaleY: 0, duration: 1.7, ease: 'expo.inOut' }, 0.05).fromTo(q('[data-media-zoom]'), { scale: 1.28 }, { scale: 1, duration: 2.6 }, 0.15);
+        }
+        tl.fromTo(items, { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: flow.dur, stagger: 0.11 }, 0.6)
           .fromTo(pops, { autoAlpha: 0, y: 34, rotate: (i) => (i ? 2.5 : -3) }, { autoAlpha: 1, y: 0, rotate: 0, duration: 1.5, stagger: 0.18 }, 1.15);
       });
       return () => mm.revert();
@@ -102,7 +108,6 @@ export function HeroV2() {
     <div>
     <section ref={root} style={frameVars} className="relative isolate flex flex-col overflow-hidden bg-ink text-cream lg:h-svh lg:min-h-[46rem]">
       <div aria-hidden className="pointer-events-none absolute -left-[18%] top-[18%] -z-10 size-[44rem] bg-[radial-gradient(closest-side,rgb(255_129_42/0.28),transparent)]" />
-      <div className="grain pointer-events-none absolute inset-0 -z-10" />
 
       {/* Content */}
       <div data-content className="container-x relative z-10 flex flex-col pt-[calc(var(--nav-h)+3.5rem)] lg:h-full lg:justify-center lg:pt-[var(--nav-h)]">
@@ -128,10 +133,10 @@ export function HeroV2() {
       </div>
 
       {/* Frame: in flow on phones; on desktop the media becomes a full-bleed layer clipped to the frame. */}
-      <div className="relative mx-[var(--gutter)] mb-16 mt-14 aspect-[4/5] sm:aspect-[16/11] lg:contents">
+      <div ref={frame} className="relative mx-[var(--gutter)] mb-16 mt-14 aspect-[4/5] sm:aspect-[16/11] lg:contents">
         <div data-media className="absolute inset-0 overflow-hidden rounded-[1.6rem] bg-ink-2 lg:rounded-none lg:[clip-path:inset(var(--fr-top)_var(--fr-right)_var(--fr-bottom)_calc(100%_-_var(--fr-right)_-_var(--fr-w))_round_28px)]">
           <div data-media-inner className="hero-v2-inner absolute inset-0">
-            <div data-media-zoom className="absolute inset-0">
+            <div data-media-zoom className={cn('absolute inset-0', !filmShown && 'max-lg:invisible')}>
               <Video media={assets.hero} mobile={assets.heroMobile} eager sizes="(min-width: 1024px) 100vw, 92vw" className="absolute inset-0" />
             </div>
           </div>

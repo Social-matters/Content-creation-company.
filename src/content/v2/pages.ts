@@ -8,6 +8,7 @@ import type { Cta, Headline } from '../types';
 const enquire = { label: 'Enquire now', href: '#enquire' } satisfies Cta;
 const call = { label: 'Book a call', href: '/contact', meta: '15 min' } satisfies Cta;
 
+// CONFIRM: service description needs CCC sign-off (no names, roster or results until supplied)
 export const celebritiesPage = {
   meta: {
     title: 'Celebrity & TV serial actor tie-ups',
@@ -46,6 +47,7 @@ export const celebritiesPage = {
   },
 } as const;
 
+// CONFIRM: what's included (crew, studio, edited delivery) needs CCC sign-off
 export const modelShootsPage = {
   meta: {
     title: 'Model shoots',

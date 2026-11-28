@@ -33,10 +33,41 @@ While the flag is `true`, testimonials show a visible "Sample quote" tag and eve
 - [ ] **Legal pages**: draft privacy policy and terms; need counsel review (DPDP Act 2023): `src/content/legal.ts`.
 - [ ] **Copyright year** is a literal ("© 2026"): `site.ts` → `footer.copyright`.
 
-## v2 (`/v2`)
+## v2 (`/v2`): influencer-led version
 
-v2 reuses everything above, so the same placeholders apply there. One new line needs sign-off:
-- [ ] **Hero manifesto** ("You write one brief. Creators across India shoot it their way…"): `src/content/v2.ts` → `heroV2.manifesto`.
+v2 copy lives in `src/content/v2/`. Same rules: everything below is invented or needs sign-off.
+
+### Numbers and figures (invented, do not ship)
+| Where | Current | File |
+|---|---|---|
+| Hero stat | 2,400+ influencers onboarding | `v2/home.ts` → `heroV2.stat` |
+| Stats tiles (shown with a "Sample figures" tag) | 2,400+ influencers · 25+ celebrities & actors on roster · 40+ shoots · 6 cities | `v2/home.ts` → `statsV2.items` |
+| How-it-works mock | 12,40,000 views, +120K today, 12 of 340 fit, follower and ER figures | `v2/home.ts` → `howV2.mock`, `howV2.chips` |
+| Hero notifications | "+120K views in the last hour", handles | `v2/home.ts` → `heroV2.notifications` |
+
+### Prices to confirm
+- [ ] **Influencer Campaigns** "Custom quote", **Celebrity & TV Serial Actor Tie-ups** "On request", **Model Shoots** "Custom quote": `v2/home.ts` → `servicesV2`.
+- [ ] **Budget bands** on the brand form (Under ₹50K … ₹10L+): `v2/forms.ts` → `budgets`.
+
+### People, names and quotes (invented, do not ship)
+- **Handles** (`@ananya.styles`, `@rohan.eats`, `@meera.makes`) in hero notifications, the shortlist mock and the live feed: `v2/home.ts`.
+- **Mosaic tier/niche labels** ("Micro · Food", …) on stock clips: `v2/home.ts` → `mosaicV2.tiles`.
+- **Testimonials**: three sample quotes (tagged "Sample quote"): `v2/home.ts` → `testimonialsV2`.
+- **Celebrities and TV actors**: no names or images anywhere. Supply licensed images and any names you want shown; until then the site uses "Roster placeholder" cards and set footage.
+
+### Claims to confirm
+- [ ] **Comparison, CCC column**: AI-scored audience-quality vetting, celebrity/TV actor access arranged, models and crew provided, AI brief + matching built in, pay-on-performance available, contracts/payments/reporting handled, flat package pricing: `v2/home.ts` → `comparisonV2`.
+- [ ] **AI Influencer Matching "Live: try it now"** badge: `v2/home.ts` → `servicesV2.influencer[3].badge`.
+- [ ] **Celebrity page copy** (endorsements, appearances, serial actor tie-ups; "Roster shared on request"): `v2/pages.ts` → `celebritiesPage`.
+- [ ] **Model Shoots page copy** (crew, studio, edited delivery): `v2/pages.ts` → `modelShootsPage`.
+- [ ] **Launch cities** (mosaic copy + city marquee): `v2/home.ts` → `mosaicV2.body`, `marqueesV2.cities`.
+- [ ] **Hero manifesto**: `v2/home.ts` → `heroV2.manifesto`.
+- [ ] **Compliance wording** (e.g. ASCI disclosures): deliberately left out until you confirm.
+
+### Media
+- Influencer mosaic and proof reuse the Mixkit stock below. Wanted from CCC: real network influencer reels (with consent), ideally Indian creators shooting GRWM, unboxings and vlogs (not available on the free sources).
+- `set-1`, `set-2`: behind-the-scenes set footage standing in for celebrity / TV work. Replace with licensed talent imagery when available.
+- `model-1`, `model-2`: stock model shoots. Replace with CCC's own shoots.
 
 ## Media (temporary stock → CCC's own content)
 

@@ -10,8 +10,7 @@ import { Headline } from '@/components/ui/Headline';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Video } from '@/components/ui/Video';
-import type { NotificationTone } from '@/components/sections/NotificationCard';
-import { NotificationCycle } from './NotificationCycle';
+import { useShownOnView, useStackedReveal } from './flow';
 
 type Props = {
   badge?: string;
@@ -20,7 +19,6 @@ type Props = {
   ctas?: readonly Cta[];
   media?: MediaSlot;
   mobileMedia?: MediaSlot;
-  notifications?: readonly { app: string; time: string; text: string; tone: NotificationTone }[];
   size?: 'd1' | 'd2';
   children?: ReactNode;
 };
@@ -29,9 +27,13 @@ type Props = {
  * v2 inner-page hero: content with room around it, media in a frame beside it (if any).
  * Curtain + zoom entrance; on scroll the content drifts up and the film drifts slower.
  */
-export function PageHeroV2({ badge, headline, lead, ctas, media, mobileMedia, notifications, size = 'd1', children }: Props) {
+export function PageHeroV2({ badge, headline, lead, ctas, media, mobileMedia, size = 'd1', children }: Props) {
   const root = useRef<HTMLElement>(null);
+  const frame = useRef<HTMLDivElement>(null);
   const { entranceDone } = useUI();
+  /** Stacked layouts: the film paints once 60% of the frame is in view (desktop: at once). */
+  const filmShown = useShownOnView(frame);
+  useStackedReveal(root, filmShown, '[data-zoom]');
 
   useGSAP(
     () => {
@@ -50,7 +52,7 @@ export function PageHeroV2({ badge, headline, lead, ctas, media, mobileMedia, no
           return;
         }
         const tl = gsap.timeline({ defaults: { ease: flow.ease } });
-        if (framed) {
+        if (framed && window.matchMedia(mq.desktop).matches) {
           tl.fromTo(q('[data-curtain]'), { scaleY: 1 }, { scaleY: 0, duration: 1.6, ease: 'expo.inOut' }, 0.05).fromTo(q('[data-zoom]'), { scale: 1.25 }, { scale: 1, duration: 2.4 }, 0.15);
         }
         tl.fromTo(items, { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: flow.dur, stagger: 0.1 }, framed ? 0.55 : 0.4);
@@ -66,7 +68,6 @@ export function PageHeroV2({ badge, headline, lead, ctas, media, mobileMedia, no
   return (
     <section ref={root} className="relative isolate overflow-hidden bg-ink text-cream">
       <div aria-hidden className="pointer-events-none absolute -left-[15%] top-[10%] -z-10 size-[42rem] bg-[radial-gradient(closest-side,rgb(255_129_42/0.26),transparent)]" />
-      <div className="grain pointer-events-none absolute inset-0 -z-10" />
       <div
         className={cn(
           'container-x grid gap-16 pb-[clamp(5rem,9vw,8rem)] pt-[calc(var(--nav-h)+clamp(4.5rem,9vw,8.5rem))]',
@@ -97,19 +98,14 @@ export function PageHeroV2({ badge, headline, lead, ctas, media, mobileMedia, no
 
         {media && (
           <div className="relative mx-auto w-full max-w-[34rem]">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[1.6rem] bg-ink-2 ring-1 ring-cream/10">
+            <div ref={frame} className="relative aspect-[4/5] overflow-hidden rounded-[1.6rem] bg-ink-2 ring-1 ring-cream/10">
               <div data-par className="absolute -inset-y-[6%] inset-x-0">
-                <div data-zoom className="absolute inset-0">
+                <div data-zoom className={cn('absolute inset-0', !filmShown && 'max-lg:invisible')}>
                   <Video media={mobileMedia ?? media} eager sizes="(min-width: 1024px) 34rem, 92vw" className="absolute inset-0" />
                 </div>
               </div>
               <div data-curtain className="absolute inset-0 origin-top bg-ink" />
             </div>
-            {notifications && (
-              <div data-in aria-hidden className="absolute -bottom-7 left-4 lg:-left-14 lg:bottom-[12%]">
-                <NotificationCycle items={notifications} play={entranceDone} />
-              </div>
-            )}
           </div>
         )}
       </div>

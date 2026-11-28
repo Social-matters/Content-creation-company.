@@ -8,6 +8,28 @@ Quality bar: award-level. Cinematic, smooth, confident, fast. If it feels averag
 
 > Next.js here is **16.4** with `cacheComponents` + `partialPrefetching` on. Read `node_modules/next/dist/docs/` before using an unfamiliar API. Routes stay mounted but hidden (React `<Activity>`) after navigation, so: never query the document globally for animation targets; always scope GSAP to a ref, and expect effects to unmount/remount on hide/show.
 
+## Two versions
+
+- **v1** at `/` is the original site. Leave it as is unless asked; shared components must keep v1's behaviour as their default.
+- **v2** at `/v2/*` is the influencer-led redesign. Its copy lives in `src/content/v2/`, its sections in `src/components/v2/`. Shared components read `useSiteVersion()` (`lib/site-version.tsx`) to switch links (`/v2` base), motion profile and v2-only form fields.
+
+### v2 positioning (influencer-led)
+- CCC is **mainly an influencer-marketing company; creator content supports it** (roughly 70/30). Show this through weight (section count, screen height, imagery, copy order), never by printing "70/30" or any ratio as a claim.
+- Influencer side first and large: influencer campaigns, celebrity and TV serial actor tie-ups, pay-on-performance, AI influencer matching. Creator-content side second and compact: model shoots, creator visit, content exhibition.
+- Hero: "Influence. Content. Results." with the tilted block on "Results.".
+
+### v2 nav rules
+- One brand-facing site: **no Brands/Creators toggle** and no audience-dependent copy. Nav = Influencers · Celebrities · Model Shoots · How it works, then Log in and Start a campaign.
+- No pricing page and no plans section (owner's decision). Service cards may show a short price line.
+- Influencers, creators and models join through a quiet footer link and the band at the end of the home page ("Join our influencer network"), never the header.
+- `/v2/creators` and `/v2/pricing` redirect to `/v2` (`next.config.ts`).
+
+### v2 copy rules
+- No invented facts. No celebrity or actor names, roster sizes or results unless CCC provides them. Every number, name and testimonial is `// PLACEHOLDER` (claims to verify: `// CONFIRM`) and listed in `docs/TODO-real-content.md`; placeholder stats and quotes show a visible "Sample" tag while `PLACEHOLDER_CONTENT` is on.
+- Never imply a real celebrity endorses CCC. No identifiable celebrity or actor imagery: use set atmosphere (hands, gear, lights) or the "Roster placeholder" card until licensed images arrive.
+- No compliance claims (e.g. "ASCI-compliant disclosures") until CCC confirms them.
+- The comparison is CCC vs DIY influencer outreach only, and its last row stays honest about where DIY is the better choice.
+
 ---
 
 ## 2. Tech stack (decided; don't swap without asking)

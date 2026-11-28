@@ -62,16 +62,20 @@ docs/                        reference-notes, decisions, TODO-real-content
 
 ## v2 design (`/v2`)
 
-A second design of the same site lives at `/v2/*` (home, creators, pricing, about, contact, forms, legal) so the
-two can be compared on one deployment. It reads the same `src/content` files (plus `src/content/v2.ts` for the
-few v2-only lines), and is `noindex` with canonicals pointing at the v1 pages.
+A second, influencer-led version of the site lives at `/v2/*` (home, celebrities, model shoots, about, contact,
+forms, legal) so the two can be compared on one deployment. It is `noindex`; see `CLAUDE.md` → "Two versions"
+for its positioning, nav and copy rules.
 
 - **Routes:** `src/app/v2/` with `MarketingShell version="v2"`. Links inside v2 stay in v2 automatically (`TLink`).
-- **Sections:** `src/components/v2/` (HeroV2, MosaicV2, HowItWorksV2, ServicesV2, OperationsV2, ProofV2, StatsV2,
-  VoicesV2, FinaleV2, PageHeroV2) and the motion primitives in `v2/flow.tsx` (`Sheet`, `FlowWords`, `useNearGSAP`).
+  `/v2/creators` and `/v2/pricing` redirect to `/v2`.
+- **Copy:** `src/content/v2/` (`home.ts`, `site.ts`, `pages.ts`, `forms.ts`). v1 copy in `src/content/*.ts` is separate.
+- **Sections:** `src/components/v2/` (HeroV2, MosaicV2, ServicesV2, HowItWorksV2 + screens, OperationsV2, ProofV2,
+  StatsV2, VoicesV2, FinaleV2, PageHeroV2) and the motion helpers in `v2/flow.tsx`. Shared components
+  (Nav, Footer, Comparison, forms) take v2 content as props or read `useSiteVersion()`.
 - **Look and feel:** the `.v2` scope in `styles/tokens.css` sets the roomier spacing and calmer type scale;
   `flow` in `lib/motion.ts` is the softer, scroll-linked motion profile.
-- **Removing v2:** delete `src/app/v2`, `src/components/v2` and `src/content/v2.ts`; the shared hooks fall back to v1.
+- **Removing v2:** delete `src/app/v2`, `src/components/v2` and `src/content/v2`, the redirects in `next.config.ts`,
+  and the v2 branches in the shared components.
 
 ## Swapping content
 
