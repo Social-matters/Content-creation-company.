@@ -1,5 +1,6 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useRef } from 'react';
 import { gsap } from '@/lib/gsap';
 import { flow, mq } from '@/lib/motion';
@@ -11,6 +12,8 @@ import { useRevealChildren } from '@/components/ui/Reveal';
 import { Headline } from '@/components/ui/Headline';
 import { Button } from '@/components/ui/Button';
 import { Video } from '@/components/ui/Video';
+
+const EarlyAccessForm = dynamic(() => import('@/components/forms/LeadForms').then((m) => m.EarlyAccessForm), { ssr: false });
 
 /**
  * Closing call. A circular "portal" opens onto a shoot day as the section arrives, ringed in
@@ -58,7 +61,12 @@ export function FinaleV2() {
           </div>
         </div>
 
-        <div data-reveal className="relative mt-[clamp(5rem,12vw,10rem)] flex flex-col gap-8 border-t border-cream/10 pt-10 lg:flex-row lg:items-end lg:justify-between">
+        {/* Fixed minimum height so the form arriving after hydration can't shift the page. */}
+        <div id="early-access" className="relative mt-[clamp(5rem,12vw,10rem)] min-h-[28rem] max-w-[38rem] rounded-[2rem] border-2 border-black bg-white text-ink shadow-[10px_10px_0_0_var(--ccc-orange)] sm:min-h-[24rem]">
+          <EarlyAccessForm titleId="early-access-title" />
+        </div>
+
+        <div data-reveal className="relative mt-[clamp(4rem,9vw,7rem)] flex flex-col gap-8 border-t border-cream/10 pt-10 lg:flex-row lg:items-end lg:justify-between">
           <div className="flex flex-col gap-3">
             <p className="font-mono text-[0.75rem] uppercase tracking-[0.12em] text-orange">{join.label}</p>
             <p className="font-display text-d4">{join.title}</p>

@@ -7,12 +7,19 @@ import { cn } from '@/lib/cn';
 import { contact } from '@/content/pages';
 import { site } from '@/content/site';
 import { useRevealChildren } from '@/components/ui/Reveal';
-import { BrandForm, CreatorForm } from '@/components/forms/LeadForms';
+import { BrandForm, ContactForm, CreatorForm } from '@/components/forms/LeadForms';
+import { formCopyV2 } from '@/content/v2/forms';
 import { Eyebrow } from '@/components/ui/Badge';
 import { Icon } from '@/components/ui/Icon';
 
-/** Contact cards + tabbed brand/creator application forms. */
-export function ContactTabs() {
+/** Contact cards + tabbed forms. `withMessage` (v2) adds a plain contact message as the first tab. */
+export function ContactTabs({ withMessage = false }: { withMessage?: boolean }) {
+  const tabs: readonly string[] = withMessage ? formCopyV2.contactTabs : contact.tabs;
+  const forms = [
+    ...(withMessage ? [<ContactForm key="message" titleId="contact-message" />] : []),
+    <BrandForm key="brand" titleId="contact-brand" />,
+    <CreatorForm key="creator" titleId="contact-creator" />,
+  ];
   const [tab, setTab] = useState(0);
   const root = useRef<HTMLElement>(null);
   useRevealChildren(root);
@@ -41,8 +48,8 @@ export function ContactTabs() {
 
         <div data-reveal>
           <Eyebrow tone="light">{`// ${contact.tabsLabel}`}</Eyebrow>
-          <div role="tablist" aria-label={contact.tabsLabel} className="mt-4 inline-flex rounded-full border-2 border-black bg-white p-1 shadow-[4px_4px_0_0_#000]">
-            {contact.tabs.map((t, i) => (
+          <div role="tablist" aria-label={contact.tabsLabel} className="mt-4 inline-flex flex-wrap rounded-[1.6rem] border-2 border-black bg-white p-1 shadow-[4px_4px_0_0_#000]">
+            {tabs.map((t, i) => (
               <button
                 key={t}
                 role="tab"
@@ -70,7 +77,7 @@ export function ContactTabs() {
                 exit={{ opacity: 0, y: -12 }}
                 transition={{ duration: 0.35, ease: uiEase }}
               >
-                {tab === 0 ? <BrandForm titleId="contact-brand" /> : <CreatorForm titleId="contact-creator" />}
+                {forms[tab]}
               </motion.div>
             </AnimatePresence>
           </div>

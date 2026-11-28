@@ -1,6 +1,7 @@
 'use client';
 
-import { createContext, useContext, useMemo, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { rememberUtm } from '@/lib/lead-context';
 
 export type ModalId = 'campaign' | 'creator' | 'login';
 
@@ -25,6 +26,7 @@ const StateContext = createContext<UIState | null>(null);
 export function UIProvider({ children }: { children: ReactNode }) {
   const [modal, setModal] = useState<ModalId | null>(null);
   const [entranceDone, setEntranceDone] = useState(false);
+  useEffect(rememberUtm, []);
 
   const actions = useMemo<UIActions>(
     () => ({

@@ -5,17 +5,17 @@ import type { Headline as HeadlineContent } from '@/content/types';
 import { BrandForm, CreatorForm } from '@/components/forms/LeadForms';
 import { SectionIntro } from './SectionIntro';
 
-type Props = { kind: 'brand' | 'creator'; label?: string; headline?: HeadlineContent; body?: string; id?: string; /** Pre-ticks a need on the v2 brand form. */ need?: ComponentProps<typeof BrandForm>['need'] };
+type Props = { kind: 'brand' | 'creator'; label?: string; headline?: HeadlineContent; body?: string; id?: string; /** v2: send as a celebrity or model shoot enquiry (that need comes pre-ticked). */ enquiry?: ComponentProps<typeof BrandForm>['enquiry'] };
 
 /** Inline application form in a brutal card. Same forms as the modals. */
-export function ApplySection({ kind, label, headline, body, id, need }: Props) {
+export function ApplySection({ kind, label, headline, body, id, enquiry }: Props) {
   const titleId = `apply-${kind}`;
   return (
     <section id={id} className="bg-cream py-[var(--section-y)] text-ink">
       <div className={headline ? 'container-x grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-start' : 'container-x max-w-4xl'}>
         {headline ? <SectionIntro label={label} headline={headline} body={body} size="d2" className="lg:sticky lg:top-28" /> : null}
         <div className="rounded-[2rem] border-2 border-black bg-white shadow-[10px_10px_0_0_var(--ccc-orange)]">
-          {kind === 'brand' ? <BrandForm titleId={titleId} need={need} /> : <CreatorForm titleId={titleId} />}
+          {kind === 'brand' ? <BrandForm titleId={titleId} enquiry={enquiry} /> : <CreatorForm titleId={titleId} />}
         </div>
       </div>
     </section>

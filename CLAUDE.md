@@ -118,9 +118,15 @@ Performance and accessibility (non-negotiable):
 - [ ] Reduced-motion and mobile fallbacks work
 - [ ] Lighthouse mobile: Performance ≥ 90, Accessibility/SEO ≥ 95; keyboard + screen-reader pass
 - [ ] All text in `src/content`, all media in the assets manifest; `docs/TODO-real-content.md` accurate
-- [ ] Forms validate and submit through the adapter (`src/lib/leads.ts`); animated success states
+- [ ] Forms validate and submit through the adapter (`src/lib/leads.ts`); animated success states, shown only after delivery is confirmed
 - [ ] `README.md` covers setup, scripts, structure, swapping content/assets, and how Phase 2/3 plug in
 - [ ] Clean commits per phase
+
+## Form emails
+- Every lead form is emailed via Resend from the server action only (`lib/leads.ts`, `lib/email/`). The login box is UI only.
+- Never hardcode or commit the recipient address or any key: they live in `.env.local` and Vercel. The repo is public.
+- A new form gets its own `kind` in `lib/schemas.ts` (same schema client and server), the consent checkbox, a subject in `lib/email/template.ts` and a case in `scripts/test-forms.mjs`. Run `pnpm test:forms`.
+- Escape all user text in emails; clean it before it goes into a subject.
 
 ## Working rules
 

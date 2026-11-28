@@ -1,3 +1,5 @@
+import { site } from './site';
+
 export const categories = [
   'Food & Beverage',
   'Fashion',
@@ -21,9 +23,11 @@ export const formCopy = {
   required: 'Required',
   select: 'Select…',
   submitting: 'Sending…',
-  error: 'Something went wrong. Try again, or email us directly.',
+  error: `Something went wrong. Please try again or email us at ${site.email}`,
+  rateLimited: `Too many submissions. Please wait a few minutes, or email us at ${site.email}`,
   honeypot: 'Leave this field empty',
-  privacy: 'By applying you agree to our privacy policy. No spam, ever.',
+  /** Required checkbox under every form; the link opens in a new tab so typed details aren't lost. */
+  consent: { before: 'By submitting, you agree to our', link: 'Privacy Policy', after: '.', href: '/privacy', required: 'Please tick the box to continue' },
   brand: {
     eyebrow: '// For brands',
     title: "I'm a brand.",
@@ -83,14 +87,15 @@ export const formCopy = {
       cta: 'Done',
     },
   },
+  // Login is UI-only until the dashboards exist: nothing is sent or stored.
   login: {
     eyebrow: '// Welcome back',
     title: 'Log in',
-    intro: 'Dashboards for brands and creators open soon. Drop your email and we will send a magic link when they do.',
+    intro: 'Dashboards for brands and creators open soon.',
     email: 'Email',
     placeholder: 'you@email.com',
-    submit: 'Send magic link',
-    success: { title: 'Check your inbox.', body: 'Dashboards are on the way. We will email you the moment yours is ready.', cta: 'Done' },
+    submit: 'Continue',
+    success: { title: 'Not open yet.', body: `Dashboards are still being built, so there is nothing to log in to. Questions? Email ${site.email}.`, cta: 'Done' },
     note: 'No password needed.',
   },
   pages: {

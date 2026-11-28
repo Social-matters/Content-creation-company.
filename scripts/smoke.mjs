@@ -12,6 +12,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const base = process.env.BASE_URL ?? 'http://localhost:3000';
+/** With a real key in .env.local, submitting would email the team a fake lead: skip unless SMOKE_SEND=1. */
+const envFile = path.resolve(import.meta.dirname, '../.env.local');
+const hasRealKey = fs.existsSync(envFile) && /^[ \t]*RESEND_API_KEY[ \t]*=[ \t]*[^\s#]/m.test(fs.readFileSync(envFile, 'utf8'));
+const maySend = !hasRealKey || process.env.SMOKE_SEND === '1';
 const out = path.resolve(import.meta.dirname, '../shots/smoke');
 fs.mkdirSync(out, { recursive: true });
 const shot = (page, name) => page.screenshot({ path: path.join(out, `${name}.png`) });
@@ -68,11 +72,14 @@ const errors = [];
   await dialog.getByLabel('Category').selectOption('Food & Beverage');
   await dialog.getByLabel('City').fill('Mumbai');
   await dialog.getByLabel('Tell us about your brand').fill('Cold brew in cans, launching in two cities.');
-  await dialog.getByRole('button', { name: /apply as a brand/i }).click();
-  const success = dialog.getByRole('status');
-  await success.waitFor({ timeout: 10000 }).catch(() => {});
-  await page.waitForTimeout(900);
-  check('valid brand lead submits and shows success', await success.isVisible().catch(() => false));
+  await dialog.getByRole('checkbox', { name: /by submitting/i }).check();
+  if (maySend) {
+    await dialog.getByRole('button', { name: /apply as a brand/i }).click();
+    const success = dialog.getByRole('status');
+    await success.waitFor({ timeout: 20000 }).catch(() => {});
+    await page.waitForTimeout(900);
+    check('valid brand lead submits and shows success', await success.isVisible().catch(() => false));
+  } else console.log('- brand lead submission skipped: .env.local has a Resend key (SMOKE_SEND=1 sends a real test email; pnpm test:forms uses a mock)');
   await shot(page, 'modal-success');
   await page.keyboard.press('Escape');
   await page.waitForTimeout(600);

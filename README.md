@@ -11,7 +11,7 @@ Requirements: Node 20+ (24 tested), pnpm 10+, ffmpeg (only for `pnpm assets`).
 
 ```bash
 pnpm install
-cp .env.example .env.local     # optional: PEXELS_API_KEY, RESEND_API_KEY
+cp .env.example .env.local     # form email settings (see "Form emails"); without a key, dev only logs submissions
 pnpm dev                       # http://localhost:3000
 ```
 
@@ -20,13 +20,18 @@ pnpm dev                       # http://localhost:3000
 | `pnpm dev` / `build` / `start` | Next.js dev server / production build / serve the build |
 | `pnpm lint` · `pnpm typecheck` | ESLint · route typegen + `tsc --noEmit` |
 | `pnpm shots [route…] [--w=1440,768,390] [--entrance] [--reduced]` | Scrolls routes in Playwright, saves screenshots to `shots/`, prints console errors |
-| `pnpm smoke` | Interaction test: entrance, modal, validation, lead submit, Esc, route wipe, Flip toggle, mobile menu, FAQ, skip link, reduced motion |
+| `pnpm smoke` | Interaction test: entrance, modal, validation, lead submit, Esc, route wipe, Flip toggle, mobile menu, FAQ, skip link, reduced motion, v2. Skips the submit if `.env.local` has a key (`SMOKE_SEND=1` sends it) |
+| `pnpm test:forms` | Builds, then submits every form against a mock Resend server and checks each email. Never sends real mail |
+| `pnpm logos [dir]` | Processes client logos from `.incoming/client-logos/` into `public/brand/clients/` + `src/content/clients.ts` |
 | `pnpm assets [slot] [--force]` | Downloads + compresses media into `public/media/` (ffmpeg) |
 | `pnpm assets:doc` | Regenerates `ASSETS.md` from the asset sources |
 | `pnpm check:content` | Fails while placeholder content remains (use in CI before production) |
 
 `pnpm shots` / `pnpm smoke` need a running server (`BASE_URL`, default `http://localhost:3000`) and Playwright's
 Chromium (`npx playwright install chromium`). On Git Bash for Windows prefix route args with `MSYS_NO_PATHCONV=1`.
+
+> `pnpm start` is a production server: it needs the three email variables below, or every request fails with a
+> configuration error.
 
 > **Dev-server quirk:** if a page shows a hydration mismatch right after you edited a client component,
 > restart `pnpm dev` (stale server bundle). Production builds are unaffected.
@@ -54,7 +59,8 @@ src/
                              Video, PhoneFrame, Modal, Cursor, Magnetic, Reveal, Icon, TLink
     brand/                   Logo (traced SVG), LogoMark (C³ arc glyph)
   content/                   ALL copy + the assets manifest (edit these, not components)
-  lib/                       gsap.ts, motion.ts (motion tokens), tokens.ts, schemas.ts (Zod), leads.ts, defer.ts
+  lib/                       gsap.ts, motion.ts (motion tokens), tokens.ts, schemas.ts (Zod), leads.ts, email/,
+                             rate-limit.ts, lead-context.ts (page + UTM), defer.ts
   styles/tokens.css          design tokens (mirrored by lib/tokens.ts)
 scripts/                     fetch-assets, asset-sources, assets-doc, shots, smoke, check-content
 docs/                        reference-notes, decisions, TODO-real-content
@@ -97,16 +103,59 @@ To use your own footage, change the slot in `scripts/asset-sources.mjs`:
 then `pnpm assets --force hero && pnpm assets:doc`. File names don't change, so no code edits.
 `provider: 'pexels'` with a `query` works once `PEXELS_API_KEY` is set. Licences are tracked in `ASSETS.md`.
 
-## Leads
+## Form emails
 
-Forms validate with Zod on both client and server (`src/lib/schemas.ts`), include a honeypot, and submit through
-the `submitLead` server action to `src/lib/leads.ts`:
+Every form is emailed to the CCC team through [Resend](https://resend.com), from a Server Action only: brand
+application, influencer / creator application, celebrity enquiry, model shoot enquiry, contact message and
+early-access signup (the v1 forms use the same pipeline). The login box is UI only and sends nothing.
 
-- `RESEND_API_KEY` set → emailed to `LEADS_TO_EMAIL` via Resend
-- development → appended to `.leads/leads.jsonl` (+ console)
-- otherwise → structured `console.info('[lead]', …)` (visible in Vercel logs)
+### Setup
 
-Add a database adapter by implementing `LeadAdapter.save` in `leads.ts`.
+1. **Create a Resend account** at resend.com. For first tests, sign up with the same address that should receive
+   the leads (see step 4).
+2. **Verify your sending domain:** Resend dashboard → *Domains* → *Add domain* → enter the domain (for example
+   `contentcreationcompany.in`). Resend shows the DNS records to add (an MX and a TXT record for SPF, a TXT record
+   for DKIM, and an optional DMARC record). Add exactly those at your DNS provider, then press *Verify*. DNS can take
+   from a few minutes to a day or two.
+3. **Create an API key:** *API Keys* → *Create API key*, permission *Sending access*. Copy it once.
+4. **Fill in `.env.local`** (project root, git-ignored). Never paste the key into a chat, an issue or a source file.
+
+   | Variable | Value |
+   |---|---|
+   | `RESEND_API_KEY` | the key from step 3 |
+   | `LEADS_TO_EMAIL` | inbox that receives every submission |
+   | `LEADS_FROM_EMAIL` | `CCC Website <leads@your-verified-domain>`; until then `CCC Website <onboarding@resend.dev>` |
+   | `SEND_CONFIRMATION_EMAIL` | `true` also emails the sender a short thank-you. Leave `false` until the domain is verified |
+
+   **Until your domain is verified, Resend's test sender (`onboarding@resend.dev`) can only deliver to the email
+   address your Resend account was created with.** Sending to any other inbox fails, and the form shows its error.
+
+### Real test send
+
+1. Save `.env.local` with the key, then (re)start `pnpm dev`.
+2. Open `http://localhost:3000/v2/contact`, send a message, and check the inbox (and spam). Hit *Reply*: it should
+   address the email you typed into the form.
+3. If the form shows an error, the terminal running `pnpm dev` prints Resend's reason (`[lead] delivery failed`).
+4. Open the email in Gmail and in Outlook to confirm it renders well in both.
+
+### Behaviour
+
+| Situation | What happens |
+|---|---|
+| Development, no `RESEND_API_KEY` | Submission is printed to the terminal with a warning that **no email was sent**; the form shows success |
+| Production, any of the three variables missing | Clear `Email configuration error` at server start; every request fails until fixed |
+| Resend rejects or times out | Full error logged on the server; the visitor sees a friendly message and keeps what they typed |
+| More than 5 submissions from one IP in 10 minutes | Refused with a "wait a few minutes" message |
+| Honeypot field filled | Pretends to succeed, sends nothing |
+
+- **Same validation twice:** each form has its own `kind` in `src/lib/schemas.ts`; the browser and the server
+  action run the same schema. A consent tick is required.
+- **Email:** `src/lib/email/template.ts` (branded HTML + plain text, inline logo, all user text escaped, subjects
+  stripped of control characters, Reply-To = sender). Includes every field, the form name, page, IST time and UTM tags.
+- **Rate limit:** `src/lib/rate-limit.ts` is in memory, per server instance. Move it to Upstash (or similar) before
+  heavy traffic. It trusts `x-real-ip` / `x-forwarded-for`, which Vercel sets itself.
+- **Another destination** (database, CRM): implement `LeadAdapter.save` in `src/lib/leads.ts`; it must throw unless
+  delivery is confirmed.
 
 ## Motion system
 
@@ -118,7 +167,7 @@ initialise lazily (`lib/defer.ts`) to keep hydration light. See `CLAUDE.md` for 
 ## Deploy (Vercel)
 
 Zero-config Next.js on Vercel; `vercel.json` pins the Mumbai region (`bom1`) for India-first latency.
-Set `RESEND_API_KEY` and `LEADS_TO_EMAIL` in the Vercel project. Add `pnpm check:content` to the production
+**Before deploying**, add `RESEND_API_KEY`, `LEADS_TO_EMAIL` and `LEADS_FROM_EMAIL` in the Vercel project (*Settings → Environment Variables*, for Production and Preview). Without them the deployed server raises the configuration error. Add `pnpm check:content` to the production
 build step (or CI) to block deploys while placeholders remain.
 
 ## How Phase 2 and Phase 3 plug in

@@ -14,23 +14,27 @@ export type LegalDoc = {
 export const privacy: LegalDoc = {
   title: 'Privacy policy',
   description: 'How Content Creation Company collects, uses and protects your personal data.',
-  updated: '26 November 2026',
+  updated: '28 November 2026',
   intro: 'This policy explains what personal data Content Creation Company ("CCC", "we") collects through this website, why, and the choices you have.',
   sections: [
     {
       heading: 'What we collect',
       body: [
-        'When you apply as a brand or creator, or ask for a login link, we collect what you type into the form: name, brand name, email, phone number, city, category or niche, Instagram handle, follower range, languages and any description you add.',
+        'When you send a brand application, an influencer or creator application, a celebrity or model shoot enquiry, a contact message or an early-access signup, we collect what you type into the form: for example your name, brand name, email, phone number, city, category or niche, Instagram handle, follower range, languages, budget, timeline, your base rate and any message you add.',
+        'With each submission we also record the page it was sent from and any campaign tags (UTM) in the link that brought you here. We briefly use your IP address to limit spam.',
         'We also collect basic technical data (browser type, pages visited) to keep the site secure and working.',
       ],
     },
     {
       heading: 'Why we use it',
-      body: ['To review your application, contact you about early access, match brands with creators, and improve the service. We do not sell your personal data.'],
+      body: [
+        'Each submission is emailed to the CCC team, who use it to respond to you, match brands with influencers and creators, and prepare quotes. We also use it to tell you about early access and to improve the service. We do not sell your personal data.',
+        'Creator rates are used only by CCC, for matching and quoting.',
+      ],
     },
     {
       heading: 'Who we share it with',
-      body: ['Service providers that help us run the site and send email, under contracts that protect your data. Brands and creators only see each other’s details once both sides agree to work together.'],
+      body: ['Service providers that help us run the site and deliver email (including Resend, which sends form submissions to our inbox), under contracts that protect your data. Brands and creators only see each other’s details once both sides agree to work together.'],
     },
     {
       heading: 'How long we keep it',

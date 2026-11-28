@@ -19,7 +19,7 @@ export default function ContactPageV2() {
           {site.email}
         </a>
       </PageHeroV2>
-      <ContactTabs />
+      <ContactTabs withMessage />
     </>
   );
 }

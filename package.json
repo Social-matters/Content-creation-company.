@@ -13,6 +13,7 @@
     "smoke": "node scripts/smoke.mjs",
     "assets:doc": "node scripts/assets-doc.mjs",
     "logos": "node scripts/process-logos.mjs",
+    "test:forms": "next build && node scripts/test-forms.mjs",
     "check:content": "node scripts/check-content.mjs"
   },
   "dependencies": {
@@ -26,6 +27,7 @@
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-hook-form": "^7.92.0",
+    "resend": "^6.40.1",
     "server-only": "^0.0.1",
     "zod": "^4.6.7"
   },

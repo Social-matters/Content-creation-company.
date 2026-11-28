@@ -29,6 +29,15 @@ export const talentTypes = [
   { value: 'model', label: 'Model' },
 ] as const;
 
+// CONFIRM: rate units offered to influencers, creators and models
+export const priceUnits = [
+  { value: 'per reel', label: 'Per reel' },
+  { value: 'per post', label: 'Per post' },
+  { value: 'per story', label: 'Per story' },
+  { value: 'per day', label: 'Per shoot day' },
+  { value: 'per campaign', label: 'Per campaign' },
+] as const;
+
 export const formCopyV2 = {
   brand: {
     needs: 'What do you need?',
@@ -40,6 +49,29 @@ export const formCopyV2 = {
     title: 'Join our influencer network.',
     intro: 'Influencers, creators and models. Paid briefs from brands that fit your audience; we handle contracts and payments.',
     type: 'I am a',
+    basePrice: 'Your base rate (₹)',
+    basePricePlaceholder: '5000',
+    priceUnit: 'Rate is',
+    priceNote: 'Only CCC sees your rate. We use it for matching and quoting.',
     submit: 'Apply to join',
   },
+  contact: {
+    eyebrow: '// Contact',
+    title: 'Send a message.',
+    intro: 'Brands, influencers, investors, venues or press: tell us what you need.',
+    fields: { name: 'Your name', email: 'Email', message: 'Message' },
+    placeholders: { name: 'Aditi Sharma', email: 'you@email.com', message: 'What can we help with?' },
+    submit: 'Send message',
+    success: { title: 'Message sent.', body: 'We reply within 24 hours.', cta: 'Done' },
+  },
+  earlyAccess: {
+    eyebrow: '// Early access',
+    title: 'Get early access.',
+    intro: 'Leave your email and we will tell you when dashboards open.',
+    email: 'Email',
+    placeholder: 'you@email.com',
+    submit: 'Join the list',
+    success: { title: "You're on the list.", body: 'We will email you when early access opens.', cta: 'Done' },
+  },
+  contactTabs: ['Send a message', "I'm a brand", 'Join the network'],
 } as const;

@@ -69,6 +69,16 @@ v2 copy lives in `src/content/v2/`. Same rules: everything below is invented or 
 - `set-1`, `set-2`: behind-the-scenes set footage standing in for celebrity / TV work. Replace with licensed talent imagery when available.
 - `model-1`, `model-2`: stock model shoots. Replace with CCC's own shoots.
 
+## Forms and email (before launch)
+
+- [ ] **Resend:** verify the sending domain, then set `LEADS_FROM_EMAIL` to an address on it (README → "Form emails").
+- [ ] **Vercel:** add `RESEND_API_KEY`, `LEADS_TO_EMAIL`, `LEADS_FROM_EMAIL` **before** deploying this version.
+- [ ] **Real test:** send one form and check the email in Gmail and Outlook (only browser rendering has been checked so far).
+- [ ] **Rate unit options** on the influencer form: `src/content/v2/forms.ts` → `priceUnits`.
+- [ ] **Privacy policy** was updated for emailed submissions, Resend, UTM/page capture and creator rates: include it in the legal review.
+- [ ] **Early-access and contact copy:** `src/content/v2/forms.ts`.
+- [ ] Move the rate limit to Upstash or similar before heavy traffic.
+
 ## Media (temporary stock → CCC's own content)
 
 All 45 media slots are royalty-free Mixkit stock (see `ASSETS.md`). Replace with CCC's own shoots:

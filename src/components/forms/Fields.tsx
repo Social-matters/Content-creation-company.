@@ -4,6 +4,7 @@ import { forwardRef, useId, type InputHTMLAttributes, type ReactNode, type Selec
 import type { UseFormRegisterReturn } from 'react-hook-form';
 import { cn } from '@/lib/cn';
 import { formCopy } from '@/content/forms';
+import { useSiteVersion, withBase } from '@/lib/site-version';
 
 const control =
   'w-full rounded-2xl border-2 border-black bg-white px-4 py-3.5 text-[1rem] text-ink placeholder:text-stone-dark/80 outline-none transition-[box-shadow,transform] duration-200 focus:-translate-x-0.5 focus:-translate-y-0.5 focus:shadow-[4px_4px_0_0_var(--ccc-orange)] aria-[invalid=true]:border-[#c2410c]';
@@ -127,3 +128,29 @@ export function ChipGroupField({
     </fieldset>
   );
 }
+
+/** Required consent line under every lead form. The policy opens in a new tab so typed details survive. */
+export const ConsentField = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement> & { error?: string; className?: string }>(function ConsentField({ error, className, ...props }, ref) {
+  const id = useId();
+  const errId = `${id}-err`;
+  const href = withBase(useSiteVersion().base, formCopy.consent.href);
+  return (
+    <div className={cn('flex flex-col gap-2', className)}>
+      <div className="flex items-start gap-3">
+        <input ref={ref} id={id} type="checkbox" required aria-invalid={!!error} aria-describedby={error ? errId : undefined} className="mt-0.5 size-5 shrink-0 cursor-pointer appearance-none rounded-[5px] border-2 border-black bg-white bg-center bg-no-repeat checked:bg-orange checked:bg-[url(/brand/tick.svg)] aria-[invalid=true]:border-[#c2410c]" {...props} />
+        <label htmlFor={id} className="cursor-pointer text-sm leading-snug text-ink/80">
+          {formCopy.consent.before}{' '}
+          <a href={href} target="_blank" rel="noopener" className="font-semibold text-ink underline decoration-orange decoration-2 underline-offset-2 hover:text-orange-text">
+            {formCopy.consent.link}
+          </a>
+          {formCopy.consent.after}
+        </label>
+      </div>
+      {error && (
+        <p id={errId} role="alert" className="text-[0.85rem] font-medium text-[#c2410c]">
+          {error}
+        </p>
+      )}
+    </div>
+  );
+});
