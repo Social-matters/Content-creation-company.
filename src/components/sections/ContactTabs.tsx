@@ -1,29 +1,54 @@
 'use client';
 
 import { AnimatePresence, motion } from 'motion/react';
-import { useRef, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { uiEase, uiSpring } from '@/lib/motion';
 import { cn } from '@/lib/cn';
 import { contact } from '@/content/pages';
 import { useRevealChildren } from '@/components/ui/Reveal';
 import { BrandForm, ContactForm, CreatorForm } from '@/components/forms/LeadForms';
-import { formCopyV2 } from '@/content/v2/forms';
+import { brandNeeds, formCopyV2, serviceNeeds } from '@/content/v2/forms';
 import { Eyebrow } from '@/components/ui/Badge';
 
-/** Tabbed forms: a message, a brand application and the network application. */
+/** Tab order matches `formCopyV2.contactTabs`. `?apply=` picks one. */
+const TAB = { message: 0, brand: 1, creator: 2 } as const;
+type Need = (typeof brandNeeds)[number]['value'];
+
+/** Tells the tabs what the link asked for. Its own Suspense boundary keeps the page prerendered. */
+function FromLink({ onLink }: { onLink: (apply: string | null, service: string | null) => void }) {
+  const params = useSearchParams();
+  const apply = params.get('apply');
+  const service = params.get('service');
+  useEffect(() => onLink(apply, service), [apply, service, onLink]);
+  return null;
+}
+
+/** Tabbed forms: a message, a brand application and the network application (open by default). */
 export function ContactTabs() {
   const tabs = formCopyV2.contactTabs;
+  const [tab, setTab] = useState<number>(TAB.creator);
+  const [need, setNeed] = useState<Need>();
+  const onLink = useCallback((apply: string | null, service: string | null) => {
+    const wanted = service ? serviceNeeds[service as keyof typeof serviceNeeds] : undefined;
+    if (wanted) {
+      setNeed(wanted);
+      setTab(TAB.brand);
+    } else if (apply && apply in TAB) setTab(TAB[apply as keyof typeof TAB]);
+  }, []);
   const forms = [
     <ContactForm key="message" titleId="contact-message" />,
-    <BrandForm key="brand" titleId="contact-brand" />,
+    <BrandForm key={`brand-${need ?? ''}`} titleId="contact-brand" need={need} />,
     <CreatorForm key="creator" titleId="contact-creator" />,
   ];
-  const [tab, setTab] = useState(0);
   const root = useRef<HTMLElement>(null);
   useRevealChildren(root);
 
   return (
     <section ref={root} className="bg-cream py-[var(--section-y)] text-ink">
+      <Suspense fallback={null}>
+        <FromLink onLink={onLink} />
+      </Suspense>
       <div className="container-x">
         <div data-reveal className="mx-auto max-w-[54rem]">
           <Eyebrow tone="light">{`// ${contact.tabsLabel}`}</Eyebrow>

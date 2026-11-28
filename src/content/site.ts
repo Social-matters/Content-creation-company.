@@ -26,6 +26,9 @@ export const nav = {
   skip: 'Skip to content',
 } as const;
 
+/** The one place people apply: the top of the contact page. Every apply link points here. */
+export const joinSection = { id: 'join-the-network', href: '/contact#join-the-network' } as const;
+
 export const joinNetwork = { label: 'Join our influencer network', modal: 'creator' } satisfies Cta;
 
 export const socials = [
@@ -55,7 +58,7 @@ export const footer = {
       links: [
         { label: 'About', href: '/about' },
         { label: 'Contact', href: '/contact' },
-        { label: 'Start a campaign', href: '/start-a-campaign' },
+        { label: 'Start a campaign', href: '/contact?apply=brand#join-the-network' },
       ],
     },
     {

@@ -98,14 +98,15 @@ function SubmitRow({ pending, failure, label, icon = 'send', consent }: { pendin
 }
 
 /** Brand application, also used for the celebrity and model shoot enquiries. */
-export function BrandForm({ titleId, onDone, enquiry }: FormProps & { enquiry?: EnquiryKind }) {
+export function BrandForm({ titleId, onDone, enquiry, need }: FormProps & { enquiry?: EnquiryKind; /** Pre-ticked in "What do you need?". */ need?: string }) {
   const c = formCopy.brand;
   const preset = enquiry ? ENQUIRY[enquiry] : null;
   const kind = enquiry ?? 'brand';
   const schema = preset?.schema ?? brandSchema;
+  const ticked = preset?.need ?? need;
   const { register, handleSubmit, setError, formState } = useForm<BrandFormInput>({
     resolver: resolve<BrandFormInput>(schema),
-    defaultValues: { kind, consent: false, ...(preset ? { needs: [preset.need] } : {}) },
+    defaultValues: { kind, consent: false, ...(ticked ? { needs: [ticked] } : {}) },
   });
   const { done, failure, pending, submit } = useSubmit(setError);
   const e = formState.errors;

@@ -4,6 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { createContext, useCallback, useContext, useEffect, useRef, type ReactNode } from 'react';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { mq } from '@/lib/motion';
+import { focusSectionHeading } from '@/lib/focus-section';
 import { useSmoothScroll } from './SmoothScroll';
 import { LogoMark } from '@/components/brand/LogoMark';
 
@@ -23,12 +24,22 @@ export function PageTransitionProvider({ children }: { children: ReactNode }) {
   const panel = useRef<HTMLDivElement>(null);
   const pending = useRef<{ path: string; hash: string } | null>(null);
 
+  const arrive = useCallback(
+    (hash: string) => {
+      scrollTo(hash, { offset: NAV_OFFSET });
+      focusSectionHeading(hash.slice(1));
+    },
+    [scrollTo],
+  );
+
   const navigate = useCallback(
     (href: string) => {
       const url = new URL(href, window.location.href);
       if (url.pathname === window.location.pathname) {
-        if (url.hash) scrollTo(url.hash, { offset: NAV_OFFSET });
-        else scrollTo(0);
+        // A new query (which form to open) has to reach the URL; a bare anchor only scrolls.
+        if (url.search && url.search !== window.location.search) router.push(href, { scroll: false });
+        // Two frames: the mobile menu has to release the scroll lock first.
+        requestAnimationFrame(() => requestAnimationFrame(() => (url.hash ? arrive(url.hash) : scrollTo(0))));
         return;
       }
       const reduced = window.matchMedia(mq.reduced).matches;
@@ -44,7 +55,7 @@ export function PageTransitionProvider({ children }: { children: ReactNode }) {
         .to(panel.current, { yPercent: 0, duration: 0.6, ease: 'power3.inOut' })
         .add(() => router.push(href, { scroll: false }));
     },
-    [lenis, router, scrollTo],
+    [arrive, lenis, router, scrollTo],
   );
 
   useEffect(() => {
@@ -64,11 +75,11 @@ export function PageTransitionProvider({ children }: { children: ReactNode }) {
         ease: 'power3.inOut',
         onComplete: () => {
           gsap.set(el, { autoAlpha: 0 });
-          if (p.hash) scrollTo(p.hash, { offset: NAV_OFFSET });
+          if (p.hash) arrive(p.hash);
         },
       });
     });
-  }, [pathname, lenis, scrollTo]);
+  }, [pathname, lenis, arrive]);
 
   return (
     <TransitionContext.Provider value={{ navigate }}>

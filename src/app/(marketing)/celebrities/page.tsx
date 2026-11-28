@@ -13,7 +13,7 @@ export default function CelebritiesPage() {
       <PageHeroV2 {...p.hero} size="d1" />
       <NumberedGrid {...p.included} />
       <NumberedGrid {...p.how} tone="dark" />
-      <ApplySection kind="brand" id="enquire" enquiry="celebrity" {...p.enquiry} />
+      <ApplySection id="enquire" enquiry="celebrity" {...p.enquiry} />
     </>
   );
 }

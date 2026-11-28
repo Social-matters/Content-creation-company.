@@ -1,9 +1,10 @@
 'use client';
 
-import { useRef, type ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import { gsap, useGSAP } from '@/lib/gsap';
 import { flow, mq } from '@/lib/motion';
 import { cn } from '@/lib/cn';
+import { focusSectionHeading } from '@/lib/focus-section';
 import type { Cta, Headline as HeadlineContent, MediaSlot } from '@/content/types';
 import { useUI } from '@/components/providers/UIProvider';
 import { Headline } from '@/components/ui/Headline';
@@ -20,6 +21,8 @@ type Props = {
   media?: MediaSlot;
   mobileMedia?: MediaSlot;
   size?: 'd1' | 'd2';
+  /** Makes this hero a link target; its heading takes focus when someone lands on it. */
+  id?: string;
   children?: ReactNode;
 };
 
@@ -27,13 +30,20 @@ type Props = {
  * v2 inner-page hero: content with room around it, media in a frame beside it (if any).
  * Curtain + zoom entrance; on scroll the content drifts up and the film drifts slower.
  */
-export function PageHeroV2({ badge, headline, lead, ctas, media, mobileMedia, size = 'd1', children }: Props) {
+export function PageHeroV2({ badge, headline, lead, ctas, media, mobileMedia, size = 'd1', id, children }: Props) {
   const root = useRef<HTMLElement>(null);
   const frame = useRef<HTMLDivElement>(null);
   const { entranceDone } = useUI();
   /** Stacked layouts: the film paints once 60% of the frame is in view (desktop: at once). */
   const filmShown = useShownOnView(frame);
   useStackedReveal(root, filmShown, '[data-zoom]');
+
+  // A direct visit to the anchor (redirect, shared link). The heading is hidden until the entrance ends.
+  useEffect(() => {
+    if (!id || !entranceDone || window.location.hash !== `#${id}`) return;
+    const frame = requestAnimationFrame(() => focusSectionHeading(id));
+    return () => cancelAnimationFrame(frame);
+  }, [id, entranceDone]);
 
   useGSAP(
     () => {
@@ -66,7 +76,7 @@ export function PageHeroV2({ badge, headline, lead, ctas, media, mobileMedia, si
   );
 
   return (
-    <section ref={root} className="relative isolate overflow-hidden bg-ink text-cream">
+    <section ref={root} id={id} className="relative isolate overflow-hidden bg-ink text-cream">
       <div aria-hidden className="pointer-events-none absolute -left-[15%] top-[10%] -z-10 size-[42rem] bg-[radial-gradient(closest-side,rgb(255_129_42/0.26),transparent)]" />
       <div
         className={cn(
@@ -80,7 +90,7 @@ export function PageHeroV2({ badge, headline, lead, ctas, media, mobileMedia, si
               <Badge tone="glass">{badge}</Badge>
             </div>
           )}
-          <Headline as="h1" lines={headline} size={size} tone="dark" play={entranceDone} delay={0.3} className={media ? 'lg:text-[min(5.4vw,10.5vh)]' : undefined} />
+          <Headline as="h1" lines={headline} size={size} tone="dark" play={entranceDone} delay={0.3} className={media ? 'lg:text-[min(5.4vw,10.5vh)]' : undefined} focusTarget={Boolean(id)} />
           {lead && (
             <p data-in className="text-lead max-w-xl text-cream/75">
               {lead}

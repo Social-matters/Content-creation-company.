@@ -1,7 +1,7 @@
 /** Shared content types. Copy lives in src/content/*.ts; components never hardcode text. */
 
 /** A display headline. Each entry is one authored line; `accent` marks the highlighted word. */
-export type HeadlineLine = string | { before?: string; accent: string; after?: string; style?: AccentStyle };
+export type HeadlineLine = string | { before?: string; accent: string; after?: string; style?: AccentStyle; /** Let a long highlighted phrase take two lines on phones. */ wrap?: boolean };
 export type AccentStyle = 'block' | 'orange' | 'outline';
 export type Headline = readonly HeadlineLine[];
 

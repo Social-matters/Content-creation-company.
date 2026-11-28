@@ -72,4 +72,9 @@ Decisions made without asking (per "decide, note it, continue"). Newest last.
 | 66 | 2026-11-28 | **The site is now indexable**, with canonicals on every page. | Only the preview was `noindex`. Placeholder content must be cleared before launch. |
 | 67 | 2026-11-28 | **`v2` stays in folder, file and export names.** | Renaming would bury the real changes in a very large diff. |
 | 68 | 2026-11-28 | **About's creator card has one button.** Its "See how you earn" link went to a page this design never had. | Dead link. |
+| 69 | 2026-11-28 | **v5 §2: the contact page is the one application page** (owner's choice over moving it to the home page). Heading "Apply to join the network." is a default the owner may change (`pages.ts` → `contact.hero`). The `join-the-network` id is on the heading block at the top of `/contact`. | There was never a section on the home page to move to. |
+| 70 | 2026-11-28 | **`/start-a-campaign` and `/join-as-creator` are removed** and redirect to that section (`?apply=brand` opens the brand form). The footer's "Start a campaign" link points there too. | No separate application page. |
+| 71 | 2026-11-28 | **The form tabs open on "Join the network"** unless the link asks for another (`?apply=message|brand|creator`, or `?service=…`, which also pre-ticks the need). Change `TAB.creator` in `ContactTabs.tsx` to alter the default. | It matches the new heading and the header button. |
+| 72 | 2026-11-28 | **The tilted block wraps to two lines on phones** for this heading only. | "JOIN THE NETWORK." doesn't fit 390px at a readable size on one line. |
+| 73 | 2026-11-28 | **Kept:** the two enquiry forms on Celebrities and Model Shoots, and the "Start a campaign" / "Join our influencer network" pop-ups. | They aren't pages and weren't named in the request. Flagged for the owner. |
 

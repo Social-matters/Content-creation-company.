@@ -35,6 +35,8 @@ type Props = {
    */
   play?: boolean;
   delay?: number;
+  /** Where keyboard focus lands when someone is sent to this section. */
+  focusTarget?: boolean;
 };
 
 /** Display headline with SplitText line-mask reveal and an animated accent word. */
@@ -47,6 +49,7 @@ export function Headline({
   lineClassName,
   play,
   delay = 0,
+  focusTarget,
 }: Props) {
   const ref = useRef<HTMLElement>(null);
 
@@ -66,7 +69,11 @@ export function Headline({
   );
 
   return (
-    <Tag ref={ref} className={cn("font-display", sizes[size], className)}>
+    <Tag
+      ref={ref}
+      className={cn("font-display", sizes[size], className)}
+      {...(focusTarget ? { tabIndex: -1, "data-focus-target": true } : null)}
+    >
       {lines.map((line, i) => (
         <span key={i} className={cn("block", lineClassName?.(i))}>
           <Line line={line} tone={tone} />
@@ -96,6 +103,8 @@ function revealHeadline(
       linesClass: "ccc-line",
       aria: "none",
       autoSplit: true,
+      // Keep a highlighted phrase in one piece, with its block, when it takes two lines.
+      deepSlice: false,
       onSplit(self) {
         const tl = gsap.timeline({ delay, scrollTrigger });
         tl.from(self.lines, {
@@ -126,7 +135,7 @@ function Line({ line, tone }: { line: HeadlineLine; tone: Tone }) {
   return (
     <>
       {line.before}
-      <Accent text={line.accent} style={line.style ?? "orange"} tone={tone} />
+      <Accent text={line.accent} style={line.style ?? "orange"} tone={tone} wrap={line.wrap} />
       {line.after}
     </>
   );
@@ -136,10 +145,12 @@ export function Accent({
   text,
   style,
   tone,
+  wrap,
 }: {
   text: string;
   style: AccentStyle;
   tone: Tone;
+  wrap?: boolean;
 }) {
   if (style === "orange")
     return (
@@ -159,7 +170,7 @@ export function Accent({
       </span>
     );
   }
-  return <TiltedBlock tone={tone}>{text}</TiltedBlock>;
+  return <TiltedBlock tone={tone} wrap={wrap}>{text}</TiltedBlock>;
 }
 
 /**
@@ -169,22 +180,27 @@ export function Accent({
 export function TiltedBlock({
   children,
   tone = "light",
+  wrap,
 }: {
   children: React.ReactNode;
   tone?: Tone;
+  wrap?: boolean;
 }) {
   return (
     <span
       className={cn(
         "relative isolate inline-block whitespace-nowrap px-[0.09em]",
         tone === "dark" ? "text-ink" : "text-orange",
+        wrap && "max-sm:whitespace-normal",
       )}
     >
       <span
         data-accent-bg
         aria-hidden
         className={cn(
-          "absolute inset-x-0 -top-[0.02em] -bottom-[0.06em] -z-10 origin-left -rotate-[2.2deg] border-[0.035em] border-black",
+          "absolute inset-x-0 -top-[0.02em] -z-10 origin-left border-[0.035em] border-black",
+          // A long phrase needs a flatter tilt, or the far end of the block lifts off its letters.
+          wrap ? "-bottom-[0.12em] -rotate-[0.8deg]" : "-bottom-[0.06em] -rotate-[2.2deg]",
           tone === "dark" ? "bg-orange" : "bg-black",
         )}
         style={{

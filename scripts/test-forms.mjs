@@ -127,9 +127,10 @@ const fillEarly = (form, email) => text(form, 'Email', email);
 const CONTROL = new RegExp('[\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029]');
 const CLEAN_BRAND = 'Brew <b>Co</b> Bcc: someone@evil.test';
 
-/** The contact form sits below the fold and fades in on scroll, so scroll to it like a visitor would. */
-async function contactForm(page) {
-  const form = page.locator('#main form').first();
+/** The forms sit below the fold and fade in on scroll, so scroll to the open one like a visitor would. */
+const PANEL = { message: 0, brand: 1, creator: 2 };
+async function contactForm(page, tab = 'message') {
+  const form = page.locator(`#contact-panel-${PANEL[tab]} form`);
   await form.waitFor({ state: 'attached' });
   await form.evaluate((el) => el.scrollIntoView());
   await form.waitFor({ state: 'visible', timeout: 15000 });
@@ -170,15 +171,15 @@ try {
   // ---------- 1. Brand application (arrives with campaign tags, then moves on) ----------
   {
     const { ctx, page } = await visit(app, '/about?utm_source=newsletter&utm_campaign=launch');
-    await page.goto(`${app.url}/start-a-campaign`, { waitUntil: 'networkidle' });
-    const form = page.locator('#main form').first();
+    await page.goto(`${app.url}/contact?apply=brand`, { waitUntil: 'networkidle' });
+    const form = await contactForm(page, 'brand');
     await fillBrand(form, { email: 'Asha@Example.COM', needs: ['Influencer campaign', 'Model shoot'] });
     const m = await submitAndCapture(page, form, /apply as a brand/i, {
       name: 'brand',
       subject: `[CCC] New brand enquiry: ${CLEAN_BRAND} (Influencer campaign, Model shoot)`,
       replyTo: 'asha@example.com',
       includes: ['Name: Asha <i>Rao</i>', 'Email: asha@example.com', 'Phone: +91 9876543210', 'Needs: Influencer campaign, Model shoot', 'Budget: ₹50K – ₹2L', 'Timeline: Within a month', 'Category: Food & Beverage', 'City: Pune', ATTACK, 'Form: Brand application'],
-      page: '/start-a-campaign',
+      page: '/contact',
       sample: 'brand',
     });
     check('brand: attack text arrives escaped', Boolean(m?.html.includes(ATTACK_ESCAPED)));
@@ -201,15 +202,15 @@ try {
 
   // ---------- 4. Influencer application ----------
   {
-    const { ctx, page } = await visit(app, '/join-as-creator');
-    const form = page.locator('#main form').first();
+    const { ctx, page } = await visit(app, '/join-as-creator'); // old address, redirects to the section
+    const form = await contactForm(page, 'creator');
     await fillCreator(form, { email: 'rohan@example.com' });
     await submitAndCapture(page, form, /apply to join/i, {
       name: 'influencer',
       subject: '[CCC] New influencer application: Rohan Mehta, ₹5,000 per reel',
       replyTo: 'rohan@example.com',
       includes: ['I am a: Model', 'Instagram: @rohan.test', 'Niche: Lifestyle', 'Followers: Micro · 10K–100K', 'Base price (internal): ₹5,000', 'Rate unit (internal): per reel', 'Languages: Hindi, English', 'City: Mumbai', 'Base price is internal'],
-      page: '/join-as-creator',
+      page: '/contact',
       sample: 'influencer',
     });
     await ctx.close();
@@ -217,7 +218,7 @@ try {
 
   // ---------- 5. Contact message ----------
   {
-    const { ctx, page } = await visit(app, '/contact');
+    const { ctx, page } = await visit(app, '/contact?apply=message');
     const form = await contactForm(page);
     await text(form, 'Your name', 'Meera Iyer');
     await text(form, 'Email', 'meera@example.com');
@@ -249,7 +250,7 @@ try {
   }
   // ---------- Consent is required ----------
   {
-    const { ctx, page } = await visit(app, '/contact');
+    const { ctx, page } = await visit(app, '/contact?apply=message');
     const form = await contactForm(page);
     await text(form, 'Your name', 'No Consent');
     await text(form, 'Email', 'no@example.com');
@@ -277,7 +278,7 @@ try {
 
   // ---------- Failure keeps the data, then a retry works ----------
   {
-    const { ctx, page } = await visit(app, '/contact');
+    const { ctx, page } = await visit(app, '/contact?apply=message');
     const form = await contactForm(page);
     await text(form, 'Your name', 'Retry Rani');
     await text(form, 'Email', 'retry@example.com');
@@ -300,7 +301,7 @@ try {
 
   // ---------- Honeypot ----------
   {
-    const { ctx, page } = await visit(app, '/contact');
+    const { ctx, page } = await visit(app, '/contact?apply=message');
     const form = await contactForm(page);
     await text(form, 'Your name', 'Spam Bot');
     await text(form, 'Email', 'bot@example.com');
@@ -372,7 +373,7 @@ try {
     await new Promise((r) => web.listen(0, '127.0.0.1', r));
     const sheetEnv = { SHEETS_WEBHOOK_URL: `http://127.0.0.1:${web.address().port}/exec`, SHEETS_WEBHOOK_SECRET: 'test-secret-0123456789' };
     const send = async (server, message) => {
-      const { ctx, page } = await visit(server, '/contact');
+      const { ctx, page } = await visit(server, '/contact?apply=message');
       const form = await contactForm(page);
       await text(form, 'Your name', '=HYPERLINK("http://evil.test","x")');
       await text(form, 'Email', 'sheet@example.com');

@@ -7,6 +7,17 @@ export const brandNeeds = [
   { value: 'content', label: 'Creator content' },
 ] as const;
 
+/** `?service=` on a link pre-ticks the matching need, so the enquiry arrives labelled. */
+export const serviceNeeds = {
+  campaigns: 'influencer',
+  celebrity: 'celebrity',
+  performance: 'influencer',
+  matching: 'influencer',
+  'model-shoots': 'models',
+  visit: 'content',
+  exhibition: 'content',
+} as const satisfies Record<string, (typeof brandNeeds)[number]['value']>;
+
 // PLACEHOLDER: budget bands to confirm with CCC
 export const budgets = [
   { value: 'under-50k', label: 'Under ₹50K' },

@@ -13,7 +13,7 @@ export default function ModelShootsPage() {
       <PageHeroV2 {...p.hero} media={assets.ctaBrand} mobileMedia={assets.models[1]} />
       <NumberedGrid {...p.included} />
       <NumberedGrid {...p.how} tone="dark" />
-      <ApplySection kind="brand" id="enquire" enquiry="model-shoot" {...p.enquiry} />
+      <ApplySection id="enquire" enquiry="model-shoot" {...p.enquiry} />
     </>
   );
 }

@@ -26,6 +26,9 @@ const nextConfig: NextConfig = {
       { source: '/v2/:path*', destination: '/:path*', permanent: true },
       { source: '/creators', destination: '/', permanent: true },
       { source: '/pricing', destination: '/', permanent: false },
+      // No separate application pages: everything lands on the one section.
+      { source: '/start-a-campaign', destination: '/contact?apply=brand#join-the-network', permanent: true },
+      { source: '/join-as-creator', destination: '/contact#join-the-network', permanent: true },
     ];
   },
   async headers() {

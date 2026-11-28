@@ -83,9 +83,6 @@ export const formCopy = {
       cta: 'Done',
     },
   },
-  pages: {
-    brand: { title: 'Start a campaign', description: 'Apply for a founding-brand slot with Content Creation Company.' },
-  },
 } as const;
 
 export const phonePrefix = '+91';

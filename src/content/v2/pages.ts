@@ -85,12 +85,3 @@ export const modelShootsPage = {
     body: 'Tell us what you are shooting and when. We reply within 24 hours.',
   },
 } as const;
-
-export const joinPage = {
-  meta: { title: 'Join our influencer network', description: 'Influencers, creators and models: apply to join the Content Creation Company network.' },
-  hero: {
-    badge: 'Now onboarding influencers',
-    headline: ['Join the', { accent: 'network.', style: 'block' }] satisfies Headline,
-    lead: 'Influencers, creators and models: paid briefs from brands that fit your audience.',
-  },
-} as const;

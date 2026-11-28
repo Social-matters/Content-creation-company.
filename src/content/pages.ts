@@ -33,21 +33,14 @@ export const about = {
   },
 } as const;
 
+/** The contact page is the application page: the heading and the forms under it. */
 export const contact = {
-  meta: { title: 'Contact', description: 'Talk to Content Creation Company: brands, creators, investors, partners, venues and press.' },
+  meta: { title: 'Join the network', description: 'Apply to join the Content Creation Company network, or send us a message. We reply within 24 hours.' },
   hero: {
     badge: 'We reply within 24 hours',
-    headline: ['Want to talk', { before: 'before ', accent: 'applying?', style: 'block' }] satisfies Headline,
-    lead: 'Drop us a line. Investors, partners, venues and press: same address.',
+    headline: ['Apply to', { accent: 'join the network.', style: 'block', wrap: true }] satisfies Headline, // default heading, owner may change it
+    lead: 'Tell us who you are and what you do. We reply within 24 hours.',
   },
-  emailLabel: 'Email us',
-  tabsLabel: 'Or apply directly',
-} as const;
-
-export const applyPages = {
-  brand: {
-    badge: 'Founding-brand slots open',
-    headline: ['Start a', { accent: 'campaign.', style: 'block' }] satisfies Headline,
-    lead: 'Two minutes now saves weeks of DMs later.',
-  },
+  writeFirst: 'Questions first? Investors, partners, venues and press: same address.',
+  tabsLabel: 'Pick your form',
 } as const;

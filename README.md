@@ -44,7 +44,6 @@ src/
     (marketing)/             every public route (shares MarketingShell)
       page.tsx               home
       celebrities/ model-shoots/ about/ contact/ privacy/ terms/
-      start-a-campaign/ join-as-creator/   form pages (same forms as the modals)
       styleguide/            hidden design-system page (noindex)
     (brand)/ (creator)/      reserved for Phase 2 (README only)
     actions.ts               server action: validate + hand lead to the adapter
