@@ -62,4 +62,6 @@ Decisions made without asking (per "decide, note it, continue"). Newest last.
 | 56 | 2026-11-28 | **Rate limit counts valid submissions** (after validation and honeypot), including failed sends. | Protects the email quota without punishing typos. |
 | 57 | 2026-11-28 | **Tests are end-to-end:** production build + a mock Resend API (`RESEND_BASE_URL`), driven by Playwright (`pnpm test:forms`). | Exercises the real SDK, server action and forms with nothing leaving the machine. |
 | 58 | 2026-11-28 | **Consent link opens in a new tab.** | A same-tab visit would close a modal and lose what was typed. |
+| 59 | 2026-11-28 | **v2 header: "Log in" removed; "Start a campaign" became "Apply", linking to `/v2/contact`** (desktop and mobile menu). Hero and in-page "Start a campaign" buttons still open the campaign form. v1 header unchanged. | Owner's request about the header. |
+| 60 | 2026-11-28 | **`Button` keeps link CTAs as links even with a click handler.** | The mobile menu passes `onClose`, which turned a link CTA into a button that went nowhere. |
 

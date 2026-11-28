@@ -40,7 +40,7 @@ export function AudienceToggle({ className, layoutId = 'audience-pill' }: { clas
 
 /**
  * Pill nav. v1: Brands/Creators audience toggle that swaps links and CTA by route.
- * `fixed` (v2): one brand-facing set of links and CTA, no audience toggle.
+ * `fixed` (v2): one brand-facing set of links and CTA, no audience toggle and no login.
  */
 export function Nav({ fixed }: { fixed?: { links: readonly LinkItem[]; cta: Cta } }) {
   const pathname = useLocalPath();
@@ -113,9 +113,11 @@ export function Nav({ fixed }: { fixed?: { links: readonly LinkItem[]; cta: Cta 
           </nav>
 
           <div className="flex flex-1 items-center justify-end gap-2 sm:gap-4">
-            <button data-nav-item type="button" onClick={() => openModal('login')} className="hidden whitespace-nowrap text-[0.92rem] font-medium text-cream/80 transition-colors hover:text-cream md:block">
-              {nav.login}
-            </button>
+            {!fixed && (
+              <button data-nav-item type="button" onClick={() => openModal('login')} className="hidden whitespace-nowrap text-[0.92rem] font-medium text-cream/80 transition-colors hover:text-cream md:block">
+                {nav.login}
+              </button>
+            )}
             <div data-nav-item className="hidden sm:block">
               <Button cta={cta} className="py-1.5 pl-5 text-[0.72rem]" />
             </div>
@@ -133,7 +135,7 @@ export function Nav({ fixed }: { fixed?: { links: readonly LinkItem[]; cta: Cta 
           </div>
         </div>
       </header>
-      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} links={links} cta={cta} audience={!fixed} />
+      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} links={links} cta={cta} audience={!fixed} login={!fixed} />
     </>
   );
 }

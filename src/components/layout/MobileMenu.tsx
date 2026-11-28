@@ -15,10 +15,10 @@ import { Logo } from '@/components/brand/Logo';
 import { AudienceToggle } from './Nav';
 import { SocialLinks } from './SocialLinks';
 
-type Props = { open: boolean; onClose: () => void; links: readonly LinkItem[]; cta: Cta; /** v1 shows the Brands/Creators toggle; v2 shows the logo. */ audience?: boolean };
+type Props = { open: boolean; onClose: () => void; links: readonly LinkItem[]; cta: Cta; /** v1 shows the Brands/Creators toggle; v2 shows the logo. */ audience?: boolean; /** v1 lists "Log in" after the links. */ login?: boolean };
 
 /** Full-screen menu (below lg) with staggered links. Esc closes; scroll is locked while open. */
-export function MobileMenu({ open, onClose, links, cta, audience = true }: Props) {
+export function MobileMenu({ open, onClose, links, cta, audience = true, login = true }: Props) {
   const { lenis } = useSmoothScroll();
   const { openModal } = useUIActions();
   const closeBtn = useRef<HTMLButtonElement>(null);
@@ -68,7 +68,7 @@ export function MobileMenu({ open, onClose, links, cta, audience = true }: Props
             </button>
           </div>
           <nav aria-label="Mobile" className="container-x relative mt-8 flex flex-col">
-            {[...links, { label: nav.login, href: '#login' }].map((l, i) => (
+            {[...links, ...(login ? [{ label: nav.login, href: '#login' }] : [])].map((l, i) => (
               <motion.div
                 key={l.href}
                 className="overflow-hidden border-b border-cream/10"

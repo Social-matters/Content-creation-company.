@@ -70,9 +70,9 @@ export function Button({ cta, variant = 'primary', icon = 'arrow', className, ma
 
   const cls = cn(base, variants[variant], disabled && 'pointer-events-none opacity-60', className);
   let el: ReactNode;
-  if (cta.href && !onClick && type !== 'submit') {
+  if (cta.href && !cta.modal && type !== 'submit') {
     el = (
-      <TLink href={cta.href} className={cls} data-cursor="hide">
+      <TLink href={cta.href} className={cls} data-cursor="hide" onClick={() => onClick?.()}>
         {inner}
       </TLink>
     );

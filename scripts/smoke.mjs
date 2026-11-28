@@ -159,6 +159,9 @@ const errors = [];
   page.on('console', (m) => m.type() === 'error' && !m.text().includes('404') && errors.push(`v2: ${m.text().slice(0, 200)}`));
   await page.goto(base + '/v2', { waitUntil: 'networkidle' });
   await page.waitForTimeout(2200);
+  const bar = page.locator('header');
+  check('v2: no login in the header', (await bar.getByRole('button', { name: 'Log in' }).count()) === 0);
+  check('v2: header Apply links to contact', (await bar.getByRole('link', { name: 'Apply', exact: true }).getAttribute('href')) === '/v2/contact');
   check('v2: hero content visible', (await page.locator('[data-hero-in]').first().evaluate((e) => getComputedStyle(e).opacity)) === '1');
   const hrefs = await page.locator('a[href^="/"]').evaluateAll((as) => as.map((a) => a.getAttribute('href')));
   const stray = hrefs.filter((h) => !h.startsWith('/v2') && !/^\/(_next|media|brand)\//.test(h));
@@ -184,6 +187,25 @@ const errors = [];
   await page.waitForTimeout(1800);
   check('v2: back to home', new URL(page.url()).pathname === '/v2');
   await shot(page, 'v2-how');
+  await ctx.close();
+}
+
+// ---------- v2 mobile menu ----------
+{
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  await ctx.addInitScript(() => sessionStorage.setItem('ccc:entrance-played', '1'));
+  const page = await ctx.newPage();
+  page.on('pageerror', (e) => errors.push(`v2 menu: ${e.message}`));
+  await page.goto(base + '/v2', { waitUntil: 'networkidle' });
+  await page.waitForTimeout(1500);
+  await page.getByRole('button', { name: 'Menu' }).click();
+  await page.waitForTimeout(1200);
+  const menu = page.getByRole('dialog', { name: 'Menu' });
+  check('v2: no login in the mobile menu', (await menu.getByText('Log in').count()) === 0);
+  await menu.getByRole('link', { name: 'Apply', exact: true }).click();
+  await page.waitForURL('**/v2/contact', { timeout: 8000 }).catch(() => {});
+  await page.waitForTimeout(1500);
+  check('v2: mobile Apply opens contact and closes the menu', new URL(page.url()).pathname === '/v2/contact' && (await page.getByRole('dialog', { name: 'Menu' }).count()) === 0);
   await ctx.close();
 }
 

@@ -19,7 +19,7 @@ Quality bar: award-level. Cinematic, smooth, confident, fast. If it feels averag
 - Hero: "Influence. Content. Results." with the tilted block on "Results.".
 
 ### v2 nav rules
-- One brand-facing site: **no Brands/Creators toggle** and no audience-dependent copy. Nav = Influencers · Celebrities · Model Shoots · How it works, then Log in and Start a campaign.
+- One brand-facing site: **no Brands/Creators toggle** and no audience-dependent copy. Nav = Influencers · Celebrities · Model Shoots · How it works, then **Apply** (links to `/contact`). No login in the v2 header or menu (owner's decision).
 - No pricing page and no plans section (owner's decision). Service cards may show a short price line.
 - Influencers, creators and models join through a quiet footer link and the band at the end of the home page ("Join our influencer network"), never the header.
 - `/v2/creators` and `/v2/pricing` redirect to `/v2` (`next.config.ts`).

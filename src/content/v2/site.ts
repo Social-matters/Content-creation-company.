@@ -17,7 +17,7 @@ export const navV2 = {
     { label: 'Model Shoots', href: '/model-shoots' },
     { label: 'How it works', href: '/#how' },
   ] satisfies LinkItem[],
-  cta: { label: 'Start a campaign', modal: 'campaign' } satisfies Cta,
+  cta: { label: 'Apply', href: '/contact' } satisfies Cta,
 };
 
 export const joinNetwork = { label: 'Join our influencer network', modal: 'creator' } satisfies Cta;

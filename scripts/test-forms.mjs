@@ -351,7 +351,7 @@ try {
 
   // ---------- Login is UI-only ----------
   {
-    const { ctx, page } = await visit(app, '/v2');
+    const { ctx, page } = await visit(app, '/'); // only v1 still has a login button
     let posts = 0;
     page.on('request', (r) => r.method() === 'POST' && r.headers()['next-action'] && posts++);
     await page.getByRole('button', { name: 'Log in' }).first().click();
