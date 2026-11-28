@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { MarketingShell } from '@/components/layout/MarketingShell';
-import { v2Meta } from '@/content/v2';
+import { v2Meta } from '@/content/v2/site';
 
 /** v2 design preview: same content, new layout and motion. Not indexed (see v2Meta). */
 export const metadata: Metadata = { robots: v2Meta.robots };

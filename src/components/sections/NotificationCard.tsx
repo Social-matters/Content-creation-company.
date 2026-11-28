@@ -3,7 +3,7 @@ import { cn } from '@/lib/cn';
 import { Icon } from '@/components/ui/Icon';
 import { LogoMark } from '@/components/brand/LogoMark';
 
-type Tone = 'ig' | 'ccc' | 'match';
+export type NotificationTone = 'ig' | 'ccc' | 'match' | 'shoot' | 'star';
 
 /**
  * Per-card float phase for the CSS `.float-loop` animation (compositor-only, no per-frame JS).
@@ -17,7 +17,7 @@ export const floatVars = (i: number) =>
   }) as CSSProperties;
 
 /** Phone-notification card used over hero media. */
-export function NotificationCard({ app, time, text, tone, className }: { app: string; time: string; text: string; tone: Tone; className?: string }) {
+export function NotificationCard({ app, time, text, tone, className }: { app: string; time: string; text: string; tone: NotificationTone; className?: string }) {
   return (
     <div
       className={cn(
@@ -31,9 +31,10 @@ export function NotificationCard({ app, time, text, tone, className }: { app: st
           tone === 'ig' && 'bg-[radial-gradient(circle_at_30%_110%,#ffd776_0%,#f9813a_25%,#e0295f_55%,#9b2ec5_85%)] text-white',
           tone === 'ccc' && 'bg-orange text-ink',
           tone === 'match' && 'bg-cream text-ink',
+          (tone === 'shoot' || tone === 'star') && 'bg-ink-3 text-orange',
         )}
       >
-        {tone === 'ig' ? <Icon name="instagram" size={22} /> : tone === 'ccc' ? <LogoMark className="size-7" strokeWidth={10} /> : <Icon name="sparkle" size={20} />}
+        {tone === 'ig' ? <Icon name="instagram" size={22} /> : tone === 'ccc' ? <LogoMark className="size-7" strokeWidth={10} /> : <Icon name={tone === 'shoot' ? 'calendar' : tone === 'star' ? 'star' : 'sparkle'} size={20} />}
       </span>
       <span className="flex min-w-0 flex-1 flex-col">
         <span className="flex items-center justify-between gap-3 text-[0.82rem]">

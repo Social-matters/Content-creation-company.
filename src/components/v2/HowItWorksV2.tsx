@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { gsap, ScrollTrigger, useGSAP } from '@/lib/gsap';
 import { mq } from '@/lib/motion';
 import { howItWorks } from '@/content/home';
-import { howV2 } from '@/content/v2';
+import { howV2 } from '@/content/v2/home';
 import { PhoneFrame } from '@/components/ui/PhoneFrame';
 import { Icon, type IconName } from '@/components/ui/Icon';
 import { Eyebrow } from '@/components/ui/Badge';

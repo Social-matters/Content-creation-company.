@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { gsap, useGSAP } from '@/lib/gsap';
 import { flow, mq } from '@/lib/motion';
 import { proof } from '@/content/home';
-import { proofV2 } from '@/content/v2';
+import { proofV2 } from '@/content/v2/home';
 import { assets } from '@/content/assets';
 import type { Headline as HeadlineContent } from '@/content/types';
 import { Eyebrow } from '@/components/ui/Badge';

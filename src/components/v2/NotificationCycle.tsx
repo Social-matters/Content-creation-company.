@@ -3,9 +3,9 @@
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { uiEase } from '@/lib/motion';
-import { NotificationCard } from '@/components/sections/NotificationCard';
+import { NotificationCard, type NotificationTone } from '@/components/sections/NotificationCard';
 
-type Item = { app: string; time: string; text: string; tone: 'ig' | 'ccc' | 'match' };
+type Item = { app: string; time: string; text: string; tone: NotificationTone };
 
 /** One notification at a time, softly replaced every few seconds (pauses under reduced motion). */
 export function NotificationCycle({ items, className, interval = 3800, play = true }: { items: readonly Item[]; className?: string; interval?: number; play?: boolean }) {

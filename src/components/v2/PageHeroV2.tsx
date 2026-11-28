@@ -10,6 +10,7 @@ import { Headline } from '@/components/ui/Headline';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Video } from '@/components/ui/Video';
+import type { NotificationTone } from '@/components/sections/NotificationCard';
 import { NotificationCycle } from './NotificationCycle';
 
 type Props = {
@@ -19,7 +20,7 @@ type Props = {
   ctas?: readonly Cta[];
   media?: MediaSlot;
   mobileMedia?: MediaSlot;
-  notifications?: readonly { app: string; time: string; text: string; tone: 'ig' | 'ccc' | 'match' }[];
+  notifications?: readonly { app: string; time: string; text: string; tone: NotificationTone }[];
   size?: 'd1' | 'd2';
   children?: ReactNode;
 };

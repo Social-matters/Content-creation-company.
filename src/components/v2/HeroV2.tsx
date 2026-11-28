@@ -4,8 +4,7 @@ import Image from 'next/image';
 import { useRef, type CSSProperties } from 'react';
 import { gsap, useGSAP } from '@/lib/gsap';
 import { flow, mq } from '@/lib/motion';
-import { hero } from '@/content/home';
-import { heroV2 } from '@/content/v2';
+import { heroV2 as hero } from '@/content/v2/home';
 import { assets } from '@/content/assets';
 import { useUI } from '@/components/providers/UIProvider';
 import { Headline } from '@/components/ui/Headline';
@@ -13,7 +12,6 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Counter } from '@/components/ui/Counter';
 import { Video } from '@/components/ui/Video';
-import { TLink } from '@/components/ui/TLink';
 import { FlowWords } from './flow';
 import { NotificationCycle } from './NotificationCycle';
 
@@ -114,24 +112,18 @@ export function HeroV2() {
           </div>
           <Headline as="h1" lines={hero.headline} size="d1" tone="dark" play={entranceDone} delay={0.35} className="mt-8 lg:mt-10 lg:text-[min(6.5vw,11.5vh)]" />
           <p data-hero-in className="text-lead mt-8 max-w-[30rem] text-cream/75 lg:mt-10">
-            {hero.lead}
+            {hero.sub}
           </p>
           <div data-hero-in className="mt-9 flex flex-wrap gap-3 lg:mt-11">
             <Button cta={hero.ctas[0]} />
             <Button cta={hero.ctas[1]} variant="outline-dark" icon="calendar" />
           </div>
-          <p data-hero-in className="mt-7 text-[0.95rem] text-cream/55">
-            {hero.creatorLink.prefix}{' '}
-            <TLink href={hero.creatorLink.href} className="font-semibold text-cream underline decoration-orange decoration-2 underline-offset-4 transition-colors hover:text-orange">
-              {hero.creatorLink.label}
-            </TLink>
-          </p>
         </div>
         <div data-hero-in aria-hidden className="absolute bottom-9 left-[var(--gutter)] hidden items-center gap-3 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-cream/60 lg:flex">
           <span className="relative h-9 w-px overflow-hidden bg-cream/15">
             <span className="scroll-cue absolute inset-x-0 top-0 h-1/2 bg-orange" />
           </span>
-          {heroV2.scroll}
+          {hero.scroll}
         </div>
       </div>
 
@@ -161,7 +153,7 @@ export function HeroV2() {
               </span>
               <span className="flex items-baseline gap-1.5">
                 <Counter value={hero.stat.value} suffix={hero.stat.suffix} play={entranceDone} delay={1.3} className="font-display text-[1.05rem]" />
-                <span className="text-[0.8rem] text-cream/65">{heroV2.statLabel}</span>
+                <span className="text-[0.8rem] text-cream/65">{hero.stat.label}</span>
               </span>
             </div>
             <div data-pop className="absolute -bottom-7 left-4 sm:left-6 lg:-left-16 lg:bottom-[14%]" aria-hidden>
@@ -176,7 +168,7 @@ export function HeroV2() {
       {/* Desktop manifesto over the opened film (driven by the scroll scene). */}
       <div data-manifesto className="pointer-events-none invisible absolute inset-0 z-20 hidden items-center lg:flex motion-reduce:!hidden">
         <div className="container-x">
-          <FlowWords driven text={heroV2.manifesto} className="max-w-[62rem] font-display text-[clamp(2.2rem,4.4vw,4.6rem)] leading-[0.98] text-cream" />
+          <FlowWords driven text={hero.manifesto} className="max-w-[62rem] font-display text-[clamp(2.2rem,4.4vw,4.6rem)] leading-[0.98] text-cream" />
         </div>
       </div>
 
@@ -186,7 +178,7 @@ export function HeroV2() {
     {/* Phones (and reduced motion on desktop): the manifesto as its own block. */}
     <div className="bg-ink text-cream lg:hidden lg:motion-reduce:block">
       <div className="container-x pb-28 pt-4 lg:py-[var(--section-y)]">
-        <FlowWords text={heroV2.manifesto} className="max-w-[62rem] font-display text-[clamp(1.8rem,6.4vw,4.2rem)] leading-[1] text-cream" />
+        <FlowWords text={hero.manifesto} className="max-w-[62rem] font-display text-[clamp(1.8rem,6.4vw,4.2rem)] leading-[1] text-cream" />
       </div>
     </div>
     </>
