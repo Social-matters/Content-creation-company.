@@ -5,14 +5,12 @@ import { useRef, useState } from 'react';
 import { uiEase, uiSpring } from '@/lib/motion';
 import { cn } from '@/lib/cn';
 import { contact } from '@/content/pages';
-import { site } from '@/content/site';
 import { useRevealChildren } from '@/components/ui/Reveal';
 import { BrandForm, ContactForm, CreatorForm } from '@/components/forms/LeadForms';
 import { formCopyV2 } from '@/content/v2/forms';
 import { Eyebrow } from '@/components/ui/Badge';
-import { Icon } from '@/components/ui/Icon';
 
-/** Contact cards + tabbed forms. `withMessage` (v2) adds a plain contact message as the first tab. */
+/** Tabbed application forms. `withMessage` (v2) adds a plain contact message as the first tab. */
 export function ContactTabs({ withMessage = false }: { withMessage?: boolean }) {
   const tabs: readonly string[] = withMessage ? formCopyV2.contactTabs : contact.tabs;
   const forms = [
@@ -26,27 +24,8 @@ export function ContactTabs({ withMessage = false }: { withMessage?: boolean }) 
 
   return (
     <section ref={root} className="bg-cream py-[var(--section-y)] text-ink">
-      <div className="container-x grid gap-12 lg:grid-cols-[0.75fr_1.25fr]">
-        <div className="flex flex-col gap-4">
-          {contact.cards.map((c) => (
-            <a
-              key={c.title}
-              data-reveal
-              href={`mailto:${site.email}?subject=${encodeURIComponent(c.title)}`}
-              className="group flex items-center justify-between gap-4 rounded-[1.4rem] border-2 border-black bg-white p-6 shadow-[4px_4px_0_0_#000] transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[6px_8px_0_0_var(--ccc-orange)]"
-            >
-              <span>
-                <span className="block font-display text-[1.4rem] leading-none">{c.title}</span>
-                <span className="mt-2 block text-ink/70">{c.body}</span>
-              </span>
-              <span className="grid size-11 shrink-0 place-items-center rounded-full border-2 border-black bg-orange transition-transform duration-300 group-hover:rotate-45">
-                <Icon name="arrowUpRight" size={18} />
-              </span>
-            </a>
-          ))}
-        </div>
-
-        <div data-reveal>
+      <div className="container-x">
+        <div data-reveal className="mx-auto max-w-[54rem]">
           <Eyebrow tone="light">{`// ${contact.tabsLabel}`}</Eyebrow>
           <div role="tablist" aria-label={contact.tabsLabel} className="mt-4 inline-flex flex-wrap rounded-[1.6rem] border-2 border-black bg-white p-1 shadow-[4px_4px_0_0_#000]">
             {tabs.map((t, i) => (

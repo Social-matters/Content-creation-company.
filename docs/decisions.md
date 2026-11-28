@@ -67,4 +67,4 @@ Decisions made without asking (per "decide, note it, continue"). Newest last.
 | 61 | 2026-11-28 | **Google Sheet added as a lead destination** (Apps Script web app + shared secret), alongside email; production needs at least one of the two. Supersedes the "all three email variables" rule in #53. | Owner: "or link to the sheet". No Google Cloud project or service-account key needed; the sheet can stay Restricted. |
 | 62 | 2026-11-28 | **Cells that could be formulas are forced to text** (website and script). With two destinations, one confirmed copy is success. | A visitor-typed formula could read other leads. Asking a visitor to retry a saved lead would duplicate it. |
 | 63 | 2026-11-28 | **The sheet's address is not stored in the repository.** | Public repo. |
-
+| 64 | 2026-11-28 | **v5 §1: the Brands / Creators / Everyone else cards are removed from both contact pages**, and the form column is centred (max 54rem). | The component and its content are shared by v1 and v2. A single narrow column avoids an empty left half. |

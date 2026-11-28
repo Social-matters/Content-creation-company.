@@ -43,11 +43,6 @@ export const contact = {
   emailLabel: 'Email us',
   tabsLabel: 'Or apply directly',
   tabs: ["I'm a brand", "I'm a creator"] as const,
-  cards: [
-    { title: 'Brands', body: 'Founding-brand slots, pricing and Creator Visits.' },
-    { title: 'Creators', body: 'Joining the network, briefs and payouts.' },
-    { title: 'Everyone else', body: 'Investors, venues, partners and press.' },
-  ],
 } as const;
 
 export const pricingPage = {
