@@ -15,6 +15,7 @@ import { Counter } from '@/components/ui/Counter';
 import { Video } from '@/components/ui/Video';
 import { FlowWords, useShownOnView, useStackedReveal } from './flow';
 import { NotificationCycle } from './NotificationCycle';
+import { HeroClientStrip } from './Clients';
 
 /**
  * Desktop frame geometry. The same numbers drive the CSS (first paint) and GSAP (scroll),
@@ -106,7 +107,7 @@ export function HeroV2() {
     <>
     {/* Own wrapper: ScrollTrigger wraps the pinned section in a spacer, so React must never insert beside it. */}
     <div>
-    <section ref={root} style={frameVars} className="relative isolate flex flex-col overflow-hidden bg-ink text-cream lg:h-svh lg:min-h-[46rem]">
+    <section ref={root} style={frameVars} className="relative isolate flex flex-col overflow-hidden bg-ink text-cream lg:h-svh lg:min-h-[40rem]">
       <div aria-hidden className="pointer-events-none absolute -left-[18%] top-[18%] -z-10 size-[44rem] bg-[radial-gradient(closest-side,rgb(255_129_42/0.28),transparent)]" />
 
       {/* Content */}
@@ -115,20 +116,17 @@ export function HeroV2() {
           <div data-hero-in>
             <Badge tone="glass">{hero.badge}</Badge>
           </div>
-          <Headline as="h1" lines={hero.headline} size="d1" tone="dark" play={entranceDone} delay={0.35} className="mt-8 lg:mt-10 lg:text-[min(6.5vw,11.5vh)]" />
-          <p data-hero-in className="text-lead mt-8 max-w-[30rem] text-cream/75 lg:mt-10">
+          <Headline as="h1" lines={hero.headline} size="d1" tone="dark" play={entranceDone} delay={0.35} className="mt-8 lg:mt-10 lg:text-[min(6.5vw,11.5vh)] lg:[@media(max-height:820px)]:mt-6" />
+          <p data-hero-in className="text-lead mt-8 max-w-[30rem] text-cream/75 lg:mt-10 lg:[@media(max-height:820px)]:mt-5">
             {hero.sub}
           </p>
-          <div data-hero-in className="mt-9 flex flex-wrap gap-3 lg:mt-11">
+          <div data-hero-in className="mt-9 flex flex-wrap gap-3 lg:mt-11 lg:[@media(max-height:820px)]:mt-6">
             <Button cta={hero.ctas[0]} />
             <Button cta={hero.ctas[1]} variant="outline-dark" icon="calendar" />
           </div>
-        </div>
-        <div data-hero-in aria-hidden className="absolute bottom-9 left-[var(--gutter)] hidden items-center gap-3 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-cream/60 lg:flex">
-          <span className="relative h-9 w-px overflow-hidden bg-cream/15">
-            <span className="scroll-cue absolute inset-x-0 top-0 h-1/2 bg-orange" />
-          </span>
-          {hero.scroll}
+          <div data-hero-in className="mt-12 max-w-[34rem] lg:mt-14 lg:[@media(max-height:820px)]:mt-7">
+            <HeroClientStrip />
+          </div>
         </div>
       </div>
 

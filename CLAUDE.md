@@ -28,6 +28,7 @@ Quality bar: award-level. Cinematic, smooth, confident, fast. If it feels averag
 - No invented facts. No celebrity or actor names, roster sizes or results unless CCC provides them. Every number, name and testimonial is `// PLACEHOLDER` (claims to verify: `// CONFIRM`) and listed in `docs/TODO-real-content.md`; placeholder stats and quotes show a visible "Sample" tag while `PLACEHOLDER_CONTENT` is on.
 - Never imply a real celebrity endorses CCC. No identifiable celebrity or actor imagery: use set atmosphere (hands, gear, lights) or the "Roster placeholder" card until licensed images arrive.
 - No compliance claims (e.g. "ASCI-compliant disclosures") until CCC confirms them.
+- Client logos come only from files the owner supplies, via `pnpm logos` (never scraped or substituted). Raw files stay in the git-ignored `.incoming/`.
 - The comparison is CCC vs DIY influencer outreach only, and its last row stays honest about where DIY is the better choice.
 
 ---

@@ -113,7 +113,7 @@ export function Nav({ fixed }: { fixed?: { links: readonly LinkItem[]; cta: Cta 
           </nav>
 
           <div className="flex flex-1 items-center justify-end gap-2 sm:gap-4">
-            <button data-nav-item type="button" onClick={() => openModal('login')} className="hidden text-[0.92rem] font-medium text-cream/80 transition-colors hover:text-cream md:block">
+            <button data-nav-item type="button" onClick={() => openModal('login')} className="hidden whitespace-nowrap text-[0.92rem] font-medium text-cream/80 transition-colors hover:text-cream md:block">
               {nav.login}
             </button>
             <div data-nav-item className="hidden sm:block">

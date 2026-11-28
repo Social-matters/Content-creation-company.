@@ -95,5 +95,20 @@ run `pnpm assets --force hero && pnpm assets:doc`. File names stay the same, so 
 
 ## Client logos
 
-None used. The stats section shows open "Your brand" slots instead of fake logos. When founding brands
-sign, add their logos (with permission) and replace the slots grid in `src/components/sections/Stats.tsx`.
+**v1** uses none (open "Your brand" slots). **v2** shows 17 supplied logos (hero strip, band, grid), processed by
+`pnpm logos` from the git-ignored folder `.incoming/client-logos/` into `public/brand/clients/` + `src/content/clients.ts`.
+Nothing in the supplied folder was ignored (17 PNG files, nothing else).
+
+- [ ] **Confirm the heading "Brands we've worked with"** is true of CCC. If these are Social Matters' clients, the wording must say so: `src/content/v2/home.ts` → `clientsV2.title`.
+- [ ] **Confirm each brand has agreed** to its logo appearing on this site. The repository is public, so the processed files are public too.
+
+**Files to ask for again** (they work, but a vector or larger transparent original would look better):
+
+| File | Problem |
+|---|---|
+| `Ekadhi.png` | Jagged, broken edges in the source; thin strokes look pixelated |
+| `Sri-Krishna-Silks.png` | Rough, jagged edges in the source |
+| `Alchemy.png`, `She-Needs.png`, `Poornima-Prints.png`, `Ramala-Collections.png` | Fine-print taglines are unreadable at web logo sizes (a version without the tagline would help) |
+| All 17 | Supplied as white art on a solid grey box, not transparent. The script removes the box; a colour or SVG original would allow use on light sections |
+| `TONI-and-GUY.png` | Names two outlets (Hitec-City & Himayatnagar): confirm that is the intended lock-up |
+

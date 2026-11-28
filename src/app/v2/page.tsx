@@ -10,6 +10,7 @@ import { OperationsV2 } from '@/components/v2/OperationsV2';
 import { ProofV2 } from '@/components/v2/ProofV2';
 import { StatsV2 } from '@/components/v2/StatsV2';
 import { VoicesV2 } from '@/components/v2/VoicesV2';
+import { ClientBand, ClientGrid } from '@/components/v2/Clients';
 import { FinaleV2 } from '@/components/v2/FinaleV2';
 
 export const metadata: Metadata = { alternates: { canonical: '/' } };
@@ -23,6 +24,7 @@ export default function HomeV2() {
     <>
       <HeroV2 />
       <MosaicV2 />
+      <ClientBand />
       <ServicesV2 />
       <HowItWorksV2 />
       <Marquee items={marqueesV2.formats} speed={45} className={`${band} bg-orange text-black`} itemClassName={bandText} />
@@ -31,6 +33,7 @@ export default function HomeV2() {
       <ProofV2 />
       <Comparison content={comparisonV2} />
       <StatsV2 />
+      <ClientGrid />
       <VoicesV2 />
       <FinaleV2 />
     </>

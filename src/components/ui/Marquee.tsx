@@ -13,7 +13,10 @@ type Props = {
   speed?: number;
   className?: string;
   itemClassName?: string;
+  /** `null` for none. */
   separator?: ReactNode;
+  /** Draw an item as something other than its text (e.g. a logo). The text stays the screen-reader label. */
+  renderItem?: (item: string) => ReactNode;
   copies?: number;
 };
 
@@ -22,7 +25,7 @@ type Props = {
  * direction flips travel), easing back to the base speed. Pauses on hover and
  * while off-screen. Static under reduced motion.
  */
-export function Marquee({ items, direction = 1, speed = 70, className, itemClassName, separator = <Star />, copies = 3 }: Props) {
+export function Marquee({ items, direction = 1, speed = 70, className, itemClassName, separator = <Star />, renderItem, copies = 3 }: Props) {
   const root = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLDivElement>(null);
 
@@ -88,8 +91,8 @@ export function Marquee({ items, direction = 1, speed = 70, className, itemClass
           <div key={c} className="flex shrink-0 items-center">
             {items.map((item) => (
               <span key={item} className={cn('flex items-center', itemClassName)}>
-                {item}
-                <span className="mx-[0.45em] inline-flex">{separator}</span>
+                {renderItem ? renderItem(item) : item}
+                {separator !== null && <span className="mx-[0.45em] inline-flex">{separator}</span>}
               </span>
             ))}
           </div>

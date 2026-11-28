@@ -197,11 +197,18 @@ html.is-loading {
     transform: translateX(calc(50% - var(--fr-right) - var(--fr-w) / 2)) scale(1.12);
   }
 }
-/* "Scroll" cue: a short orange bead travelling down a hairline. */
-@keyframes scroll-cue {
-  from { transform: translateY(-100%); }
-  to { transform: translateY(200%); }
+/* Hero client strip: two identical lists drifting by exactly one list width. */
+@keyframes logo-drift {
+  to { transform: translate3d(-50%, 0, 0); }
 }
-.scroll-cue {
-  animation: scroll-cue 2.2s var(--ease-in-out) infinite;
+.logo-drift {
+  animation: logo-drift 70s linear infinite;
+}
+.logo-drift:hover {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .logo-drift {
+    animation: none;
+  }
 }

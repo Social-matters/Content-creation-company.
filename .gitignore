@@ -46,3 +46,6 @@ next-env.d.ts
 /.leads
 /shots
 .cache-*.log
+
+# raw client files (never committed; processed copies live in public/brand/clients)
+/.incoming

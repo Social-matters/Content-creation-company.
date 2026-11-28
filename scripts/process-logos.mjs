@@ -1,0 +1,133 @@
+#!/usr/bin/env node
+/**
+ * Turns supplied client logos into web-ready white-on-transparent WebPs and writes
+ * src/content/clients.ts.
+ *
+ *   pnpm logos [inputDir]          default: .incoming/client-logos (git-ignored)
+ *
+ * The input is untrusted: only raster files whose bytes match PNG / JPEG / WebP are read.
+ * Anything else (including SVG, which can carry scripts) is ignored and reported.
+ * Handles both real transparency and white artwork on a flat dark background.
+ */
+import fs from 'node:fs';
+import path from 'node:path';
+import sharp from 'sharp';
+
+const root = path.resolve(import.meta.dirname, '..');
+const input = path.resolve(root, process.argv[2] ?? '.incoming/client-logos');
+const outDir = path.join(root, 'public/brand/clients');
+const manifest = path.join(root, 'src/content/clients.ts');
+
+/** Display names, in the order they appear on the site. Keys are file names without extension. */
+const NAMES = {
+  VLCC: 'VLCC Salon',
+  'TONI-and-GUY': 'TONI&GUY, Hitec-City and Himayatnagar',
+  'KLM-Fashion-Mall': 'KLM Fashion Mall',
+  Royaloak: 'Royaloak Furnitures',
+  'Murugan-Silks': 'Kanchipuram Murugan Silks',
+  'Sri-Krishna-Silks': 'Sri Krishna Silks',
+  'Sri-Padmavathi-Jewellers': 'Sri Padmavathi Jewellers',
+  Sanghvi: 'Sanghvi Silver Emporium',
+  Emmadi: 'Emmadi Silver Jewellery',
+  Ekadhi: 'Ekadhi Silver Jewellery',
+  Tyohaar: 'Tyohaar Silver Jewellery',
+  'Ramala-Collections': 'Ramala Collections',
+  'Poornima-Prints': 'Poornima Prints',
+  'She-Needs': 'She Needs',
+  Alchemy: 'Alchemy Luxury Eyewear',
+  'Ithika-Group': 'Ithika Group',
+  'Srih-Clinic': 'Srih Clinic',
+};
+
+const MAGIC = {
+  png: (b) => b.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])),
+  jpeg: (b) => b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff,
+  webp: (b) => b.toString('ascii', 0, 4) === 'RIFF' && b.toString('ascii', 8, 12) === 'WEBP',
+};
+
+const MAX = { width: 480, height: 200 };
+
+if (!fs.existsSync(input)) {
+  console.error(`No logo folder at ${input}. Put the supplied image files there first.`);
+  process.exit(1);
+}
+
+const ignored = [];
+const warnings = [];
+const logos = [];
+
+for (const entry of fs.readdirSync(input, { withFileTypes: true })) {
+  const file = path.join(input, entry.name);
+  if (!entry.isFile()) {
+    ignored.push(`${entry.name} (not a regular file)`);
+    continue;
+  }
+  const buf = fs.readFileSync(file);
+  if (!/\.(png|jpe?g|webp)$/i.test(entry.name) || !Object.values(MAGIC).some((test) => test(buf))) {
+    ignored.push(`${entry.name} (not a PNG, JPEG or WebP image)`);
+    continue;
+  }
+  const base = entry.name.replace(/\.[^.]+$/, '');
+  const { data, info } = await sharp(buf).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+  const { width, height } = info;
+  const lum = (i) => 0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2];
+
+  const corners = [0, (width - 1) * 4, (height - 1) * width * 4, (width * height - 1) * 4];
+  const transparent = corners.every((i) => data[i + 3] < 16);
+  let background = 0;
+  if (!transparent) {
+    const values = corners.map(lum);
+    background = Math.max(...values);
+    if (background > 96 || background - Math.min(...values) > 8) {
+      warnings.push(`${entry.name}: background isn't a flat dark colour, skipped (supply a transparent version)`);
+      continue;
+    }
+  }
+
+  // White artwork; coverage comes from real alpha, or from brightness above the flat background.
+  const out = Buffer.alloc(width * height * 4, 255);
+  for (let i = 0; i < out.length; i += 4) {
+    const coverage = transparent ? data[i + 3] / 255 : Math.max(0, (lum(i) - background - 3) / (255 - background - 3));
+    out[i + 3] = Math.round(Math.min(1, coverage) * 255);
+  }
+
+  const trimmed = await sharp(out, { raw: { width, height, channels: 4 } })
+    .trim({ background: { r: 255, g: 255, b: 255, alpha: 0 }, threshold: 10 })
+    .png()
+    .toBuffer();
+  const meta = await sharp(trimmed).metadata();
+  if (meta.width < 320 && meta.height < 120) warnings.push(`${entry.name}: artwork is only ${meta.width}x${meta.height}px; ask for a larger file`);
+
+  const slug = base.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  fs.mkdirSync(outDir, { recursive: true });
+  const result = await sharp(trimmed)
+    .resize({ ...MAX, fit: 'inside', withoutEnlargement: true })
+    .webp({ quality: 90, alphaQuality: 100, effort: 6 })
+    .toFile(path.join(outDir, `${slug}.webp`));
+  if (!NAMES[base]) warnings.push(`${entry.name}: no display name in NAMES, using the file name`);
+  logos.push({ base, slug, name: NAMES[base] ?? base.replace(/[-_]+/g, ' '), width: result.width, height: result.height, bytes: result.size });
+}
+
+const order = Object.keys(NAMES);
+const rank = (l) => (order.includes(l.base) ? order.indexOf(l.base) : order.length);
+logos.sort((a, b) => rank(a) - rank(b) || a.name.localeCompare(b.name));
+
+const quote = (s) => `'${s.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`;
+fs.writeFileSync(
+  manifest,
+  `/**
+ * GENERATED by scripts/process-logos.mjs (\`pnpm logos\`). Edit names in that script, not here.
+ * White-on-transparent client logos in public/brand/clients/. The raw files are not committed.
+ */
+export type ClientLogo = { name: string; src: string; width: number; height: number };
+
+export const clients: readonly ClientLogo[] = [
+${logos.map((l) => `  { name: ${quote(l.name)}, src: '/brand/clients/${l.slug}.webp', width: ${l.width}, height: ${l.height} },`).join('\n')}
+];
+`,
+);
+
+console.log(`✓ ${logos.length} logos → public/brand/clients (${Math.round(logos.reduce((n, l) => n + l.bytes, 0) / 1024)} KB total)`);
+for (const l of logos) console.log(`  ${l.slug.padEnd(28)} ${String(l.width).padStart(3)}x${String(l.height).padEnd(3)} ${(l.bytes / 1024).toFixed(1)} KB`);
+console.log(ignored.length ? `Ignored:\n  ${ignored.join('\n  ')}` : 'Ignored: nothing');
+console.log(warnings.length ? `Warnings:\n  ${warnings.join('\n  ')}` : 'Warnings: none');
