@@ -3,7 +3,7 @@
 import { useRef } from 'react';
 import { gsap, useGSAP } from '@/lib/gsap';
 import { mq, playOnce } from '@/lib/motion';
-import { creatorCta } from '@/content/home';
+import { creatorCtaV2 as creatorCta } from '@/content/v2/home';
 import { assets } from '@/content/assets';
 import { useRevealChildren } from '@/components/ui/Reveal';
 import { Headline } from '@/components/ui/Headline';
@@ -44,9 +44,8 @@ export function CreatorCta() {
               <Icon name="check" size={16} className="text-orange" strokeWidth={3} />
               {creatorCta.note}
             </p>
-            <div data-reveal className="mt-4 flex flex-wrap items-center gap-6">
-              <Button cta={creatorCta.ctas[0]} />
-              <Button cta={creatorCta.ctas[1]} variant="link-dark" />
+            <div data-reveal className="mt-4">
+              <Button cta={creatorCta.cta} />
             </div>
           </div>
           <div className="relative min-h-[26rem] lg:min-h-full">

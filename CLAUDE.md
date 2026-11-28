@@ -8,23 +8,21 @@ Quality bar: award-level. Cinematic, smooth, confident, fast. If it feels averag
 
 > Next.js here is **16.4** with `cacheComponents` + `partialPrefetching` on. Read `node_modules/next/dist/docs/` before using an unfamiliar API. Routes stay mounted but hidden (React `<Activity>`) after navigation, so: never query the document globally for animation targets; always scope GSAP to a ref, and expect effects to unmount/remount on hide/show.
 
-## Two versions
+## One site
 
-- **v1** at `/` is the original site. Leave it as is unless asked; shared components must keep v1's behaviour as their default.
-- **v2** at `/v2/*` is the influencer-led redesign. Its copy lives in `src/content/v2/`, its sections in `src/components/v2/`. Shared components read `useSiteVersion()` (`lib/site-version.tsx`) to switch links (`/v2` base), motion profile and v2-only form fields.
+There is one site. The earlier original design (v1) was removed on 2026-11-28 and the influencer-led design that lived at `/v2` is now served from `/` (old `/v2/*` links redirect). Some folder, file and export names still carry `v2` (`src/content/v2/`, `src/components/v2/`, `HeroV2`, `servicesV2`): they are the live ones. Shared copy (site name, nav, footer, pages, forms, legal) is in `src/content/*.ts`; home and form copy is in `src/content/v2/`. The site is indexable.
 
-### v2 positioning (influencer-led)
+### Positioning (influencer-led)
 - CCC is **mainly an influencer-marketing company; creator content supports it** (roughly 70/30). Show this through weight (section count, screen height, imagery, copy order), never by printing "70/30" or any ratio as a claim.
 - Influencer side first and large: influencer campaigns, celebrity and TV serial actor tie-ups, pay-on-performance, AI influencer matching. Creator-content side second and compact: model shoots, creator visit, content exhibition.
 - Hero: "Influence. Content. Results." with the tilted block on "Results.".
 
-### v2 nav rules
-- One brand-facing site: **no Brands/Creators toggle** and no audience-dependent copy. Nav = Influencers · Celebrities · Model Shoots · How it works, then **Apply** (links to `/contact`). No login in the v2 header or menu (owner's decision).
+### Nav rules
+- One brand-facing site: **no Brands/Creators toggle** and no audience-dependent copy. Nav = Influencers · Celebrities · Model Shoots · How it works, then **Apply** (links to `/contact`). No login anywhere (owner's decision).
 - No pricing page and no plans section (owner's decision). Service cards may show a short price line.
 - Influencers, creators and models join through a quiet footer link and the band at the end of the home page ("Join our influencer network"), never the header.
-- `/v2/creators` and `/v2/pricing` redirect to `/v2` (`next.config.ts`).
 
-### v2 copy rules
+### Copy rules
 - No invented facts. No celebrity or actor names, roster sizes or results unless CCC provides them. Every number, name and testimonial is `// PLACEHOLDER` (claims to verify: `// CONFIRM`) and listed in `docs/TODO-real-content.md`; placeholder stats and quotes show a visible "Sample" tag while `PLACEHOLDER_CONTENT` is on.
 - Never imply a real celebrity endorses CCC. No identifiable celebrity or actor imagery: use set atmosphere (hands, gear, lights) or the "Roster placeholder" card until licensed images arrive.
 - No compliance claims (e.g. "ASCI-compliant disclosures") until CCC confirms them.
@@ -84,12 +82,11 @@ Must-have effects:
 8. Operations grid: 8 numbered cards, stagger-in, 3D tilt on hover with cursor-following highlight.
 9. Number counters: odometer-style rolling digits on viewport entry (once).
 10. Proof by category: looping muted videos in rounded frames, clip-path curtain reveal; play only in viewport (IntersectionObserver).
-11. Plan comparison: cards lift on hover; Self-serve/Managed toggle with Flip.
-12. Magnetic buttons + custom cursor (fine pointer only): dot + ring; ring grows with a label over videos/cards; hidden on touch.
-13. Nav: pill nav hides on scroll down, shows on scroll up, blurred bg after the hero; Brands/Creators toggle with sliding pill; full-screen mobile menu with staggered links.
-14. Modals ("Start a campaign", login): scale+fade, backdrop blur, focus-trapped, Esc closes.
-15. Page transitions between routes (short orange wipe).
-16. Footer: giant CCC wordmark that reveals/parallaxes into view.
+11. Magnetic buttons + custom cursor (fine pointer only): dot + ring; ring grows with a label over videos/cards; hidden on touch.
+12. Nav: pill nav hides on scroll down, shows on scroll up, blurred bg after the hero; full-screen mobile menu with staggered links.
+13. Modals ("Start a campaign", join the network): scale+fade, backdrop blur, focus-trapped, Esc closes.
+14. Page transitions between routes (short orange wipe).
+15. Footer: giant CCC wordmark that reveals/parallaxes into view.
 
 Performance and accessibility (non-negotiable):
 - `prefers-reduced-motion`: disable Lenis, pinning, parallax, marquees; fall back to simple fades. Use `gsap.matchMedia()`.
@@ -123,7 +120,7 @@ Performance and accessibility (non-negotiable):
 - [ ] Clean commits per phase
 
 ## Form submissions
-- Every lead form goes to email (Resend) and/or the team's Google Sheet, from the server action only (`lib/leads.ts`, `lib/lead-config.ts`, `lib/sheet.ts`, `integrations/google-sheet/`). The login box is UI only.
+- Every lead form goes to email (Resend) and/or the team's Google Sheet, from the server action only (`lib/leads.ts`, `lib/lead-config.ts`, `lib/sheet.ts`, `integrations/google-sheet/`).
 - Never hardcode or commit the recipient address or any key: they live in `.env.local` and Vercel. The repo is public.
 - A new form gets its own `kind` in `lib/schemas.ts` (same schema client and server), the consent checkbox, a subject in `lib/email/template.ts` and a case in `scripts/test-forms.mjs`. Run `pnpm test:forms`.
 - Escape all user text in emails; clean it before it goes into a subject.

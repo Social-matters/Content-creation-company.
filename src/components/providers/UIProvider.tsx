@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { rememberUtm } from '@/lib/lead-context';
 
-export type ModalId = 'campaign' | 'creator' | 'login';
+export type ModalId = 'campaign' | 'creator';
 
 type UIActions = {
   openModal: (id: ModalId) => void;

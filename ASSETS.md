@@ -40,7 +40,6 @@ Regenerate after changing `scripts/asset-sources.mjs`: `pnpm assets && pnpm asse
 | `mosaic-16` | media/mosaic-16.mp4 (198 KB), .webp (8 KB) | https://mixkit.co/free-stock-video/42310/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
 | `mosaic-17` | media/mosaic-17.mp4 (343 KB), .webp (21 KB) | https://mixkit.co/free-stock-video/50488/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
 | `mosaic-18` | media/mosaic-18.mp4 (49 KB), .webp (11 KB) | https://mixkit.co/free-stock-video/4550/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
-| `mosaic-19` | media/mosaic-19.mp4 (163 KB), .webp (24 KB) | https://mixkit.co/free-stock-video/34486/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
 | `mosaic-20` | media/mosaic-20.mp4 (172 KB), .webp (13 KB) | https://mixkit.co/free-stock-video/52106/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
 | `cat-food` | media/cat-food.mp4 (1256 KB), .webp (22 KB) | https://mixkit.co/free-stock-video/9286/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
 | `cat-fashion` | media/cat-fashion.mp4 (324 KB), .webp (35 KB) | https://mixkit.co/free-stock-video/50793/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
@@ -48,26 +47,15 @@ Regenerate after changing `scripts/asset-sources.mjs`: `pnpm assets && pnpm asse
 | `cat-fitness` | media/cat-fitness.mp4 (259 KB), .webp (14 KB) | https://mixkit.co/free-stock-video/52110/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
 | `cat-lifestyle` | media/cat-lifestyle.mp4 (448 KB), .webp (33 KB) | https://mixkit.co/free-stock-video/42313/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
 | `cat-travel` | media/cat-travel.mp4 (765 KB), .webp (76 KB) | https://mixkit.co/free-stock-video/6945/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
-| `cat-tech` | media/cat-tech.mp4 (240 KB), .webp (23 KB) | https://mixkit.co/free-stock-video/34477/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
-| `cat-home` | media/cat-home.mp4 (110 KB), .webp (13 KB) | https://mixkit.co/free-stock-video/43033/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
 | `cta-brand` | media/cta-brand.mp4 (882 KB), .webp (41 KB) | https://mixkit.co/free-stock-video/50641/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
 | `cta-creator` | media/cta-creator.mp4 (1211 KB), .webp (52 KB) | https://mixkit.co/free-stock-video/42315/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
-| `creators-hero` | media/creators-hero.mp4 (2292 KB), .webp (105 KB) | https://mixkit.co/free-stock-video/34485/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
-| `creators-hero-mobile` | media/creators-hero-mobile.mp4 (857 KB), .webp (37 KB) | https://mixkit.co/free-stock-video/34485/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
 | `set-1` | media/set-1.mp4 (308 KB), .webp (16 KB) | https://mixkit.co/free-stock-video/44066/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
 | `set-2` | media/set-2.mp4 (234 KB), .webp (18 KB) | https://mixkit.co/free-stock-video/44079/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
 | `model-1` | media/model-1.mp4 (722 KB), .webp (18 KB) | https://mixkit.co/free-stock-video/50639/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
 | `model-2` | media/model-2.mp4 (455 KB), .webp (17 KB) | https://mixkit.co/free-stock-video/52279/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
-| `ui-pizza` | media/ui-pizza.webp (17 KB) | https://mixkit.co/free-stock-video/44001/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
-| `ui-coffee` | media/ui-coffee.webp (6 KB) | https://mixkit.co/free-stock-video/43941/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
-| `ui-toast` | media/ui-toast.webp (17 KB) | https://mixkit.co/free-stock-video/43922/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
-| `ui-wok` | media/ui-wok.webp (16 KB) | https://mixkit.co/free-stock-video/47555/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
-| `ui-skincare` | media/ui-skincare.webp (9 KB) | https://mixkit.co/free-stock-video/50417/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
-| `ui-closet` | media/ui-closet.webp (22 KB) | https://mixkit.co/free-stock-video/35798/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
 | `avatar-1` | media/avatar-1.webp (4 KB) | https://mixkit.co/free-stock-video/42323/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
 | `avatar-2` | media/avatar-2.webp (3 KB) | https://mixkit.co/free-stock-video/50782/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
 | `avatar-3` | media/avatar-3.webp (5 KB) | https://mixkit.co/free-stock-video/42319/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
 | `avatar-4` | media/avatar-4.webp (4 KB) | https://mixkit.co/free-stock-video/34469/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
-| `avatar-5` | media/avatar-5.webp (2 KB) | https://mixkit.co/free-stock-video/52039/ | Mixkit (Envato) | [Mixkit Stock Video Free License](https://mixkit.co/license/#videoFree) |
 
 Web fonts (Archivo Black, Bricolage Grotesque, JetBrains Mono) are self-hosted at build time by `next/font/google` under the SIL Open Font License.

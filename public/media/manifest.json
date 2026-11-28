@@ -239,18 +239,6 @@
       "poster": 11
     }
   },
-  "mosaic-19": {
-    "kind": "video",
-    "width": 432,
-    "height": 768,
-    "alt": "Behind the scenes of a talking-head shoot",
-    "source": "https://mixkit.co/free-stock-video/34486/",
-    "license": "Mixkit Stock Video Free License",
-    "kb": {
-      "video": 163,
-      "poster": 24
-    }
-  },
   "mosaic-20": {
     "kind": "video",
     "width": 432,
@@ -335,30 +323,6 @@
       "poster": 76
     }
   },
-  "cat-tech": {
-    "kind": "video",
-    "width": 540,
-    "height": 960,
-    "alt": "Creator recording on a camera rig at a desk",
-    "source": "https://mixkit.co/free-stock-video/34477/",
-    "license": "Mixkit Stock Video Free License",
-    "kb": {
-      "video": 240,
-      "poster": 23
-    }
-  },
-  "cat-home": {
-    "kind": "video",
-    "width": 540,
-    "height": 960,
-    "alt": "A bright modern kitchen interior",
-    "source": "https://mixkit.co/free-stock-video/43033/",
-    "license": "Mixkit Stock Video Free License",
-    "kb": {
-      "video": 110,
-      "poster": 13
-    }
-  },
   "cta-brand": {
     "kind": "video",
     "width": 1600,
@@ -381,102 +345,6 @@
     "kb": {
       "video": 1211,
       "poster": 52
-    }
-  },
-  "creators-hero": {
-    "kind": "video",
-    "width": 1920,
-    "height": 1080,
-    "alt": "A creator recording at her desk with a camera rig",
-    "source": "https://mixkit.co/free-stock-video/34485/",
-    "license": "Mixkit Stock Video Free License",
-    "kb": {
-      "video": 2292,
-      "poster": 105
-    }
-  },
-  "creators-hero-mobile": {
-    "kind": "video",
-    "width": 720,
-    "height": 1280,
-    "alt": "A creator recording at her desk with a camera rig",
-    "source": "https://mixkit.co/free-stock-video/34485/",
-    "license": "Mixkit Stock Video Free License",
-    "kb": {
-      "video": 857,
-      "poster": 37
-    }
-  },
-  "ui-pizza": {
-    "kind": "image",
-    "width": 360,
-    "height": 640,
-    "alt": "Pepperoni pizza close-up",
-    "source": "https://mixkit.co/free-stock-video/44001/",
-    "license": "Mixkit Stock Video Free License",
-    "kb": {
-      "video": 0,
-      "poster": 17
-    }
-  },
-  "ui-coffee": {
-    "kind": "image",
-    "width": 360,
-    "height": 640,
-    "alt": "Coffee being poured",
-    "source": "https://mixkit.co/free-stock-video/43941/",
-    "license": "Mixkit Stock Video Free License",
-    "kb": {
-      "video": 0,
-      "poster": 6
-    }
-  },
-  "ui-toast": {
-    "kind": "image",
-    "width": 360,
-    "height": 640,
-    "alt": "Grilled toast",
-    "source": "https://mixkit.co/free-stock-video/43922/",
-    "license": "Mixkit Stock Video Free License",
-    "kb": {
-      "video": 0,
-      "poster": 17
-    }
-  },
-  "ui-wok": {
-    "kind": "image",
-    "width": 360,
-    "height": 640,
-    "alt": "Vegetables in a wok",
-    "source": "https://mixkit.co/free-stock-video/47555/",
-    "license": "Mixkit Stock Video Free License",
-    "kb": {
-      "video": 0,
-      "poster": 16
-    }
-  },
-  "ui-skincare": {
-    "kind": "image",
-    "width": 360,
-    "height": 640,
-    "alt": "Skincare products on a table",
-    "source": "https://mixkit.co/free-stock-video/50417/",
-    "license": "Mixkit Stock Video Free License",
-    "kb": {
-      "video": 0,
-      "poster": 9
-    }
-  },
-  "ui-closet": {
-    "kind": "image",
-    "width": 360,
-    "height": 640,
-    "alt": "Organised wardrobe",
-    "source": "https://mixkit.co/free-stock-video/35798/",
-    "license": "Mixkit Stock Video Free License",
-    "kb": {
-      "video": 0,
-      "poster": 22
     }
   },
   "avatar-1": {
@@ -525,18 +393,6 @@
     "kb": {
       "video": 0,
       "poster": 4
-    }
-  },
-  "avatar-5": {
-    "kind": "image",
-    "width": 160,
-    "height": 160,
-    "alt": "",
-    "source": "https://mixkit.co/free-stock-video/52039/",
-    "license": "Mixkit Stock Video Free License",
-    "kb": {
-      "video": 0,
-      "poster": 2
     }
   },
   "set-1": {

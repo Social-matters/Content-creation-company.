@@ -2,9 +2,9 @@ import { ImageResponse } from 'next/og';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { site } from '@/content/site';
-import { hero } from '@/content/home';
+import { heroV2 as hero } from '@/content/v2/home';
 
-export const alt = `${site.name}: Creators. Content. Results.`;
+export const alt = `${site.name}: Influence. Content. Results.`;
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 

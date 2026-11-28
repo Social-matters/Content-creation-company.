@@ -3,8 +3,7 @@
 import { useRef, type ElementType, type ReactNode, type RefObject } from 'react';
 import { gsap, ScrollTrigger, SplitText, useGSAP } from '@/lib/gsap';
 import { whenNear } from '@/lib/defer';
-import { dur, ease, flow, mq, revealStart, stagger, playOnce } from '@/lib/motion';
-import { useSiteVersion } from '@/lib/site-version';
+import { ease, flow, mq } from '@/lib/motion';
 
 /**
  * Batch fade-up for every `[data-reveal]` element inside `scope` as it enters the viewport.
@@ -12,7 +11,6 @@ import { useSiteVersion } from '@/lib/site-version';
  * the section is near the viewport to keep hydration light.
  */
 export function useRevealChildren(scope: RefObject<HTMLElement | null>) {
-  const v2 = useSiteVersion().version === 'v2';
   useGSAP(
     (context) => {
       const root = scope.current;
@@ -24,36 +22,35 @@ export function useRevealChildren(scope: RefObject<HTMLElement | null>) {
           const mm = gsap.matchMedia();
           mm.add({ motion: mq.motionOK, reduced: mq.reduced }, (ctx) => {
             const reduced = ctx.conditions?.reduced;
-            const y = reduced ? 0 : v2 ? flow.y : 48;
+            const y = reduced ? 0 : flow.y;
             gsap.set(items, { autoAlpha: 0, y });
             ScrollTrigger.batch(items, {
-              start: v2 ? flow.start : revealStart,
+              start: flow.start,
               onEnter: (batch) =>
                 gsap.to(batch, {
                   autoAlpha: 1,
                   y: 0,
-                  duration: reduced ? 0.5 : v2 ? flow.dur : dur.reveal,
-                  ease: v2 ? flow.easeSoft : ease.reveal,
-                  stagger: v2 ? flow.stagger : stagger.base,
+                  duration: reduced ? 0.5 : flow.dur,
+                  ease: flow.easeSoft,
+                  stagger: flow.stagger,
                   delay: (i, el: HTMLElement) => Number(el.dataset.revealDelay ?? 0),
                   overwrite: true,
                 }),
-              // v2: settle back out when scrolled back above, so the next pass flows in again.
-              onLeaveBack: v2 ? (batch) => gsap.to(batch, { autoAlpha: 0, y, duration: 0.6, ease: flow.easeSoft, overwrite: true }) : undefined,
+              // Settle back out when scrolled back above, so the next pass flows in again.
+              onLeaveBack: (batch) => gsap.to(batch, { autoAlpha: 0, y, duration: 0.6, ease: flow.easeSoft, overwrite: true }),
             });
           });
           return () => mm.revert();
         }),
       );
     },
-    { scope, dependencies: [v2] },
+    { scope },
   );
 }
 
 /** Paragraph whose lines slide up from masks (SplitText) when scrolled into view. */
 export function RevealText({ as: Tag = 'p', children, className, delay = 0, play }: { as?: ElementType; children: ReactNode; className?: string; delay?: number; play?: boolean }) {
   const ref = useRef<HTMLElement>(null);
-  const v2 = useSiteVersion().version === 'v2';
   useGSAP(
     (context) => {
       const el = ref.current;
@@ -76,16 +73,16 @@ export function RevealText({ as: Tag = 'p', children, className, delay = 0, play
             linesClass: 'copy-line',
             aria: 'none',
             autoSplit: true,
-            onSplit: (self) => gsap.from(self.lines, { yPercent: 105, duration: v2 ? flow.dur : dur.reveal, stagger: v2 ? flow.stagger * 0.8 : stagger.tight, ease: ease.reveal, delay, scrollTrigger }),
+            onSplit: (self) => gsap.from(self.lines, { yPercent: 105, duration: flow.dur, stagger: flow.stagger * 0.8, ease: ease.reveal, delay, scrollTrigger }),
           });
           return () => split.revert();
         });
         return () => mm.revert();
       };
-      if (play === undefined) return whenNear(el, () => context.add(() => setup(v2 ? { trigger: el, start: flow.start, ...flow.toggle } : { trigger: el, start: revealStart, ...playOnce })));
+      if (play === undefined) return whenNear(el, () => context.add(() => setup({ trigger: el, start: flow.start, ...flow.toggle })));
       return setup();
     },
-    { scope: ref, dependencies: [play, v2], revertOnUpdate: true },
+    { scope: ref, dependencies: [play], revertOnUpdate: true },
   );
   return (
     <Tag ref={ref} className={className}>

@@ -6,7 +6,7 @@
  *   pnpm test:forms          (builds first)
  *
  * Checks payload, subject, Reply-To, HTML escaping, header sanitising, consent, honeypot,
- * server-side re-validation, rate limit, failure handling, the login box (sends nothing),
+ * server-side re-validation, rate limit, failure handling,
  * the optional confirmation email and the production configuration error.
  * Sample emails are saved to shots/email/ (HTML, text and a screenshot).
  */
@@ -66,7 +66,7 @@ function startNext(port, env) {
 async function ready(server) {
   for (let i = 0; i < 150; i++) {
     try {
-      return (await fetch(`${server.url}/v2`)).status;
+      return (await fetch(`${server.url}/`)).status;
     } catch {
       await new Promise((r) => setTimeout(r, 200));
     }
@@ -95,23 +95,21 @@ const pick = async (form, label, value) => form.getByLabel(label, { exact: true 
 const consent = (form) => form.getByRole('checkbox', { name: /by submitting/i });
 const chip = (form, label) => form.locator('label', { hasText: label }).click();
 
-async function fillBrand(form, { v2 = true, email, needs = [] }) {
+async function fillBrand(form, { email, needs = [] }) {
   await text(form, 'Your name', 'Asha <i>Rao</i>');
   await text(form, 'Brand name', NASTY_BRAND);
   await text(form, 'Work email', email);
   await text(form, 'Phone', '98765 43210');
   await pick(form, 'Category', 'Food & Beverage');
   await text(form, 'City', 'Pune');
-  if (v2) {
-    for (const n of needs) await chip(form, n);
-    await pick(form, 'Budget', '50k-2l');
-    await pick(form, 'Timeline', 'month');
-  }
+  for (const n of needs) await chip(form, n);
+  await pick(form, 'Budget', '50k-2l');
+  await pick(form, 'Timeline', 'month');
   await text(form, 'Tell us about your brand', `${ATTACK}\nEmail: forged@evil.test`);
 }
 
-async function fillCreator(form, { v2 = true, email }) {
-  if (v2) await chip(form, 'Model');
+async function fillCreator(form, { email }) {
+  await chip(form, 'Model');
   await text(form, 'Your name', 'Rohan Mehta');
   await text(form, 'Instagram handle', '@rohan.test');
   await text(form, 'Email', email);
@@ -120,10 +118,8 @@ async function fillCreator(form, { v2 = true, email }) {
   await pick(form, 'Followers', 'micro');
   await text(form, 'City', 'Mumbai');
   await text(form, 'Languages you create in', 'Hindi, English');
-  if (v2) {
-    await text(form, 'Your base rate (₹)', '₹5,000');
-    await pick(form, 'Rate is', 'per reel');
-  }
+  await text(form, 'Your base rate (₹)', '₹5,000');
+  await pick(form, 'Rate is', 'per reel');
   await text(form, 'Tell us about your content', ATTACK);
 }
 
@@ -173,8 +169,8 @@ try {
 
   // ---------- 1. Brand application (arrives with campaign tags, then moves on) ----------
   {
-    const { ctx, page } = await visit(app, '/v2/about?utm_source=newsletter&utm_campaign=launch');
-    await page.goto(`${app.url}/v2/start-a-campaign`, { waitUntil: 'networkidle' });
+    const { ctx, page } = await visit(app, '/about?utm_source=newsletter&utm_campaign=launch');
+    await page.goto(`${app.url}/start-a-campaign`, { waitUntil: 'networkidle' });
     const form = page.locator('#main form').first();
     await fillBrand(form, { email: 'Asha@Example.COM', needs: ['Influencer campaign', 'Model shoot'] });
     const m = await submitAndCapture(page, form, /apply as a brand/i, {
@@ -182,7 +178,7 @@ try {
       subject: `[CCC] New brand enquiry: ${CLEAN_BRAND} (Influencer campaign, Model shoot)`,
       replyTo: 'asha@example.com',
       includes: ['Name: Asha <i>Rao</i>', 'Email: asha@example.com', 'Phone: +91 9876543210', 'Needs: Influencer campaign, Model shoot', 'Budget: ₹50K – ₹2L', 'Timeline: Within a month', 'Category: Food & Beverage', 'City: Pune', ATTACK, 'Form: Brand application'],
-      page: '/v2/start-a-campaign',
+      page: '/start-a-campaign',
       sample: 'brand',
     });
     check('brand: attack text arrives escaped', Boolean(m?.html.includes(ATTACK_ESCAPED)));
@@ -193,8 +189,8 @@ try {
 
   // ---------- 2 and 3. Celebrity and model shoot enquiries ----------
   for (const [name, route, subject, formName] of [
-    ['celebrity', '/v2/celebrities', `[CCC] New celebrity enquiry: ${CLEAN_BRAND}`, 'Celebrity enquiry'],
-    ['model shoot', '/v2/model-shoots', `[CCC] New model shoot enquiry: ${CLEAN_BRAND}`, 'Model shoot enquiry'],
+    ['celebrity', '/celebrities', `[CCC] New celebrity enquiry: ${CLEAN_BRAND}`, 'Celebrity enquiry'],
+    ['model shoot', '/model-shoots', `[CCC] New model shoot enquiry: ${CLEAN_BRAND}`, 'Model shoot enquiry'],
   ]) {
     const { ctx, page } = await visit(app, route);
     const form = page.locator('#enquire form');
@@ -205,7 +201,7 @@ try {
 
   // ---------- 4. Influencer application ----------
   {
-    const { ctx, page } = await visit(app, '/v2/join-as-creator');
+    const { ctx, page } = await visit(app, '/join-as-creator');
     const form = page.locator('#main form').first();
     await fillCreator(form, { email: 'rohan@example.com' });
     await submitAndCapture(page, form, /apply to join/i, {
@@ -213,7 +209,7 @@ try {
       subject: '[CCC] New influencer application: Rohan Mehta, ₹5,000 per reel',
       replyTo: 'rohan@example.com',
       includes: ['I am a: Model', 'Instagram: @rohan.test', 'Niche: Lifestyle', 'Followers: Micro · 10K–100K', 'Base price (internal): ₹5,000', 'Rate unit (internal): per reel', 'Languages: Hindi, English', 'City: Mumbai', 'Base price is internal'],
-      page: '/v2/join-as-creator',
+      page: '/join-as-creator',
       sample: 'influencer',
     });
     await ctx.close();
@@ -221,50 +217,39 @@ try {
 
   // ---------- 5. Contact message ----------
   {
-    const { ctx, page } = await visit(app, '/v2/contact');
+    const { ctx, page } = await visit(app, '/contact');
     const form = await contactForm(page);
     await text(form, 'Your name', 'Meera Iyer');
     await text(form, 'Email', 'meera@example.com');
     await text(form, 'Message', `Hello team\n${ATTACK}`);
-    const m = await submitAndCapture(page, form, /send message/i, { name: 'contact', subject: '[CCC] New contact message: Meera Iyer', replyTo: 'meera@example.com', includes: ['Name: Meera Iyer', 'Message: Hello team', ATTACK], page: '/v2/contact', sample: 'contact' });
+    const m = await submitAndCapture(page, form, /send message/i, { name: 'contact', subject: '[CCC] New contact message: Meera Iyer', replyTo: 'meera@example.com', includes: ['Name: Meera Iyer', 'Message: Hello team', ATTACK], page: '/contact', sample: 'contact' });
     check('contact: attack text arrives escaped, line break kept', Boolean(m?.html.includes(`Hello team<br>${ATTACK_ESCAPED}`)));
     await ctx.close();
   }
 
   // ---------- 6. Early-access signup ----------
   {
-    const { ctx, page } = await visit(app, '/v2');
+    const { ctx, page } = await visit(app, '/');
     const form = page.locator('#early-access form');
     await form.waitFor({ timeout: 15000 });
     await fillEarly(form, 'early@example.com');
-    await submitAndCapture(page, form, /join the list/i, { name: 'early access', subject: '[CCC] New early-access signup: early@example.com', replyTo: 'early@example.com', includes: ['Email: early@example.com', 'Form: Early-access signup'], page: '/v2', sample: 'early-access' });
+    await submitAndCapture(page, form, /join the list/i, { name: 'early access', subject: '[CCC] New early-access signup: early@example.com', replyTo: 'early@example.com', includes: ['Email: early@example.com', 'Form: Early-access signup'], page: '/', sample: 'early-access' });
     await ctx.close();
   }
 
-  // ---------- Modal path and the v1 forms ----------
+  // ---------- Modal path ----------
   {
-    const { ctx, page } = await visit(app, '/v2');
+    const { ctx, page } = await visit(app, '/');
     await page.getByRole('button', { name: 'Start a campaign' }).first().click();
     const form = page.getByRole('dialog').locator('form');
     await form.waitFor();
     await fillBrand(form, { email: 'modal@example.com', needs: ['Creator content'] });
-    await submitAndCapture(page, form, /apply as a brand/i, { name: 'brand (modal)', subject: `[CCC] New brand enquiry: ${CLEAN_BRAND} (Creator content)`, replyTo: 'modal@example.com', includes: ['Needs: Creator content'], page: '/v2' });
+    await submitAndCapture(page, form, /apply as a brand/i, { name: 'brand (modal)', subject: `[CCC] New brand enquiry: ${CLEAN_BRAND} (Creator content)`, replyTo: 'modal@example.com', includes: ['Needs: Creator content'], page: '/' });
     await ctx.close();
   }
-  for (const [name, route, fill, button, subject] of [
-    ['v1 brand', '/start-a-campaign', fillBrand, /apply as a brand/i, `[CCC] New brand enquiry: ${CLEAN_BRAND}`],
-    ['v1 creator', '/join-as-creator', fillCreator, /apply as a creator/i, '[CCC] New influencer application: Rohan Mehta'],
-  ]) {
-    const { ctx, page } = await visit(app, route);
-    const form = page.locator('#main form').first();
-    await fill(form, { v2: false, email: 'v1@example.com' });
-    await submitAndCapture(page, form, button, { name, subject, replyTo: 'v1@example.com', includes: ['(v1 site)'], page: route });
-    await ctx.close();
-  }
-
   // ---------- Consent is required ----------
   {
-    const { ctx, page } = await visit(app, '/v2/contact');
+    const { ctx, page } = await visit(app, '/contact');
     const form = await contactForm(page);
     await text(form, 'Your name', 'No Consent');
     await text(form, 'Email', 'no@example.com');
@@ -274,7 +259,7 @@ try {
     await page.getByText('Please tick the box to continue').waitFor({ timeout: 5000 }).catch(() => {});
     check('consent: unticked box blocks the send', mail.length === before && (await page.getByText('Please tick the box to continue').isVisible()));
     const link = form.getByRole('link', { name: 'Privacy Policy' });
-    check('consent: links to the privacy page in a new tab', (await link.getAttribute('href')) === '/v2/privacy' && (await link.getAttribute('target')) === '_blank');
+    check('consent: links to the privacy page in a new tab', (await link.getAttribute('href')) === '/privacy' && (await link.getAttribute('target')) === '_blank');
 
     // The server must not trust the browser: tick the box, then tamper with the request.
     await consent(form).check();
@@ -292,7 +277,7 @@ try {
 
   // ---------- Failure keeps the data, then a retry works ----------
   {
-    const { ctx, page } = await visit(app, '/v2/contact');
+    const { ctx, page } = await visit(app, '/contact');
     const form = await contactForm(page);
     await text(form, 'Your name', 'Retry Rani');
     await text(form, 'Email', 'retry@example.com');
@@ -315,7 +300,7 @@ try {
 
   // ---------- Honeypot ----------
   {
-    const { ctx, page } = await visit(app, '/v2/contact');
+    const { ctx, page } = await visit(app, '/contact');
     const form = await contactForm(page);
     await text(form, 'Your name', 'Spam Bot');
     await text(form, 'Email', 'bot@example.com');
@@ -334,7 +319,7 @@ try {
     const before = mail.length;
     let lastAlert = '';
     for (let i = 1; i <= 6; i++) {
-      const { ctx, page } = await visit(app, '/v2', { ip: '10.9.9.9' });
+      const { ctx, page } = await visit(app, '/', { ip: '10.9.9.9' });
       const form = page.locator('#early-access form');
       await form.waitFor({ timeout: 15000 });
       await fillEarly(form, `limit${i}@example.com`);
@@ -350,26 +335,11 @@ try {
     check('rate limit: five go through, the sixth is refused', mail.length === before + 5 && lastAlert.startsWith('Too many submissions'), `sent ${mail.length - before}; alert "${lastAlert}"`);
   }
 
-  // ---------- Login is UI-only ----------
-  {
-    const { ctx, page } = await visit(app, '/'); // only v1 still has a login button
-    let posts = 0;
-    page.on('request', (r) => r.method() === 'POST' && r.headers()['next-action'] && posts++);
-    await page.getByRole('button', { name: 'Log in' }).first().click();
-    const dialog = page.getByRole('dialog');
-    await dialog.getByLabel('Email', { exact: true }).fill('login@example.com');
-    const before = mail.length;
-    await dialog.getByRole('button', { name: 'Continue' }).click();
-    await dialog.getByText('Not open yet.').waitFor({ timeout: 8000 }).catch(() => {});
-    check('login: UI only, nothing sent', posts === 0 && mail.length === before && (await dialog.getByText('Not open yet.').isVisible()));
-    await ctx.close();
-  }
-
   // ---------- Optional confirmation email ----------
   {
     const confirm = startNext(3106, { ...baseEnv, SEND_CONFIRMATION_EMAIL: 'true' });
     await ready(confirm);
-    const { ctx, page } = await visit(confirm, '/v2');
+    const { ctx, page } = await visit(confirm, '/');
     const form = page.locator('#early-access form');
     await form.waitFor({ timeout: 15000 });
     await fillEarly(form, 'confirm@example.com');
@@ -402,7 +372,7 @@ try {
     await new Promise((r) => web.listen(0, '127.0.0.1', r));
     const sheetEnv = { SHEETS_WEBHOOK_URL: `http://127.0.0.1:${web.address().port}/exec`, SHEETS_WEBHOOK_SECRET: 'test-secret-0123456789' };
     const send = async (server, message) => {
-      const { ctx, page } = await visit(server, '/v2/contact');
+      const { ctx, page } = await visit(server, '/contact');
       const form = await contactForm(page);
       await text(form, 'Your name', '=HYPERLINK("http://evil.test","x")');
       await text(form, 'Email', 'sheet@example.com');
@@ -421,7 +391,7 @@ try {
     const row = rows.at(-1);
     const cell = (name) => row?.row[row.headers.indexOf(name)];
     check('sheet only: success after the sheet confirms, no email', ok && rows.length === 1 && mail.length === emails);
-    check('sheet: secret sent, columns line up', row?.secret === sheetEnv.SHEETS_WEBHOOK_SECRET && row.headers.length === row.row.length && cell('Email') === 'sheet@example.com' && cell('Form') === 'Contact form' && cell('Page') === '/v2/contact' && cell('Submitted').endsWith(' IST') && cell('Brand') === '');
+    check('sheet: secret sent, columns line up', row?.secret === sheetEnv.SHEETS_WEBHOOK_SECRET && row.headers.length === row.row.length && cell('Email') === 'sheet@example.com' && cell('Form') === 'Contact form' && cell('Page') === '/contact' && cell('Submitted').endsWith(' IST') && cell('Brand') === '');
     check('sheet: formulas are forced to text', cell('Name')?.startsWith("'=HYPERLINK") && cell('Message')?.startsWith("'+SUM"), `${cell('Name')} | ${cell('Message')}`);
     for (const mode of ['reject', 'signin']) {
       sheetMock.mode = mode;

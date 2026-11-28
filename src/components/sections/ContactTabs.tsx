@@ -10,11 +10,11 @@ import { BrandForm, ContactForm, CreatorForm } from '@/components/forms/LeadForm
 import { formCopyV2 } from '@/content/v2/forms';
 import { Eyebrow } from '@/components/ui/Badge';
 
-/** Tabbed application forms. `withMessage` (v2) adds a plain contact message as the first tab. */
-export function ContactTabs({ withMessage = false }: { withMessage?: boolean }) {
-  const tabs: readonly string[] = withMessage ? formCopyV2.contactTabs : contact.tabs;
+/** Tabbed forms: a message, a brand application and the network application. */
+export function ContactTabs() {
+  const tabs = formCopyV2.contactTabs;
   const forms = [
-    ...(withMessage ? [<ContactForm key="message" titleId="contact-message" />] : []),
+    <ContactForm key="message" titleId="contact-message" />,
     <BrandForm key="brand" titleId="contact-brand" />,
     <CreatorForm key="creator" titleId="contact-creator" />,
   ];

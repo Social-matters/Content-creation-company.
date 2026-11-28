@@ -1,20 +1,8 @@
-import type { CSSProperties } from 'react';
 import { cn } from '@/lib/cn';
 import { Icon } from '@/components/ui/Icon';
 import { LogoMark } from '@/components/brand/LogoMark';
 
 export type NotificationTone = 'ig' | 'ccc' | 'match' | 'shoot' | 'star';
-
-/**
- * Per-card float phase for the CSS `.float-loop` animation (compositor-only, no per-frame JS).
- */
-export const floatVars = (i: number) =>
-  ({
-    '--float-dur': `${2.6 + i * 0.55}s`,
-    '--float-delay': `-${i * 0.9}s`,
-    '--float-y': i % 2 ? '10px' : '-10px',
-    '--float-r': i % 2 ? '-1.2deg' : '1deg',
-  }) as CSSProperties;
 
 /** Phone-notification card used over hero media. */
 export function NotificationCard({ app, time, text, tone, className }: { app: string; time: string; text: string; tone: NotificationTone; className?: string }) {

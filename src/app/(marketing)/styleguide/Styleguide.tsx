@@ -3,12 +3,10 @@
 import type { ReactNode } from 'react';
 import { colors } from '@/lib/tokens';
 import { assets } from '@/content/assets';
-import { marquees } from '@/content/home';
-import { useUIActions } from '@/components/providers/UIProvider';
+import { marqueesV2 as marquees } from '@/content/v2/home';
 import { Headline, TiltedBlock } from '@/components/ui/Headline';
 import { Button } from '@/components/ui/Button';
 import { Badge, Eyebrow } from '@/components/ui/Badge';
-import { Card } from '@/components/ui/Card';
 import { Counter } from '@/components/ui/Counter';
 import { Marquee } from '@/components/ui/Marquee';
 import { PhoneFrame, AbstractAvatar } from '@/components/ui/PhoneFrame';
@@ -32,8 +30,7 @@ function Block({ title, children, dark }: { title: string; children: ReactNode; 
 }
 
 export function Styleguide() {
-  const { openModal } = useUIActions();
-  return (
+    return (
     <div>
       <section className="bg-ink pb-16 pt-36 text-cream">
         <div className="container-x">
@@ -86,15 +83,12 @@ export function Styleguide() {
           <Button cta={{ label: 'Start a campaign', modal: 'campaign' }} />
           <Button cta={{ label: 'Book a call', href: '/contact', meta: '15 min' }} variant="ink" icon="calendar" />
           <Button cta={{ label: 'Join as creator', modal: 'creator' }} variant="outline-light" />
-          <Button cta={{ label: 'See pricing', href: '/pricing' }} variant="link-light" />
+          <Button cta={{ label: 'About CCC', href: '/about' }} variant="link-light" />
         </div>
         <div className="mt-6 flex flex-wrap items-center gap-5 rounded-3xl bg-ink p-8">
           <Button cta={{ label: 'Start a campaign', modal: 'campaign' }} />
           <Button cta={{ label: 'Book a call', href: '/contact', meta: '15 min' }} variant="outline-dark" icon="calendar" />
-          <Button cta={{ label: 'Join as a creator', href: '/creators' }} variant="link-dark" />
-          <button type="button" onClick={() => openModal('login')} className="font-mono text-sm text-cream underline">
-            Open login modal
-          </button>
+          <Button cta={{ label: 'Model shoots', href: '/model-shoots' }} variant="link-dark" />
         </div>
       </Block>
 
@@ -112,17 +106,6 @@ export function Styleguide() {
             <span key={n} title={n} className="grid size-12 place-items-center rounded-xl border border-cream/15">
               <Icon name={n} />
             </span>
-          ))}
-        </div>
-      </Block>
-
-      <Block title="Cards">
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {(['cream', 'white', 'orange', 'ink'] as const).map((t) => (
-            <Card key={t} tone={t} interactive className="p-6" data-cursor="View">
-              <p className="font-mono text-xs uppercase">{t}</p>
-              <p className="mt-10 font-display text-d4">Card</p>
-            </Card>
           ))}
         </div>
       </Block>

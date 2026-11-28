@@ -1,15 +1,32 @@
 import { howV2 } from '@/content/v2/home';
 import { AbstractAvatar } from '@/components/ui/PhoneFrame';
 import { Icon, type IconName } from '@/components/ui/Icon';
-import { AppBar } from '@/components/sections/HowItWorksScreens';
+import { LogoMark } from '@/components/brand/LogoMark';
 
 const m = howV2.mock;
 const label = 'mb-1.5 font-mono text-[0.6rem] uppercase tracking-wider text-ink/60';
 
+function AppBar({ title, meta, live }: { title: string; meta: string; live?: boolean }) {
+  return (
+    <div className="flex items-center justify-between border-b-2 border-black/10 px-4 pb-3">
+      <div className="flex items-center gap-2">
+        <span className="grid size-7 place-items-center rounded-lg bg-ink text-orange">
+          <LogoMark className="size-5" strokeWidth={11} />
+        </span>
+        <span className="text-[0.95rem] font-bold">{title}</span>
+      </div>
+      <span className="flex items-center gap-1.5 rounded-full border-2 border-black bg-white px-2 py-0.5 font-mono text-[0.6rem] uppercase">
+        <span className={live ? 'size-1.5 animate-pulse rounded-full bg-[#16a34a]' : 'size-1.5 rounded-full bg-orange'} />
+        {meta}
+      </span>
+    </div>
+  );
+}
+
 /**
- * v2 mock screens: brief (with what you need), influencer shortlist, approvals (celebrity
- * request, model booking, reel draft) and the live counter. Same data hooks as v1, so
- * `buildTimeline` drives them. Abstract avatars only: no real people in mock UI.
+ * Mock screens: brief (with what you need), influencer shortlist, approvals (celebrity
+ * request, model booking, reel draft) and the live counter.
+ * `buildTimeline` drives them through their data hooks. Abstract avatars only: no real people in mock UI.
  */
 export function HowItWorksScreensV2() {
   return (

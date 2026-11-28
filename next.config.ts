@@ -17,11 +17,15 @@ const nextConfig: NextConfig = {
       },
     },
   },
-  /** v2 is a single brand-facing site: no creators page, no pricing page. Old links land on the v2 home. */
+  /** The old /v2 preview is now the site. Old v1-only pages land somewhere useful. */
   async redirects() {
     return [
-      { source: '/v2/creators', destination: '/v2', permanent: true },
-      { source: '/v2/pricing', destination: '/v2', permanent: true },
+      { source: '/v2/creators', destination: '/', permanent: true },
+      { source: '/v2/pricing', destination: '/pricing', permanent: false },
+      { source: '/v2', destination: '/', permanent: true },
+      { source: '/v2/:path*', destination: '/:path*', permanent: true },
+      { source: '/creators', destination: '/', permanent: true },
+      { source: '/pricing', destination: '/', permanent: false },
     ];
   },
   async headers() {

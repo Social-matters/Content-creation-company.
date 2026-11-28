@@ -5,7 +5,7 @@ export type HeadlineLine = string | { before?: string; accent: string; after?: s
 export type AccentStyle = 'block' | 'orange' | 'outline';
 export type Headline = readonly HeadlineLine[];
 
-export type Cta = { label: string; href?: string; modal?: 'campaign' | 'creator' | 'login'; meta?: string };
+export type Cta = { label: string; href?: string; modal?: 'campaign' | 'creator'; meta?: string };
 
 export type LinkItem = { label: string; href: string; external?: boolean };
 

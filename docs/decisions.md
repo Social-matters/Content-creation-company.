@@ -68,3 +68,8 @@ Decisions made without asking (per "decide, note it, continue"). Newest last.
 | 62 | 2026-11-28 | **Cells that could be formulas are forced to text** (website and script). With two destinations, one confirmed copy is success. | A visitor-typed formula could read other leads. Asking a visitor to retry a saved lead would duplicate it. |
 | 63 | 2026-11-28 | **The sheet's address is not stored in the repository.** | Public repo. |
 | 64 | 2026-11-28 | **v5 §1: the Brands / Creators / Everyone else cards are removed from both contact pages**, and the form column is centred (max 54rem). | The component and its content are shared by v1 and v2. A single narrow column avoids an empty left half. |
+| 65 | 2026-11-28 | **v1 is removed and the `/v2` design is the site, at `/`** (owner's choice when asked during v5). `/v2/*` redirects to `/*`; `/creators` to `/`; `/pricing` temporarily to `/`. Version switches, the login box, the v1 form variants, v1-only components, copy and 12 unused media files are deleted. | v5's paths only exist without the prefix, and v1 still showed public prices. Recoverable from git. Supersedes #50 and the two-version rules. |
+| 66 | 2026-11-28 | **The site is now indexable**, with canonicals on every page. | Only the preview was `noindex`. Placeholder content must be cleared before launch. |
+| 67 | 2026-11-28 | **`v2` stays in folder, file and export names.** | Renaming would bury the real changes in a very large diff. |
+| 68 | 2026-11-28 | **About's creator card has one button.** Its "See how you earn" link went to a page this design never had. | Dead link. |
+

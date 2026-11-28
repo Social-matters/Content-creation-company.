@@ -4,8 +4,7 @@ import dynamic from 'next/dynamic';
 import { useRef } from 'react';
 import { gsap } from '@/lib/gsap';
 import { flow, mq } from '@/lib/motion';
-import { brandCta } from '@/content/home';
-import { joinBandV2 as join } from '@/content/v2/home';
+import { finaleV2, joinBandV2 as join } from '@/content/v2/home';
 import { assets } from '@/content/assets';
 import { useNearGSAP } from './flow';
 import { useRevealChildren } from '@/components/ui/Reveal';
@@ -51,13 +50,13 @@ export function FinaleV2() {
         </div>
 
         <div className="relative flex flex-col gap-10 lg:max-w-[62%]">
-          <Headline lines={brandCta.headline} size="d1" tone="dark" />
+          <Headline lines={finaleV2.headline} size="d1" tone="dark" />
           <p data-reveal className="text-lead max-w-sm text-cream/80">
-            {brandCta.body}
+            {finaleV2.body}
           </p>
           <div data-reveal className="flex flex-wrap gap-3">
-            <Button cta={brandCta.ctas[0]} />
-            <Button cta={brandCta.ctas[1]} variant="outline-dark" icon="calendar" />
+            <Button cta={finaleV2.ctas[0]} />
+            <Button cta={finaleV2.ctas[1]} variant="outline-dark" icon="calendar" />
           </div>
         </div>
 

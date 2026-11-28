@@ -3,8 +3,7 @@
 import { useRef, type ElementType } from "react";
 import { gsap, SplitText, useGSAP, type ScrollTrigger } from "@/lib/gsap";
 import { whenNear } from "@/lib/defer";
-import { dur, ease, flow, mq, revealStart, stagger, playOnce } from "@/lib/motion";
-import { useSiteVersion, type SiteVersion } from "@/lib/site-version";
+import { ease, flow, mq } from "@/lib/motion";
 import { cn } from "@/lib/cn";
 import type {
   AccentStyle,
@@ -50,7 +49,6 @@ export function Headline({
   delay = 0,
 }: Props) {
   const ref = useRef<HTMLElement>(null);
-  const { version } = useSiteVersion();
 
   useGSAP(
     (context) => {
@@ -61,21 +59,10 @@ export function Headline({
         return;
       }
       if (play === undefined)
-        return whenNear(el, () =>
-          context.add(() =>
-            revealHeadline(
-              el,
-              delay,
-              version === "v2"
-                ? { trigger: el, start: flow.start, ...flow.toggle }
-                : { trigger: el, start: revealStart, ...playOnce },
-              version,
-            ),
-          ),
-        );
-      return revealHeadline(el, delay, undefined, version);
+        return whenNear(el, () => context.add(() => revealHeadline(el, delay, { trigger: el, start: flow.start, ...flow.toggle })));
+      return revealHeadline(el, delay);
     },
-    { scope: ref, dependencies: [play, version], revertOnUpdate: true },
+    { scope: ref, dependencies: [play], revertOnUpdate: true },
   );
 
   return (
@@ -89,14 +76,12 @@ export function Headline({
   );
 }
 
-/** SplitText line reveal + accent block wipe. v2 rises slower with a slight settle-in tilt. Returns a disposer. */
+/** SplitText line reveal + accent block wipe. Lines rise with a slight settle-in tilt. Returns a disposer. */
 function revealHeadline(
   el: HTMLElement,
   delay: number,
   scrollTrigger?: ScrollTrigger.Vars,
-  version: SiteVersion = "v1",
 ) {
-  const v2 = version === "v2";
   const mm = gsap.matchMedia();
   mm.add({ motion: mq.motionOK, reduced: mq.reduced }, (ctx) => {
     gsap.set(el, { autoAlpha: 1 });
@@ -114,18 +99,18 @@ function revealHeadline(
       onSplit(self) {
         const tl = gsap.timeline({ delay, scrollTrigger });
         tl.from(self.lines, {
-          yPercent: v2 ? 105 : 118,
-          rotate: v2 ? 2.5 : 0,
+          yPercent: 105,
+          rotate: 2.5,
           transformOrigin: "0% 100%",
-          duration: v2 ? flow.dur : dur.reveal,
-          stagger: v2 ? flow.stagger + 0.02 : stagger.base,
+          duration: flow.dur,
+          stagger: flow.stagger + 0.02,
           ease: ease.reveal,
         });
         if (accents.length) {
           tl.from(
             accents,
-            { scaleX: 0, rotate: 0, duration: v2 ? 1.2 : 0.9, ease: "expo.inOut" },
-            v2 ? "-=1" : "-=0.75",
+            { scaleX: 0, rotate: 0, duration: 1.2, ease: "expo.inOut" },
+            "-=1",
           );
         }
         return tl;

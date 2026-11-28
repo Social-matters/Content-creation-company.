@@ -8,9 +8,9 @@ import { PhoneFrame } from '@/components/ui/PhoneFrame';
 import { Icon, type IconName } from '@/components/ui/Icon';
 import { Eyebrow } from '@/components/ui/Badge';
 import { Headline } from '@/components/ui/Headline';
-import { buildTimeline } from '@/components/sections/HowItWorks';
 import { HowItWorksScreensV2 } from './HowItWorksScreensV2';
 import { Sheet } from './flow';
+import { buildTimeline } from './howTimeline';
 
 const STEPS = howItWorks.steps.length;
 const CHIP_ICONS: IconName[] = ['doc', 'sparkle', 'star', 'trend'];

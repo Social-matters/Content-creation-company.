@@ -4,7 +4,6 @@ import { useRef } from 'react';
 import { gsap, useGSAP } from '@/lib/gsap';
 import { mq, playOnce } from '@/lib/motion';
 import { cn } from '@/lib/cn';
-import { comparison } from '@/content/home';
 import type { Headline } from '@/content/types';
 import { Icon } from '@/components/ui/Icon';
 import { SectionIntro } from './SectionIntro';
@@ -46,7 +45,7 @@ export type ComparisonContent = {
 };
 
 /** CCC vs the alternatives. Highlighted CCC column; on phones each row is a card. */
-export function Comparison({ content = comparison }: { content?: ComparisonContent }) {
+export function Comparison({ content }: { content: ComparisonContent }) {
   const root = useRef<HTMLElement>(null);
   const n = content.columns.length;
   const pair = n === 2;

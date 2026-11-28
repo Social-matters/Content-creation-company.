@@ -4,7 +4,6 @@ import { forwardRef, useId, type InputHTMLAttributes, type ReactNode, type Selec
 import type { UseFormRegisterReturn } from 'react-hook-form';
 import { cn } from '@/lib/cn';
 import { formCopy } from '@/content/forms';
-import { useSiteVersion, withBase } from '@/lib/site-version';
 
 const control =
   'w-full rounded-2xl border-2 border-black bg-white px-4 py-3.5 text-[1rem] text-ink placeholder:text-stone-dark/80 outline-none transition-[box-shadow,transform] duration-200 focus:-translate-x-0.5 focus:-translate-y-0.5 focus:shadow-[4px_4px_0_0_var(--ccc-orange)] aria-[invalid=true]:border-[#c2410c]';
@@ -133,7 +132,7 @@ export function ChipGroupField({
 export const ConsentField = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement> & { error?: string; className?: string }>(function ConsentField({ error, className, ...props }, ref) {
   const id = useId();
   const errId = `${id}-err`;
-  const href = withBase(useSiteVersion().base, formCopy.consent.href);
+  const href = formCopy.consent.href;
   return (
     <div className={cn('flex flex-col gap-2', className)}>
       <div className="flex items-start gap-3">

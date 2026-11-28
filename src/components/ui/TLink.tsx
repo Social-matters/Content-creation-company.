@@ -3,14 +3,12 @@
 import Link from 'next/link';
 import type { ComponentProps, MouseEvent } from 'react';
 import { usePageTransition } from '@/components/providers/PageTransition';
-import { useSiteVersion, withBase } from '@/lib/site-version';
 
 type Props = ComponentProps<typeof Link> & { href: string };
 
-/** next/link that plays the orange page wipe for internal routes. Internal hrefs get the version base (`/v2`). */
-export function TLink({ href: raw, onClick, target, ...rest }: Props) {
+/** next/link that plays the orange page wipe for internal routes. */
+export function TLink({ href, onClick, target, ...rest }: Props) {
   const { navigate } = usePageTransition();
-  const href = withBase(useSiteVersion().base, raw);
   const internal = href.startsWith('/') || href.startsWith('#');
 
   const handle = (e: MouseEvent<HTMLAnchorElement>) => {

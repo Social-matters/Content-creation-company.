@@ -57,9 +57,6 @@ export const formCopy = {
     },
   },
   creator: {
-    eyebrow: '// For creators',
-    title: "I'm a creator.",
-    intro: 'Join the network. Brand work flows in; we handle briefs, contracts and payments.',
     fields: {
       name: 'Your name',
       instagram: 'Instagram handle',
@@ -80,27 +77,14 @@ export const formCopy = {
       languages: 'Hindi, English, Marathi',
       description: 'What you make, who watches, and a reel you are proud of.',
     },
-    submit: 'Apply as a creator',
     success: {
       title: "Application in.",
       body: "We review every profile by hand. Expect a reply within 24 hours.",
       cta: 'Done',
     },
   },
-  // Login is UI-only until the dashboards exist: nothing is sent or stored.
-  login: {
-    eyebrow: '// Welcome back',
-    title: 'Log in',
-    intro: 'Dashboards for brands and creators open soon.',
-    email: 'Email',
-    placeholder: 'you@email.com',
-    submit: 'Continue',
-    success: { title: 'Not open yet.', body: `Dashboards are still being built, so there is nothing to log in to. Questions? Email ${site.email}.`, cta: 'Done' },
-    note: 'No password needed.',
-  },
   pages: {
     brand: { title: 'Start a campaign', description: 'Apply for a founding-brand slot with Content Creation Company.' },
-    creator: { title: 'Join as a creator', description: "Apply to join India's creator-commerce network." },
   },
 } as const;
 

@@ -17,7 +17,7 @@ const args = process.argv.slice(2);
 const flag = (n) => args.find((a) => a.startsWith(`--${n}`));
 const base = process.env.BASE_URL ?? 'http://localhost:3000';
 const routes = args.filter((a) => !a.startsWith('--'));
-const all = ['/', '/creators', '/pricing', '/about', '/contact', '/privacy', '/terms', '/start-a-campaign', '/join-as-creator', '/styleguide'];
+const all = ['/', '/celebrities', '/model-shoots', '/about', '/contact', '/privacy', '/terms', '/styleguide'];
 const widths = flag('w') ? flag('w').split('=')[1].split(',').map(Number) : [1440, 768, 390];
 const max = Number(flag('max')?.split('=')[1] ?? 40);
 const outRoot = path.resolve(import.meta.dirname, '../shots');

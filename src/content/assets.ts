@@ -52,7 +52,6 @@ export const assets = {
     video('mosaic-16', 432, 768, 'Creator holding a play-button sign'),
     video('mosaic-17', 432, 768, 'Creator in red sunglasses posing'),
     video('mosaic-18', 432, 768, 'Vlogger recording in sign language'),
-    video('mosaic-19', 432, 768, 'Behind the scenes of a talking-head shoot'),
     video('mosaic-20', 432, 768, 'Fitness creator training with a kettlebell'),
   ],
 
@@ -63,40 +62,23 @@ export const assets = {
     fitness: video('cat-fitness', 540, 960, 'Athlete doing dumbbell lunges in a gym'),
     lifestyle: video('cat-lifestyle', 540, 960, 'Two friends filming a dance in a retro diner'),
     travel: video('cat-travel', 540, 960, 'Ghats of Pushkar lake, Rajasthan'),
-    tech: video('cat-tech', 540, 960, 'Creator recording on a camera rig at a desk'),
-    home: video('cat-home', 540, 960, 'A bright modern kitchen interior'),
   },
 
   ctaBrand: video('cta-brand', 1600, 900, 'Fashion shoot in a studio with lights and a clothes rail'),
   ctaCreator: video('cta-creator', 720, 1000, 'Creators dancing for a short video in front of a ring light'),
-  creatorsHero: video('creators-hero', 1920, 1080, 'A creator recording at a desk with a camera rig'),
-  creatorsHeroMobile: video('creators-hero-mobile', 720, 1280, 'A creator recording at a desk with a camera rig'),
 
-  /** v2: set atmosphere for celebrity / TV work (hands and gear only, no identifiable talent). */
+  /** Set atmosphere for celebrity / TV work (hands and gear only, no identifiable talent). */
   sets: [
     video('set-1', 540, 960, 'Camera monitor framing a product shot on a studio set'),
     video('set-2', 540, 960, 'Operator adjusting a camera rig on a studio set'),
   ],
-  /** v2: model shoots. */
+  /** Model shoots. */
   models: [
     video('model-1', 720, 1280, 'Fashion shoot in a creative studio with a photographer and a model'),
     video('model-2', 540, 960, 'Model in a white dress posing against a white backdrop'),
   ],
 
-  /** Product stills for mock UI panels (no faces). */
-  ui: {
-    pizza: still('ui-pizza', 360, 640, 'Pepperoni pizza close-up'),
-    coffee: still('ui-coffee', 360, 640, 'Coffee being poured'),
-    toast: still('ui-toast', 360, 640, 'Grilled toast'),
-    wok: still('ui-wok', 360, 640, 'Vegetables in a wok'),
-    skincare: still('ui-skincare', 360, 640, 'Skincare products on a table'),
-    closet: still('ui-closet', 360, 640, 'Organised wardrobe'),
-  },
-
   /** Hero avatar stack (licensed stock faces; mock panels use abstract avatars instead). */
-  avatars: [1, 2, 3, 4, 5].map((n) => still(`avatar-${n}`, 160, 160, '')),
+  avatars: [1, 2, 3, 4].map((n) => still(`avatar-${n}`, 160, 160, '')),
 
-  logo: { poster: '/brand/ccc-logo.svg', width: 1470, height: 660, alt: 'Content Creation Company', credit: 'CCC' } satisfies MediaSlot,
 } as const;
-
-export type CategoryKey = keyof typeof assets.categories;

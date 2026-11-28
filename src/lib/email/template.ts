@@ -28,22 +28,18 @@ const rupees = (digits: string) => `₹${Number(digits).toLocaleString('en-IN')}
 
 const FORM_NAMES: Record<StoredLead['kind'], string> = {
   brand: 'Brand application',
-  'brand-classic': 'Brand application (v1 site)',
   celebrity: 'Celebrity enquiry',
   'model-shoot': 'Model shoot enquiry',
   creator: 'Influencer / creator application',
-  'creator-classic': 'Creator application (v1 site)',
   contact: 'Contact form',
   'early-access': 'Early-access signup',
 };
 
 const TITLES: Record<StoredLead['kind'], string> = {
   brand: 'New brand enquiry',
-  'brand-classic': 'New brand enquiry',
   celebrity: 'New celebrity enquiry',
   'model-shoot': 'New model shoot enquiry',
   creator: 'New influencer application',
-  'creator-classic': 'New creator application',
   contact: 'New contact message',
   'early-access': 'New early-access signup',
 };
@@ -52,12 +48,8 @@ export function leadSubject(lead: StoredLead): string {
   switch (lead.kind) {
     case 'brand':
       return `[CCC] New brand enquiry: ${subjectPart(lead.brand)} (${lead.needs.map((n) => labelOf(brandNeeds, n)).join(', ')})`;
-    case 'brand-classic':
-      return `[CCC] New brand enquiry: ${subjectPart(lead.brand)}`;
     case 'creator':
       return `[CCC] New influencer application: ${subjectPart(lead.name)}, ${rupees(lead.basePrice)} ${lead.priceUnit}`;
-    case 'creator-classic':
-      return `[CCC] New influencer application: ${subjectPart(lead.name)}`;
     case 'celebrity':
       return `[CCC] New celebrity enquiry: ${subjectPart(lead.brand)}`;
     case 'model-shoot':

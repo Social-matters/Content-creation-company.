@@ -58,7 +58,7 @@ export const playOnce = { toggleActions: 'play none none none' } as const;
 export const ENTRANCE_MIN_WIDTH = 768;
 
 /**
- * v2 motion profile (/v2/*): softer distances, longer settles, and reversible triggers so
+ * Scroll motion profile: softer distances, longer settles, and reversible triggers so
  * elements leave the way they arrived when you scroll back. Scroll-linked pieces use `scrub`
  * (seconds of smoothing) so motion follows the hand instead of firing at a threshold.
  */

@@ -7,20 +7,17 @@ import { uiEase } from '@/lib/motion';
 import { nav, site, socials } from '@/content/site';
 import type { Cta, LinkItem } from '@/content/types';
 import { useSmoothScroll } from '@/components/providers/SmoothScroll';
-import { useUIActions } from '@/components/providers/UIProvider';
 import { TLink } from '@/components/ui/TLink';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
 import { Logo } from '@/components/brand/Logo';
-import { AudienceToggle } from './Nav';
 import { SocialLinks } from './SocialLinks';
 
-type Props = { open: boolean; onClose: () => void; links: readonly LinkItem[]; cta: Cta; /** v1 shows the Brands/Creators toggle; v2 shows the logo. */ audience?: boolean; /** v1 lists "Log in" after the links. */ login?: boolean };
+type Props = { open: boolean; onClose: () => void; links: readonly LinkItem[]; cta: Cta };
 
 /** Full-screen menu (below lg) with staggered links. Esc closes; scroll is locked while open. */
-export function MobileMenu({ open, onClose, links, cta, audience = true, login = true }: Props) {
+export function MobileMenu({ open, onClose, links, cta }: Props) {
   const { lenis } = useSmoothScroll();
-  const { openModal } = useUIActions();
   const closeBtn = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
 
@@ -61,14 +58,14 @@ export function MobileMenu({ open, onClose, links, cta, audience = true, login =
         >
           <div className="grain pointer-events-none absolute inset-0" />
           <div className="container-x relative flex h-[var(--nav-h)] items-center justify-between">
-            {audience ? <AudienceToggle layoutId="audience-pill-menu" /> : <Logo className="h-9 w-auto" />}
+            <Logo className="h-9 w-auto" />
             <button ref={closeBtn} type="button" onClick={onClose} className="grid size-11 place-items-center rounded-full border border-cream/20 bg-cream/5">
               <Icon name="x" size={20} />
               <span className="sr-only">{nav.close}</span>
             </button>
           </div>
           <nav aria-label="Mobile" className="container-x relative mt-8 flex flex-col">
-            {[...links, ...(login ? [{ label: nav.login, href: '#login' }] : [])].map((l, i) => (
+            {links.map((l, i) => (
               <motion.div
                 key={l.href}
                 className="overflow-hidden border-b border-cream/10"
@@ -77,24 +74,10 @@ export function MobileMenu({ open, onClose, links, cta, audience = true, login =
                 transition={{ delay: 0.15 + i * 0.06 }}
               >
                 <motion.div initial={{ y: '110%' }} animate={{ y: 0 }} exit={{ y: '-110%', transition: { duration: 0.3 } }} transition={{ duration: 0.8, ease: uiEase, delay: 0.18 + i * 0.07 }}>
-                  {l.href === '#login' ? (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        onClose();
-                        openModal('login');
-                      }}
-                      className="flex w-full items-center justify-between py-4 font-display text-[2.4rem] leading-none"
-                    >
-                      {l.label}
-                      <Icon name="arrowUpRight" size={26} className="text-orange" />
-                    </button>
-                  ) : (
-                    <TLink href={l.href} onClick={onClose} className="flex items-center justify-between py-4 font-display text-[2.4rem] leading-none">
-                      {l.label}
-                      <Icon name="arrowUpRight" size={26} className="text-orange" />
-                    </TLink>
-                  )}
+                  <TLink href={l.href} onClick={onClose} className="flex items-center justify-between py-4 font-display text-[2.4rem] leading-none">
+                    {l.label}
+                    <Icon name="arrowUpRight" size={26} className="text-orange" />
+                  </TLink>
                 </motion.div>
               </motion.div>
             ))}

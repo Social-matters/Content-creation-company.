@@ -6,23 +6,18 @@ import { useState, useTransition, type ReactNode } from 'react';
 import { useForm, type FieldValues, type Path, type Resolver, type UseFormSetError } from 'react-hook-form';
 import { submitLead } from '@/app/actions';
 import {
-  brandClassicSchema,
   brandSchema,
   celebritySchema,
   contactSchema,
-  creatorClassicSchema,
   creatorSchema,
   earlyAccessSchema,
-  loginSchema,
   modelShootSchema,
   type BrandFormInput,
   type ContactFormInput,
   type CreatorFormInput,
   type EarlyAccessFormInput,
-  type LoginInput,
 } from '@/lib/schemas';
 import { leadContext } from '@/lib/lead-context';
-import { useSiteVersion } from '@/lib/site-version';
 import { brandNeeds, budgets, formCopyV2, priceUnits, talentTypes, timelines } from '@/content/v2/forms';
 import { categories, followerTiers, formCopy, phonePrefix } from '@/content/forms';
 import { Button } from '@/components/ui/Button';
@@ -102,13 +97,12 @@ function SubmitRow({ pending, failure, label, icon = 'send', consent }: { pendin
   );
 }
 
-/** Brand application. Inside /v2 it also asks what they need, budget and timeline. */
+/** Brand application, also used for the celebrity and model shoot enquiries. */
 export function BrandForm({ titleId, onDone, enquiry }: FormProps & { enquiry?: EnquiryKind }) {
   const c = formCopy.brand;
-  const v2 = useSiteVersion().version === 'v2';
-  const preset = v2 && enquiry ? ENQUIRY[enquiry] : null;
-  const kind = !v2 ? 'brand-classic' : (enquiry ?? 'brand');
-  const schema = !v2 ? brandClassicSchema : (preset?.schema ?? brandSchema);
+  const preset = enquiry ? ENQUIRY[enquiry] : null;
+  const kind = enquiry ?? 'brand';
+  const schema = preset?.schema ?? brandSchema;
   const { register, handleSubmit, setError, formState } = useForm<BrandFormInput>({
     resolver: resolve<BrandFormInput>(schema),
     defaultValues: { kind, consent: false, ...(preset ? { needs: [preset.need] } : {}) },
@@ -126,13 +120,9 @@ export function BrandForm({ titleId, onDone, enquiry }: FormProps & { enquiry?: 
         <TextField label={c.fields.phone} placeholder={c.placeholders.phone} type="tel" inputMode="tel" autoComplete="tel-national" prefix={phonePrefix} error={e.phone?.message} {...register('phone')} />
         <SelectField label={c.fields.category} options={categoryOptions} error={e.category?.message} {...register('category')} />
         <TextField label={c.fields.city} placeholder={c.placeholders.city} autoComplete="address-level2" error={e.city?.message} {...register('city')} />
-        {v2 && (
-          <>
-            <ChipGroupField className="sm:col-span-2" label={formCopyV2.brand.needs} options={brandNeeds} error={e.needs?.message} inputProps={register('needs')} />
-            <SelectField label={formCopyV2.brand.budget} options={budgets} error={e.budget?.message} {...register('budget')} />
-            <SelectField label={formCopyV2.brand.timeline} options={timelines} error={e.timeline?.message} {...register('timeline')} />
-          </>
-        )}
+        <ChipGroupField className="sm:col-span-2" label={formCopyV2.brand.needs} options={brandNeeds} error={e.needs?.message} inputProps={register('needs')} />
+        <SelectField label={formCopyV2.brand.budget} options={budgets} error={e.budget?.message} {...register('budget')} />
+        <SelectField label={formCopyV2.brand.timeline} options={timelines} error={e.timeline?.message} {...register('timeline')} />
         <TextAreaField className="sm:col-span-2" label={c.fields.description} placeholder={c.placeholders.description} error={e.description?.message} {...register('description')} />
         <SubmitRow pending={pending} failure={failure} label={c.submit} consent={<ConsentField error={e.consent?.message} {...register('consent')} />} />
       </form>
@@ -140,24 +130,22 @@ export function BrandForm({ titleId, onDone, enquiry }: FormProps & { enquiry?: 
   );
 }
 
-/** Creator application. Inside /v2 it's the influencer-network application: "I am a" plus a base rate. */
+/** Influencer-network application: "I am a" plus a base rate. */
 export function CreatorForm({ titleId, onDone }: FormProps) {
   const c = formCopy.creator;
   const v2c = formCopyV2.creator;
-  const v2 = useSiteVersion().version === 'v2';
-  const head = v2 ? { eyebrow: v2c.eyebrow, title: v2c.title, intro: v2c.intro } : c;
   const { register, handleSubmit, setError, formState } = useForm<CreatorFormInput>({
-    resolver: resolve<CreatorFormInput>(v2 ? creatorSchema : creatorClassicSchema),
-    defaultValues: { kind: v2 ? 'creator' : 'creator-classic', consent: false },
+    resolver: resolve<CreatorFormInput>(creatorSchema),
+    defaultValues: { kind: 'creator', consent: false },
   });
   const { done, failure, pending, submit } = useSubmit(setError);
   const e = formState.errors;
   return (
-    <Shell titleId={titleId} eyebrow={head.eyebrow} title={head.title} intro={head.intro} done={done} success={<Success {...c.success} onDone={onDone} />}>
+    <Shell titleId={titleId} eyebrow={v2c.eyebrow} title={v2c.title} intro={v2c.intro} done={done} success={<Success {...c.success} onDone={onDone} />}>
       <form onSubmit={handleSubmit(submit)} noValidate className="relative mt-8 grid gap-5 sm:grid-cols-2">
         <input type="hidden" {...register('kind')} />
         <Honeypot {...register('website')} />
-        {v2 && <ChipGroupField type="radio" className="sm:col-span-2" label={v2c.type} options={talentTypes} error={e.type?.message} inputProps={register('type')} />}
+        <ChipGroupField type="radio" className="sm:col-span-2" label={v2c.type} options={talentTypes} error={e.type?.message} inputProps={register('type')} />
         <TextField label={c.fields.name} placeholder={c.placeholders.name} autoComplete="name" error={e.name?.message} {...register('name')} />
         <TextField label={c.fields.instagram} placeholder={c.placeholders.instagram} autoCapitalize="none" spellCheck={false} error={e.instagram?.message} {...register('instagram')} />
         <TextField label={c.fields.email} placeholder={c.placeholders.email} type="email" autoComplete="email" error={e.email?.message} {...register('email')} />
@@ -166,15 +154,11 @@ export function CreatorForm({ titleId, onDone }: FormProps) {
         <SelectField label={c.fields.tier} options={tierOptions} error={e.tier?.message} {...register('tier')} />
         <TextField label={c.fields.city} placeholder={c.placeholders.city} autoComplete="address-level2" error={e.city?.message} {...register('city')} />
         <TextField label={c.fields.languages} placeholder={c.placeholders.languages} error={e.languages?.message} {...register('languages')} />
-        {v2 && (
-          <>
-            <TextField label={v2c.basePrice} placeholder={v2c.basePricePlaceholder} inputMode="numeric" prefix="₹" error={e.basePrice?.message} {...register('basePrice')} />
-            <SelectField label={v2c.priceUnit} options={priceUnits} error={e.priceUnit?.message} {...register('priceUnit')} />
-            <p className="-mt-2 text-sm text-ink/60 sm:col-span-2">{v2c.priceNote}</p>
-          </>
-        )}
+        <TextField label={v2c.basePrice} placeholder={v2c.basePricePlaceholder} inputMode="numeric" prefix="₹" error={e.basePrice?.message} {...register('basePrice')} />
+        <SelectField label={v2c.priceUnit} options={priceUnits} error={e.priceUnit?.message} {...register('priceUnit')} />
+        <p className="-mt-2 text-sm text-ink/60 sm:col-span-2">{v2c.priceNote}</p>
         <TextAreaField className="sm:col-span-2" label={c.fields.description} placeholder={c.placeholders.description} error={e.description?.message} {...register('description')} />
-        <SubmitRow pending={pending} failure={failure} label={v2 ? v2c.submit : c.submit} consent={<ConsentField error={e.consent?.message} {...register('consent')} />} />
+        <SubmitRow pending={pending} failure={failure} label={v2c.submit} consent={<ConsentField error={e.consent?.message} {...register('consent')} />} />
       </form>
     </Shell>
   );
@@ -216,20 +200,3 @@ export function EarlyAccessForm({ titleId }: FormProps) {
   );
 }
 
-/** UI only until the dashboards exist: checks the address in the browser and sends nothing. */
-export function LoginForm({ titleId, onDone }: FormProps) {
-  const c = formCopy.login;
-  const [done, setDone] = useState(false);
-  const { register, handleSubmit, formState } = useForm<LoginInput>({ resolver: zodResolver(loginSchema) });
-  return (
-    <Shell titleId={titleId} eyebrow={c.eyebrow} title={c.title} intro={c.intro} done={done} success={<Success {...c.success} onDone={onDone} />}>
-      <form onSubmit={handleSubmit(() => setDone(true))} noValidate className="relative mt-8 grid gap-5">
-        <TextField label={c.email} placeholder={c.placeholder} type="email" autoComplete="email" error={formState.errors.email?.message} {...register('email')} />
-        <div className="flex flex-col-reverse gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-ink/60">{c.note}</p>
-          <Button cta={{ label: c.submit }} type="submit" magnetic={false} />
-        </div>
-      </form>
-    </Shell>
-  );
-}

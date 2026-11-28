@@ -1,4 +1,4 @@
-import type { Cta, Headline } from './types';
+import type { Headline } from './types';
 
 export const about = {
   meta: { title: 'About', description: "Why we're building India's creator-commerce marketplace, and who's behind it." },
@@ -42,27 +42,6 @@ export const contact = {
   },
   emailLabel: 'Email us',
   tabsLabel: 'Or apply directly',
-  tabs: ["I'm a brand", "I'm a creator"] as const,
-} as const;
-
-export const pricingPage = {
-  meta: { title: 'Pricing', description: 'Self-serve or managed creator content, priced in ₹. Content Exhibition, Creator Visit, Pay-On-Performance and the AI Creator Marketplace.' },
-  hero: {
-    badge: 'Founding-brand pricing locked for year one',
-    headline: ['Built like an agency.', { before: 'Priced like a ', accent: 'platform.', style: 'block' }] satisfies Headline,
-    lead: 'Pick a plan, or a single offer. Every price is in rupees, and founding brands lock their rate for a year.',
-  },
-  faq: {
-    label: '// Pricing FAQ',
-    headline: ['The fine', { accent: 'print.', style: 'orange' }] satisfies Headline,
-    // CONFIRM: answers need sign-off before launch
-    items: [
-      { q: 'Are prices inclusive of GST?', a: 'Prices shown exclude GST, which is added at the applicable rate on invoice.' },
-      { q: 'What does the Pay-On-Performance success fee depend on?', a: 'Tiers are agreed upfront against view and engagement targets. You only pay the fee when a tier is hit.' },
-      { q: 'Can I combine offers?', a: 'Yes. Many brands pair a Content Exhibition with Pay-On-Performance to scale what works.' },
-      { q: 'What does "founding-brand pricing" mean?', a: 'Brands that sign before launch keep their rate for the first year, even if our prices go up.' },
-    ],
-  },
 } as const;
 
 export const applyPages = {
@@ -71,10 +50,4 @@ export const applyPages = {
     headline: ['Start a', { accent: 'campaign.', style: 'block' }] satisfies Headline,
     lead: 'Two minutes now saves weeks of DMs later.',
   },
-  creator: {
-    badge: 'Now onboarding creators',
-    headline: ['Join as a', { accent: 'creator.', style: 'block' }] satisfies Headline,
-    lead: 'Paid briefs that fit your audience. Contracts and payouts handled.',
-  },
-  back: { label: 'Back to home', href: '/' } satisfies Cta,
 } as const;

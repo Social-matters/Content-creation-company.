@@ -20,7 +20,7 @@
   --font-sans: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 
-  /* Fluid display scale: values live in tokens.css (--fs-*) so a version scope (.v2) can retune them. */
+  /* Fluid display scale: values live in tokens.css (--fs-*). */
   --text-mega: var(--fs-mega);
   --text-mega--line-height: 0.84;
   --text-d1: var(--fs-d1);
@@ -190,7 +190,7 @@ html.is-loading {
   }
 }
 
-/* ---------- v2 ---------- */
+/* ---------- Home hero ---------- */
 /* Hero film starts centred in the right-hand frame (desktop); GSAP takes over the transform on scroll. */
 @media (min-width: 1024px) {
   .hero-v2-inner {

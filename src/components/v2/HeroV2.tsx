@@ -148,7 +148,7 @@ export function HeroV2() {
           <div data-anchor-inner className="absolute inset-0">
             <div data-pop className="absolute left-4 top-4 flex items-center gap-3 rounded-full border border-cream/15 bg-ink/80 py-1.5 pl-1.5 pr-4 lg:left-5 lg:top-5">
               <span className="flex -space-x-2.5">
-                {assets.avatars.slice(0, 4).map((a, i) => (
+                {assets.avatars.map((a, i) => (
                   <span key={a.poster} className="relative size-8 overflow-hidden rounded-full border-2 border-ink" style={{ zIndex: 10 - i }}>
                     <Image src={a.poster} alt="" width={32} height={32} className="size-full object-cover" />
                   </span>

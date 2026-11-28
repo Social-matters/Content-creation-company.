@@ -1,7 +1,6 @@
 # Content Creation Company — marketing site (Phase 1)
 
-The public site for **Content Creation Company (CCC)**, India's creator-commerce and AI-powered content
-marketplace. Next.js 16 · TypeScript · Tailwind v4 · GSAP (ScrollTrigger, SplitText, Flip) · Lenis · motion.
+The public site for **Content Creation Company (CCC)**, an influencer-marketing company with creator content to match. Next.js 16 · TypeScript · Tailwind v4 · GSAP (ScrollTrigger, SplitText, Flip) · Lenis · motion.
 
 Phase 1 of 3: marketing site (this repo) → Phase 2 brand/creator dashboards → Phase 3 mobile app.
 
@@ -20,7 +19,7 @@ pnpm dev                       # http://localhost:3000
 | `pnpm dev` / `build` / `start` | Next.js dev server / production build / serve the build |
 | `pnpm lint` · `pnpm typecheck` | ESLint · route typegen + `tsc --noEmit` |
 | `pnpm shots [route…] [--w=1440,768,390] [--entrance] [--reduced]` | Scrolls routes in Playwright, saves screenshots to `shots/`, prints console errors |
-| `pnpm smoke` | Interaction test: entrance, modal, validation, lead submit, Esc, route wipe, Flip toggle, mobile menu, FAQ, skip link, reduced motion, v2. Skips the submit if `.env.local` has a key (`SMOKE_SEND=1` sends it) |
+| `pnpm smoke` | Interaction test: entrance, modal, validation, lead submit, Esc, route wipe, header button, mobile menu, skip link, reduced motion. Skips the submit if `.env.local` has a key (`SMOKE_SEND=1` sends it) |
 | `pnpm test:forms` | Builds, then submits every form against a mock Resend server and checks each email. Never sends real mail |
 | `pnpm logos [dir]` | Processes client logos from `.incoming/client-logos/` into `public/brand/clients/` + `src/content/clients.ts` |
 | `pnpm assets [slot] [--force]` | Downloads + compresses media into `public/media/` (ffmpeg) |
@@ -43,8 +42,8 @@ src/
   app/
     layout.tsx               fonts, metadata, JSON-LD, entrance pre-paint script
     (marketing)/             every public route (shares MarketingShell)
-      page.tsx               home (13 sections)
-      creators/ pricing/ about/ contact/ privacy/ terms/
+      page.tsx               home
+      celebrities/ model-shoots/ about/ contact/ privacy/ terms/
       start-a-campaign/ join-as-creator/   form pages (same forms as the modals)
       styleguide/            hidden design-system page (noindex)
     (brand)/ (creator)/      reserved for Phase 2 (README only)
@@ -53,9 +52,10 @@ src/
   components/
     providers/               SmoothScroll (Lenis⇄GSAP), UIProvider (modals, entrance), PageTransition (orange wipe)
     layout/                  MarketingShell, Nav, MobileMenu, Footer, Preloader, LazyChrome
-    sections/                one file per page section
-    forms/                   LeadForms (brand, creator, login), fields, success state, ModalHost
-    ui/                      Button, Badge, Card, Headline (SplitText + tilted block), Counter, Marquee,
+    sections/                sections shared by inner pages (grids, apply form, legal, comparison)
+    v2/                      home sections, inner-page hero, motion helpers (flow.tsx)
+    forms/                   LeadForms (brand, network, contact, early access), fields, success state, ModalHost
+    ui/                      Button, Badge, Headline (SplitText + tilted block), Counter, Marquee,
                              Video, PhoneFrame, Modal, Cursor, Magnetic, Reveal, Icon, TLink
     brand/                   Logo (traced SVG), LogoMark (C³ arc glyph)
   content/                   ALL copy + the assets manifest (edit these, not components)
@@ -66,26 +66,15 @@ scripts/                     fetch-assets, asset-sources, assets-doc, shots, smo
 docs/                        reference-notes, decisions, TODO-real-content
 ```
 
-## v2 design (`/v2`)
+## Where the design came from
 
-A second, influencer-led version of the site lives at `/v2/*` (home, celebrities, model shoots, about, contact,
-forms, legal) so the two can be compared on one deployment. It is `noindex`; see `CLAUDE.md` → "Two versions"
-for its positioning, nav and copy rules.
-
-- **Routes:** `src/app/v2/` with `MarketingShell version="v2"`. Links inside v2 stay in v2 automatically (`TLink`).
-  `/v2/creators` and `/v2/pricing` redirect to `/v2`.
-- **Copy:** `src/content/v2/` (`home.ts`, `site.ts`, `pages.ts`, `forms.ts`). v1 copy in `src/content/*.ts` is separate.
-- **Sections:** `src/components/v2/` (HeroV2, MosaicV2, ServicesV2, HowItWorksV2 + screens, OperationsV2, ProofV2,
-  StatsV2, VoicesV2, FinaleV2, PageHeroV2) and the motion helpers in `v2/flow.tsx`. Shared components
-  (Nav, Footer, Comparison, forms) take v2 content as props or read `useSiteVersion()`.
-- **Look and feel:** the `.v2` scope in `styles/tokens.css` sets the roomier spacing and calmer type scale;
-  `flow` in `lib/motion.ts` is the softer, scroll-linked motion profile.
-- **Removing v2:** delete `src/app/v2`, `src/components/v2` and `src/content/v2`, the redirects in `next.config.ts`,
-  and the v2 branches in the shared components.
+The site started with two designs. On 2026-11-28 the original (v1) was removed and the influencer-led one, previously
+at `/v2`, became the site. Old `/v2/*` links redirect (see `next.config.ts`). Names containing `v2` are the live
+code. v1 can be recovered from git history.
 
 ## Swapping content
 
-- **Copy:** every visible string lives in `src/content/*.ts` (`home.ts`, `creators.ts`, `pages.ts`, `site.ts`,
+- **Copy:** every visible string lives in `src/content/` (`v2/home.ts`, `v2/pages.ts`, `v2/forms.ts`, `pages.ts`, `site.ts`,
   `forms.ts`, `legal.ts`). Headlines are arrays of lines; mark the accent word with
   `{ before, accent, after, style: 'block' | 'orange' | 'outline' }`.
 - **Placeholders:** marked `// PLACEHOLDER` or `// CONFIRM`, listed in `docs/TODO-real-content.md`.
@@ -127,7 +116,7 @@ Submissions that look like formulas are stored as plain text.
 
 Every form is emailed to the CCC team through [Resend](https://resend.com), from a Server Action only: brand
 application, influencer / creator application, celebrity enquiry, model shoot enquiry, contact message and
-early-access signup (the v1 forms use the same pipeline). The login box is UI only and sends nothing.
+early-access signup.
 
 ### Setup
 
@@ -153,7 +142,7 @@ early-access signup (the v1 forms use the same pipeline). The login box is UI on
 ### Real test send
 
 1. Save `.env.local` with the key, then (re)start `pnpm dev`.
-2. Open `http://localhost:3000/v2/contact`, send a message, and check the inbox (and spam). Hit *Reply*: it should
+2. Open `http://localhost:3000/contact`, send a message, and check the inbox (and spam). Hit *Reply*: it should
    address the email you typed into the form.
 3. If the form shows an error, the terminal running `pnpm dev` prints Resend's reason (`[lead] delivery failed`).
 4. Open the email in Gmail and in Outlook to confirm it renders well in both.
@@ -193,8 +182,8 @@ build step (or CI) to block deploys while placeholders remain.
 ## How Phase 2 and Phase 3 plug in
 
 - **Phase 2 (dashboards):** build in `app/(brand)` and `app/(creator)` with their own layouts (no marketing
-  chrome or Lenis). Reuse `components/ui/*`, `styles/tokens.css`, `lib/schemas.ts`. The login modal
-  (`LoginForm`) is the hook for auth; swap `leads.ts` for a DB adapter. Extracting `components/ui` + tokens into a
+  chrome or Lenis). Reuse `components/ui/*`, `styles/tokens.css`, `lib/schemas.ts`. Add authentication there;
+  swap `leads.ts` for a DB adapter. Extracting `components/ui` + tokens into a
   `packages/ui` workspace package is a move, not a rewrite (`pnpm-workspace.yaml` is already present).
 - **Phase 3 (React Native app):** import `src/lib/tokens.ts` (colours, fonts, radii, shadows: platform-agnostic)
   and `src/lib/schemas.ts` (Zod works in RN) into the app; content types in `src/content/types.ts` keep copy shareable.

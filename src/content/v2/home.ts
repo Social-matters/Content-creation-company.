@@ -1,13 +1,13 @@
 /**
- * v2 home copy (/v2). Influencer-led positioning: influencer marketing is the main story,
+ * Home copy. Influencer-led positioning: influencer marketing is the main story,
  * creator content (model shoots, creator shoots, exhibitions) the supporting one.
- * v1 copy lives in ../home.ts and is untouched. Every invented figure, handle or name is
+ * Every invented figure, handle or name is
  * marked PLACEHOLDER and listed in docs/TODO-real-content.md.
  */
 import type { Cta, Headline, MediaSlot } from '../types';
 import { assets } from '../assets';
 import type { NotificationTone } from '@/components/sections/NotificationCard';
-import { joinNetwork } from './site';
+import { joinNetwork } from '../site';
 
 export const heroV2 = {
   badge: 'Now onboarding founding brands',
@@ -61,7 +61,7 @@ export const mosaicV2 = {
     { m: 16, tag: 'Micro · Fashion' },
     { m: 17, tag: 'Mid · Education' },
     { m: 9, tag: 'Nano · Beauty' },
-    { m: 19, tag: 'Mid · Fitness' },
+    { m: 18, tag: 'Mid · Fitness' },
   ] as { m?: number; tag?: string; type?: 'Influencer' | 'TV Actor' | 'Model' }[],
 } as const;
 
@@ -376,4 +376,23 @@ export const clientsV2 = {
   title: "Brands we've worked with",
   label: '// Brands',
   openSlot: { label: 'Your brand next', modal: 'campaign' } satisfies Cta,
+} as const;
+
+/** Closing call at the end of the home page. */
+export const finaleV2 = {
+  headline: ['Your feed', "won't fill", { accent: 'itself.', style: 'block' }] satisfies Headline,
+  body: 'Founding-brand slots are open. Lock your pricing before launch.',
+  ctas: [
+    { label: 'Start a campaign', modal: 'campaign' },
+    { label: 'Book a call', href: '/contact', meta: '15 min' },
+  ] satisfies Cta[],
+} as const;
+
+/** Creator card on the About page. */
+export const creatorCtaV2 = {
+  label: 'Creator?',
+  headline: ['Make reels.', { before: 'Get ', accent: 'paid.', style: 'orange' }] satisfies Headline,
+  body: 'Real briefs from real brands, sent to you. We handle contracts, payments and the awkward follow-ups.',
+  note: 'No minimum follower count.', // CONFIRM with CCC before launch (see docs/TODO-real-content.md)
+  cta: { label: 'Join as a creator', modal: 'creator' } satisfies Cta,
 } as const;

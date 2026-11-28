@@ -42,12 +42,10 @@ const brandDetail = {
   timeline: z.enum(values(timelines), 'Pick a timeline'),
 };
 
-/** v2 brand application, and the two enquiry forms on the Celebrities and Model Shoots pages. */
+/** Brand application, and the two enquiry forms on the Celebrities and Model Shoots pages. */
 export const brandSchema = z.object({ kind: z.literal('brand'), ...brandDetail });
 export const celebritySchema = z.object({ kind: z.literal('celebrity'), ...brandDetail });
 export const modelShootSchema = z.object({ kind: z.literal('model-shoot'), ...brandDetail });
-/** v1 brand application (no needs, budget or timeline). */
-export const brandClassicSchema = z.object({ kind: z.literal('brand-classic'), ...brandBase });
 
 const creatorBase = {
   name,
@@ -72,7 +70,7 @@ const basePrice = z
   .transform((v) => v.replace(/[₹,\s]/g, ''))
   .pipe(z.string().regex(/^\d{3,8}$/, 'Enter your rate in rupees (at least ₹100), numbers only'));
 
-/** v2 influencer-network application. */
+/** Influencer-network application. */
 export const creatorSchema = z.object({
   kind: z.literal('creator'),
   ...creatorBase,
@@ -80,8 +78,6 @@ export const creatorSchema = z.object({
   basePrice,
   priceUnit: z.enum(values(priceUnits), 'Pick what the rate covers'),
 });
-/** v1 creator application. */
-export const creatorClassicSchema = z.object({ kind: z.literal('creator-classic'), ...creatorBase });
 
 export const contactSchema = z.object({
   kind: z.literal('contact'),
@@ -93,10 +89,7 @@ export const contactSchema = z.object({
 
 export const earlyAccessSchema = z.object({ kind: z.literal('early-access'), email, ...always });
 
-/** The login box is UI-only: validated in the browser, never sent. */
-export const loginSchema = z.object({ email });
-
-export const leadSchema = z.discriminatedUnion('kind', [brandSchema, celebritySchema, modelShootSchema, brandClassicSchema, creatorSchema, creatorClassicSchema, contactSchema, earlyAccessSchema]);
+export const leadSchema = z.discriminatedUnion('kind', [brandSchema, celebritySchema, modelShootSchema, creatorSchema, contactSchema, earlyAccessSchema]);
 
 /** Where a submission came from. Informational only, so bad values are dropped rather than rejected. */
 export const leadContextSchema = z
@@ -106,12 +99,10 @@ export const leadContextSchema = z
   })
   .catch({ page: '/', utm: {} });
 
-export type LeadInput = z.input<typeof leadSchema>;
 export type Lead = z.output<typeof leadSchema>;
 export type LeadContext = z.output<typeof leadContextSchema>;
 /** Field sets for the forms (the widest variant of each; `kind` picks the schema). */
-export type BrandFormInput = Omit<z.input<typeof brandSchema>, 'kind'> & { kind: 'brand' | 'celebrity' | 'model-shoot' | 'brand-classic' };
-export type CreatorFormInput = Omit<z.input<typeof creatorSchema>, 'kind'> & { kind: 'creator' | 'creator-classic' };
+export type BrandFormInput = Omit<z.input<typeof brandSchema>, 'kind'> & { kind: 'brand' | 'celebrity' | 'model-shoot' };
+export type CreatorFormInput = z.input<typeof creatorSchema>;
 export type ContactFormInput = z.input<typeof contactSchema>;
 export type EarlyAccessFormInput = z.input<typeof earlyAccessSchema>;
-export type LoginInput = z.input<typeof loginSchema>;

@@ -5,37 +5,28 @@ export const site = {
   short: 'CCC',
   url: 'https://contentcreationcompany.in',
   description:
-    "India's creator-commerce and AI-powered content marketplace. Brands brief once; vetted creators turn it into reels, UGC and shoot-day content that performs.",
+    'Influencer marketing in India, with creator content to match: influencer campaigns, celebrity and TV serial actor tie-ups and model shoots, run end to end.',
   email: 'hello@contentcreationcompany.in',
   replyNote: 'We reply within 24 hours',
   credit: 'An Initiation by Social Matters',
   locale: 'en_IN',
 } as const;
 
+/** One brand-facing nav. Influencers join through the footer and the band on the home page. */
 export const nav = {
-  audience: [
-    { label: 'Brands', href: '/' },
-    { label: 'Creators', href: '/creators' },
-  ],
   links: [
+    { label: 'Influencers', href: '/#influencers' },
+    { label: 'Celebrities', href: '/celebrities' },
+    { label: 'Model Shoots', href: '/model-shoots' },
     { label: 'How it works', href: '/#how' },
-    { label: 'Services', href: '/#services' },
-    { label: 'Pricing', href: '/pricing' },
-    { label: 'About', href: '/about' },
   ] satisfies LinkItem[],
-  creatorLinks: [
-    { label: 'How you earn', href: '/creators#earn' },
-    { label: 'Tiers', href: '/creators#tiers' },
-    { label: 'FAQ', href: '/creators#faq' },
-    { label: 'About', href: '/about' },
-  ] satisfies LinkItem[],
-  login: 'Log in',
-  cta: { label: 'Start a campaign', modal: 'campaign' } satisfies Cta,
-  creatorCta: { label: 'Join as a creator', modal: 'creator' } satisfies Cta,
+  cta: { label: 'Apply', href: '/contact' } satisfies Cta,
   menu: 'Menu',
   close: 'Close',
   skip: 'Skip to content',
 } as const;
+
+export const joinNetwork = { label: 'Join our influencer network', modal: 'creator' } satisfies Cta;
 
 export const socials = [
   // PLACEHOLDER: confirm handles before launch
@@ -48,24 +39,15 @@ export const socials = [
 export type SocialIcon = (typeof socials)[number]['icon'];
 
 export const footer = {
-  tagline: 'Brands brief once. Creators make it theirs. Everybody gets results.',
+  tagline: 'Influencer campaigns, celebrity tie-ups and model shoots, run end to end. One platform, one outcome.',
   columns: [
     {
-      title: 'Brands',
+      title: 'Services',
       links: [
+        { label: 'Influencer campaigns', href: '/#services' },
+        { label: 'Celebrity tie-ups', href: '/celebrities' },
+        { label: 'Model shoots', href: '/model-shoots' },
         { label: 'How it works', href: '/#how' },
-        { label: 'Services', href: '/#services' },
-        { label: 'Pricing', href: '/pricing' },
-        { label: 'Start a campaign', href: '/start-a-campaign' },
-      ],
-    },
-    {
-      title: 'Creators',
-      links: [
-        { label: 'For creators', href: '/creators' },
-        { label: 'How you earn', href: '/creators#earn' },
-        { label: 'Follower tiers', href: '/creators#tiers' },
-        { label: 'Apply', href: '/join-as-creator' },
       ],
     },
     {
@@ -73,11 +55,18 @@ export const footer = {
       links: [
         { label: 'About', href: '/about' },
         { label: 'Contact', href: '/contact' },
+        { label: 'Start a campaign', href: '/start-a-campaign' },
+      ],
+    },
+    {
+      title: 'Legal',
+      links: [
         { label: 'Privacy', href: '/privacy' },
         { label: 'Terms', href: '/terms' },
       ],
     },
   ] satisfies { title: string; links: LinkItem[] }[],
+  join: joinNetwork,
   socialTitle: 'Social',
   contactTitle: 'Say hello',
   legal: [
